@@ -2,7 +2,7 @@ const { defineConfig } = require('cypress');
 
 module.exports = defineConfig({
 	// @Ely: CYPRESS DASHBOARD PARA VER NUESTRAS EJECUCIONES EN LA WEB:
-	projectId: '',
+	projectId: 'vhdqpk',
 	// 1280×720 is considered to be the most suitable screen resolution for the desktop website version:
 	viewportWidth: 1280,
 	viewportHeight: 720,
@@ -25,7 +25,7 @@ module.exports = defineConfig({
 	// E2E Testing runner
 	e2e: {
 		// Enables cross-origin and improved session support, including the cy.origin and cy.session commands:
-		experimentalSessionAndOrigin: true, // Para poder ver el Test Run de pruebas API, ésto debe estar en FALSE.
+		experimentalSessionAndOrigin: false, // Para poder ver el Test Run de pruebas API, ésto debe estar en FALSE.
 		// Use Cypress plugins:
 		setupNodeEvents(on, config) {
 			return require('./cypress/plugins/index.js')(on, config)			

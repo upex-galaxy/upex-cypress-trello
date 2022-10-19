@@ -18,9 +18,9 @@ import './commands'
 import 'cypress-react-selector';
 import "cypress-real-events/support";
 import 'cypress-wait-until';
+// import '@cypress/xpath';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 require('cypress-plugin-api')
 require('cy-verify-downloads').addCustomCommand();
-require('@cypress/xpath');
