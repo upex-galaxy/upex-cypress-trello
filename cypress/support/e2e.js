@@ -18,6 +18,7 @@ import './commands'
 import 'cypress-react-selector';
 import "cypress-real-events/support";
 import 'cypress-wait-until';
+// import '@cypress/xpath';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
