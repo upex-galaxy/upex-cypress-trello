@@ -1,0 +1,20 @@
+{
+  "get":{
+    "board":"https://api.trello.com/1/members/me/boards?fields=name,url",
+    "list": "https://api.trello.com/1/boards/",
+    "card": "https://api.trello.com/1/cards?",
+    "AddSticker": "https://api.trello.com/1/cards/"
+  },
+    "token":"15c184ca54287751d0f672bf3dec5aff4e23f4963a6381cda8102d24f4d97aff",
+    "key":"86a1cb4f2f937d7e7880bd0e6f29f25b",
+    "idList":"634ec4451a69db03becc1a2d",
+    "idCard":"634ec45202514c0235f90341",
+    "top":"10",
+    "left":"40",
+    "image":"taco-love",
+    "customSticker": "63531133c44f770179beb787",
+    "zIndex":"1",
+    "invalidSticker": "invalid sticker"
+  }
+  
+  
