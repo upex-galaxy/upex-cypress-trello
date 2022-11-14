@@ -36,8 +36,10 @@ Cypress.Commands.add('addSticker', (imagen, top, left, zIndex, rotate) => {
 						top: top,
 						left: left,
 						zIndex: zIndex,
-            rotate: rotate,
+                        rotate: rotate,
 						key: the.key,
+
+						
 						token: the.token,
 					},
 				})
