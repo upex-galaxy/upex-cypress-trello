@@ -9,12 +9,60 @@ Aunque no es el único E2E en el mercado, y tampoco es el más usado como sí lo
 Cypress es un Framework de Automatización de Next Generation construido para web modernas. Esto es im simple proyecto el cual puedes usarlo para comenzar tu viaje por la Galaxia de la Automatización!
 
 # CÓMO EMPEZAR:
-1. **Clona el Proyecto**: `git clone <URLdelRepositorioGitHub>`
-2. **Instala todas las dependencias**: `npm i` (i de install) o puedes usar `npm i -f` (-f de force) por si estás teniendo conflictos al instalar.
-3. **Corre el comando**: `npx cypress open` o `npm test` (ya que en Package.json tenemos la variable "test" como el "cypress open") para abrir Cypress!
-4. **Para correr pruebas en la terminal, ejecuta**: `npm run file */**/<filename>`, donde la variable "**file**" es "cypress run --browser chrome --reporter cypress-multi-reporters --reporter-options configFile=jsconfig.json --record --key {key} --spec", cuyo atajo es para que podamos correr las pruebas de un directorio que especifiquemos, usando el navegador de Chrome, generando 1 Reporte XML para importar a Jira y otro para generar un hermoso html, y adicionalmente actualizar el Cypress Dashboard del Proyecto.
 
-# Las Guías de UPEX para saber cómo trabajar en un Workspace Real están Confluence: [CYPRESS AL GRANO](https://upexgalaxy1.atlassian.net/wiki/spaces/UG/pages/852822)
+1. **Clona el Proyecto**: 
+    ```
+    git clone https://github.com/upex-galaxy/L1-cypex-trello.git
+    ````
+___
+2. **Instala todas las dependencias**: 
+    ```
+    npm i
+    ``` 
+    * (la letra `i` es de `install`)
+    o puedes usar:
+        ```
+        npm i -f
+        ``` 
+        * (usa el parámetro `-f` de force) por si estás teniendo conflictos al instalar.
+___
+3. **Para abrir la App de Cypress, corre el comando**: 
+    ```
+    npm test
+    ``` 
+    * también puede usar `npx cypress open` (ya que en Package.json tenemos la variable "test" como el "cypress open") para abrir Cypress!
+___
+4. **Para correr pruebas y generar Reportes XML y HTML, ejecuta**: 
+    ```
+    npm run file */**/<filename>
+    ```
+    * donde la variable "file" es:
+     `cypress run --browser chrome --reporter cypress-multi-reporters --reporter-options configFile=jsconfig.json --record --key {key} --spec`, 
+     cuyo atajo es para que podamos correr las pruebas de un directorio que especifiquemos, usando el navegador de Chrome, generando 1 Reporte XML para importar a Jira y otro para generar un hermoso html, y adicionalmente actualizar el Cypress Dashboard del Proyecto.
+___
+5. **Para generar el archivo del Test Report de Cucumber en HTML, Ejecuta**: 
+    ```
+    npm run report:cucumber
+    ```
+    * donde la variable "report:cucumber" es igual a:
+    `node ./cucumber-html-report.js` cuyo atajo es para que podamos correr las pruebas de un directorio que especifiquemos, usando el navegador de Chrome, generando 1 Reporte JSON Cucumber para importar a Jira, y adicionalmente actualizar el Cypress Dashboard del Proyecto!
+___
+6. **Para correr una REGRESIÓN y generar un solo Reporte HTML global, ejecuta**: 
+    ```
+    npm run regression:report
+    ```
+    Luego ejecuta este comando, y luego el otro:
+    ````
+    npm run report:json
+    npm run report:html
+    ````
+    * Gracias a esto se va a generar un único Reporte mochawesome HTML para evaluar TODOS los Resultados de Prueba de la Regresión. Para conocer los detalles, de estos Scripts, véase el Package.json.
+___
+7. **AHORA CON CYPRESS DASHBOARD**, puedes ver todas las ejecuciones y resultados de prueba del proyecto!
+Visita: [CYPRESS DASHBOARD](https://cloud.cypress.io/projects/vhdqpk/analytics/runs-over-time)
+___
+## APRENDE Y GANA EXPERIENCIA TRABAJANDO COMO QA AUTOMATION EN GALAXY: 
+# LEE ESTA GUÍA: [CYPRESS AL GRANO](https://upexgalaxy6.atlassian.net/wiki/spaces/UG/pages/918130)
 
 # Algunos Artículos de Cypress que puede interesarte:
 - [How to Install Cypress](https://testersdock.com/how-to-install-cypress/)
