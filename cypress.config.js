@@ -1,4 +1,6 @@
-const { defineConfig } = require('cypress');
+const {defineConfig} = require('cypress')
+const {downloadFile} = require('cypress-downloadfile/lib/addPlugin')
+const { verifyDownloadTasks } = require('cy-verify-downloads');
 
 module.exports = defineConfig({
 	// @Ely: CYPRESS DASHBOARD PARA VER NUESTRAS EJECUCIONES EN LA WEB:
@@ -10,13 +12,10 @@ module.exports = defineConfig({
 	watchForFileChanges: false,
 	// En Caso de hacer testing en SUT con seguridad web:
 	chromeWebSecurity: false,
-	// reporter: 'mochawesome',
-	reporter: 'mocha-junit-reporter',
+	// multi-reporters: one report.xml + mochawesome.json per file.
+	reporter: 'cypress-multi-reporters',
 	reporterOptions: {
-		mochaFile: 'reports/test-results.xml',
-		toConsole: true,
-		outputs: true,
-        testCaseSwitchClassnameAndName: true
+		configFile: 'jsconfig.json'
 	},
 	// Number of times to retry a failed test. If a number is set, tests will retry in both runMode and openMode:
 	retries: 0,
@@ -28,6 +27,8 @@ module.exports = defineConfig({
 		experimentalSessionAndOrigin: false, // Para poder ver el Test Run de pruebas API, ésto debe estar en FALSE.
 		// Use Cypress plugins:
 		setupNodeEvents(on, config) {
+			on('task', {downloadFile})
+			on('task', verifyDownloadTasks);
 			return require('./cypress/plugins/index.js')(on, config)			
 		},		
 		// Glob pattern to determine what test files to load:
