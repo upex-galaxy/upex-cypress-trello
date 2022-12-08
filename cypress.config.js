@@ -1,6 +1,6 @@
 const {defineConfig} = require('cypress')
 const {downloadFile} = require('cypress-downloadfile/lib/addPlugin')
-const { verifyDownloadTasks } = require('cy-verify-downloads');
+const {verifyDownloadTasks} = require('cy-verify-downloads')
 
 module.exports = defineConfig({
 	// @Ely: CYPRESS DASHBOARD PARA VER NUESTRAS EJECUCIONES EN LA WEB:
@@ -15,7 +15,7 @@ module.exports = defineConfig({
 	// multi-reporters: one report.xml + mochawesome.json per file.
 	reporter: 'cypress-multi-reporters',
 	reporterOptions: {
-		configFile: 'jsconfig.json'
+		configFile: 'jsconfig.json',
 	},
 	// Number of times to retry a failed test. If a number is set, tests will retry in both runMode and openMode:
 	retries: 0,
@@ -28,13 +28,21 @@ module.exports = defineConfig({
 		// Use Cypress plugins:
 		setupNodeEvents(on, config) {
 			on('task', {downloadFile})
-			on('task', verifyDownloadTasks);
-			return require('./cypress/plugins/index.js')(on, config)			
-		},		
+			on('task', verifyDownloadTasks)
+			return require('./cypress/plugins/index.js')(on, config)
+		},
 		// Glob pattern to determine what test files to load:
 		specPattern: ['**/*.feature', 'cypress/e2e/**/*.cy.{js,jsx,ts,tsx}'],
-		// Url used as prefix for cy.visit() or cy.request() command's url 
+		// Url used as prefix for cy.visit() or cy.request() command's url
 		// (NO USAR BASEURL SI SE EJECUTA UN INDEX.HTML):
 		// baseUrl: 'https://'
-	}
+	},
+	env: {
+		baseUrl: 'https://api.trello.com/1',
+		key: '191a488f5f9b25380f53f34531eea047',
+		token: '03d4b617f0ed756a1e74de3856627c5dcba89a366f81cc04fee1e388df60f9a7',
+		endpoint: {
+			getToken: '/tokens/',
+		},
+	},
 })
