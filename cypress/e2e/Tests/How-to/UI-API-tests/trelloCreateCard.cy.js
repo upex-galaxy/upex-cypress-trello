@@ -1,9 +1,17 @@
 describe('Open Trello API test', () => {
 
-    let api = Cypress.env()
+    const api = Cypress.env('api')
+    const gmail = Cypress.env('gmail')
     before(()=>{
-        window.localStorage.setItem('jwt', api.tokensss)
-        cy.visit("https://trello.com/")
+        cy.visit("https://trello.com/login")
+        cy.url().should("contain","trello")
+
+        cy.get("#googleButton").click()
+        cy.origin("https://google.com",{args: {gmail}}, ({gmail})=>{
+            cy.get("#identifierId").type(gmail.user)
+            cy.get("[type='button']").click({force:true})
+        })
+        
     })
     beforeEach(() => {
         cy.log(api.key)
@@ -28,3 +36,18 @@ describe('Open Trello API test', () => {
     
     
 });
+
+
+Cypress.on('uncaught:exception', (err, runnable) => {
+	// returning false here prevents Cypress from
+	// failing the test
+	return false
+})
+// Comando predeterminado para que no aparezcan los Fetch en el log del Test Runner:
+const origLog = Cypress.log
+Cypress.log = function (opts, ...other) {
+	if (opts.displayName === 'xhr'|| opts.displayName === 'fetch' && opts.url.startsWith('https://')) {
+		return
+	}
+	return origLog(opts, ...other)
+} 

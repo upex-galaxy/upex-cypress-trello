@@ -24,7 +24,7 @@ module.exports = defineConfig({
 	// E2E Testing runner
 	e2e: {
 		// Enables cross-origin and improved session support, including the cy.origin and cy.session commands:
-		experimentalSessionAndOrigin: false, // Para poder ver el Test Run de pruebas API, ésto debe estar en FALSE.
+		experimentalSessionAndOrigin: true, // Para poder ver el Test Run de pruebas API, ésto debe estar en FALSE.
 		// Use Cypress plugins:
 		setupNodeEvents(on, config) {
 			on('task', {downloadFile})
@@ -38,11 +38,18 @@ module.exports = defineConfig({
 		// baseUrl: 'https://'
 	},
 	env: {
-		baseUrl: 'https://api.trello.com/1',
-		key: '191a488f5f9b25380f53f34531eea047',
-		token: '03d4b617f0ed756a1e74de3856627c5dcba89a366f81cc04fee1e388df60f9a7',
-		endpoint: {
-			getToken: '/tokens/',
+		api:{
+			baseUrl: 'https://api.trello.com/1',
+			key: '191a488f5f9b25380f53f34531eea047',
+			token: '03d4b617f0ed756a1e74de3856627c5dcba89a366f81cc04fee1e388df60f9a7',
+			endpoint: {
+				getToken: '/tokens/',
+			},
 		},
+		// Gmail for Test
+		gmail: {
+			user: "upextesting",
+			password: "upextest123"
+		}
 	},
 })
