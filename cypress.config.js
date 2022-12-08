@@ -11,7 +11,7 @@ module.exports = defineConfig({
 	// Whether Cypress will watch and restart tests on test file changes:
 	watchForFileChanges: false,
 	// En Caso de hacer testing en SUT con seguridad web:
-	chromeWebSecurity: false,
+	chromeWebSecurity: true,
 	// multi-reporters: one report.xml + mochawesome.json per file.
 	reporter: 'cypress-multi-reporters',
 	reporterOptions: {
@@ -23,8 +23,6 @@ module.exports = defineConfig({
 	video: false,
 	// E2E Testing runner
 	e2e: {
-		// Enables cross-origin and improved session support, including the cy.origin and cy.session commands:
-		experimentalSessionAndOrigin: true, // Para poder ver el Test Run de pruebas API, ésto debe estar en FALSE.
 		// Use Cypress plugins:
 		setupNodeEvents(on, config) {
 			on('task', {downloadFile})
@@ -36,20 +34,5 @@ module.exports = defineConfig({
 		// Url used as prefix for cy.visit() or cy.request() command's url
 		// (NO USAR BASEURL SI SE EJECUTA UN INDEX.HTML):
 		// baseUrl: 'https://'
-	},
-	env: {
-		api:{
-			baseUrl: 'https://api.trello.com/1',
-			key: '191a488f5f9b25380f53f34531eea047',
-			token: '03d4b617f0ed756a1e74de3856627c5dcba89a366f81cc04fee1e388df60f9a7',
-			endpoint: {
-				getToken: '/tokens/',
-			},
-		},
-		// Gmail for Test
-		gmail: {
-			user: "upextesting",
-			password: "upextest123"
-		}
 	},
 })
