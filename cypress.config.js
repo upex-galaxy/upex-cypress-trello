@@ -35,4 +35,15 @@ module.exports = defineConfig({
 		// (NO USAR BASEURL SI SE EJECUTA UN INDEX.HTML):
 		// baseUrl: 'https://'
 	},
+	env:{
+		twitterAPI:{
+			OAuth:{
+				key: "'",
+				secret: "",
+				accessToken: "",
+				secretToken: ""	
+			},
+			BearerToken: ""
+		}
+	}
 })
