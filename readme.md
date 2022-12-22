@@ -1,6 +1,6 @@
 [![CYPEX L1 TRELLO](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/detailed/vhdqpk&style=for-the-badge&logo=cypress)](https://dashboard.cypress.io/projects/vhdqpk/runs)
 
-# Testing Automation - Cypress 10.9.0 + Cucumber
+# 🧪Testing Automation - Cypress 12👾 + Cucumber
 ![UPEX's Banners (linkedin) (1)](https://user-images.githubusercontent.com/91127281/189470339-acea5782-16f1-4f06-9ce0-df54fd3ead9d.png)
 
 Cypress es el MEJOR FRAMEWORK DE AUTOMATION E2E actualmente! No hay rival! Además de que es el framework más amigable para aprender!
@@ -20,11 +20,6 @@ ___
     npm i
     ``` 
     * (la letra `i` es de `install`)
-    o puedes usar:
-        ```
-        npm i -f
-        ``` 
-        * (usa el parámetro `-f` de force) por si estás teniendo conflictos al instalar.
 ___
 3. **Para abrir la App de Cypress, corre el comando**: 
     ```

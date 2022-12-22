@@ -1,4 +1,4 @@
-import { Given, When, And, Then } from "@badeball/cypress-cucumber-preprocessor";
+const { Given, When, And, Then } = require("@badeball/cypress-cucumber-preprocessor");
 
 describe("US 2 | TS 3 | TC1: Check the Login correctly to Orange CRM Website", () =>
 {
