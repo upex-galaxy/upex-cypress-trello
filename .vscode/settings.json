@@ -73,7 +73,7 @@
 		".cypress-cucumber-preprocessorrc.json": "cucumber",
 		"cucumber-report.json": "cucumber",
 		"cucumber-json-formatter.exe": "cucumber",
-		"cucumber-html-report.js": "cucumber",
+		"cucumber-html-report.cjs": "cucumber",
 		"jsconfig.json": "conduct",
 		"jsregression.json": "conduct",
 		"settings.json": "Vscode",
