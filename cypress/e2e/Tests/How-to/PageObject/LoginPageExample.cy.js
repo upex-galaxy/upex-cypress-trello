@@ -1,4 +1,4 @@
-const { Cy } = require('../../../../../support/POM/example.Page')
+const { Cy } = require('@pages/example.Page')
 
 describe('US Example | Test Page Object Model', () => {
     beforeEach(() => {
