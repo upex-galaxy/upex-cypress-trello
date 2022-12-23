@@ -6,8 +6,8 @@
 #     3ro: guarda los cambios en el repositorio local (git add + git commit) y envíalos al Repo Remoto (git push)
 #     Expected Result: Debería ejecutarse este Pipeline de GitHub Actions y correr cada uno de los Jobs declarados aquí. 
 
-name: 🤖CI run (BUILD) Test Suite Execution⚡
-run-name: ${{github.actor}}👨🏻‍🔬 run Test Suite in ${{github.ref_name}}
+name: 🤖CI run (BUILD) Cucumber Suite Execution⚡
+run-name: ${{github.actor}}👨🏻‍🔬 run Cucumber Suite in ${{github.ref_name}}
 
 on: # This Run is a template. The correct "Run On" should be: Any except QA and Main (cypex)
   push:
