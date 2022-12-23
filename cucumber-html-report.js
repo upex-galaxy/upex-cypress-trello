@@ -15,13 +15,11 @@ report.generate({
         }
     },
     customData: {
-        title: 'Run info',
+        title: 'UPEX GALAXY: CYPEX Cucumber HTML Reporter',
         data: [
-            {label: 'Project', value: 'Custom project'},
-            {label: 'Release', value: '1.2.3'},
-            {label: 'Cycle', value: 'B11221.34321'},
-            {label: 'Execution Start Time', value: 'Nov 19th 2017, 02:31 PM EST'},
-            {label: 'Execution End Time', value: 'Nov 19th 2017, 02:56 PM EST'}
+            {label: 'Project', value: 'CYPRESS-CUCUMBER'},
+            {label: 'Release', value: '10.9'},
+            {label: 'Cycle', value: 'Release-2023'}
         ]
     }
 });
