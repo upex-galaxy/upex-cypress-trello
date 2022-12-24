@@ -11,6 +11,7 @@ on:
     branches:
       - cypex
       - QA
+      - regression
 
 jobs:
     Cypress-RegressionTest-AfterMerge:

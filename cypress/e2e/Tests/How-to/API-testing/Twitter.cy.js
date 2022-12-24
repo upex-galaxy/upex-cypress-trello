@@ -1,17 +1,18 @@
 describe('Twitter API requests', () => {
-	const token = Cypress.env('twitterAPI').BearerToken
-	const oauth = Cypress.env('twitterAPI').OAuth
+	// const token = Cypress.env('twitterAPI').BearerToken
+	// const oauth = Cypress.env('twitterAPI').OAuth
 
 	it('getting started', () => {
-		cy.api({
-			url: 'https://api.twitter.com/2/tweets/search/recent',
-			qs: {
-				query: 'from:twitterdev',
-			},
-			auth: {
-				bearer: token,
-			},
-		})
+        cy.log("Ely termina tu test")
+		// cy.api({
+		// 	url: 'https://api.twitter.com/2/tweets/search/recent',
+		// 	qs: {
+		// 		query: 'from:twitterdev',
+		// 	},
+		// 	auth: {
+		// 		// bearer: token,
+		// 	},
+		// })
 		// cy.api({
 		// 	method: 'POST',
 		// 	url: 'https://api.twitter.com/2/tweets',
