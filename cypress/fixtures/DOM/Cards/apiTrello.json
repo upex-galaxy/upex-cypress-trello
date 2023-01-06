@@ -1,0 +1,10 @@
+{
+    "API":{
+        "card":"https://api.trello.com/1/cards/",
+        "board": "https://api.trello.com/1/members/me/boards?fields=name,url",
+        "list": "https://api.trello.com/1/boards/"
+    },
+
+"token": "ATTAb7b3766924c56463632cab629a12bb25b3a630da7f78a794ffeb72becf00d13eE3BF2AC4",
+"key": "07ca66113e9daef6ebb8996ac7f9c5d9"
+}
