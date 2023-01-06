@@ -55,12 +55,15 @@ describe('GX-5873| ✅{API} Trello | Cards | Crear, Modificar, Mover y Eliminar 
         }).then(respuesta=>{
             cy.log(respuesta);
             assert.equal(respuesta.status, 200)
+            assert.equal(respuesta.body.name,'Nueva tarjeta')
             cardID= respuesta.body.id
         })
         
     })
 
     it('GX-5874| TC2:  Validar que el usuario modifica la informacion de una card',()=>{
+        let name1;
+        let sign = 'El nombre de la tarjeta ha cambiado exitosamente'
         let boardID;
         let listID;
         cy.api({
@@ -99,6 +102,7 @@ describe('GX-5873| ✅{API} Trello | Cards | Crear, Modificar, Mover y Eliminar 
                 }
             })
         }).then(response3=>{
+            let name1= response3.body.name
             let cardID= response3.body.id;
             let numero= Math.floor(Math.random()*1000)
             cy.api({
@@ -115,8 +119,14 @@ describe('GX-5873| ✅{API} Trello | Cards | Crear, Modificar, Mover y Eliminar 
                 }
             })
         }).then(response4=>{
-            cy.log(response4);
-        })
+            expect(response4.body.name).equal(response4.body.name)
+        if (response4.body.name != name1 ){
+            cy.log(sign)
+        }
+        else{
+            cy.log('El test ha fallado')
+        }
+    })
     })    
 
     it.skip('GX-5874| TC3:  Validar que el usuario arrastra una card a otra lista',()=>{
@@ -165,20 +175,10 @@ describe('GX-5873| ✅{API} Trello | Cards | Crear, Modificar, Mover y Eliminar 
             })
         }).then(response=>{
             assert.equal(response.status, 200);
+
         })
     }) 
-    it.only('user information',()=>{
-        cy.api({
-            url: 'https://api.trello.com/1/members/me',
-            method: 'GET',
-            qs:{
-                key: Trello.key,
-                token: Trello.token
-            }
-        }).then(response=>{
-            cy.log(response);
-        })
-    })   
+
 })  
 
 //________________________________________________________________________
