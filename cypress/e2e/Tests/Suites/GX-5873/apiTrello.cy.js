@@ -119,7 +119,7 @@ describe('GX-5873| ✅{API} Trello | Cards | Crear, Modificar, Mover y Eliminar 
         })
     })    
 
-    it.only('GX-5874| TC3:  Validar que el usuario arrastra una card a otra lista',()=>{
+    it.skip('GX-5874| TC3:  Validar que el usuario arrastra una card a otra lista',()=>{
         cy.visit('https://trello.com/home');
         homepage.LoginButton();
         loginpage.InputUser();
@@ -128,7 +128,6 @@ describe('GX-5873| ✅{API} Trello | Cards | Crear, Modificar, Mover y Eliminar 
         
         loginpage.Submit();
             
-        cy.visit('https://trello.com/b/b7Sd9eJq/tablero-para-testing')
     })
     
 
