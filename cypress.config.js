@@ -50,7 +50,7 @@ export default defineConfig({
 		// baseUrl: ""
 	},
 	env:{
-
+		baseUrl:"https://api.trello.com/1",
 		AdminUser:{
 
 			username: "Admin",
