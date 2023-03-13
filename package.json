@@ -23,7 +23,6 @@
 	],
 	"author": "Uper",
 	"license": "ISC",
-	"type": "module",
 	"devDependencies": {
 		"@4tw/cypress-drag-drop": "2.2.2",
 		"@badeball/cypress-cucumber-preprocessor": "12.2.0",

@@ -7,13 +7,10 @@
 // commands please read more here:
 // https://on.cypress.io/custom-commands
 // ***********************************************
-import 'cypress-file-upload'
-import 'cypress-wait-until'
-import '@4tw/cypress-drag-drop'
-import 'cypress-downloadfile/lib/downloadFileCommand'
-import { login } from '@pages/Login.Page'
-const { authLogin, dashboardIndex } = Cypress.env('endpoint')
-import { signin } from '@pages/SignIn.Page.js'
+import 'cypress-file-upload';
+import 'cypress-wait-until';
+import '@4tw/cypress-drag-drop';
+import 'cypress-downloadfile/lib/downloadFileCommand';
 
 // -- This is a parent command --
 // Cypress.Commands.add('login', (email, password) => { ... })
