@@ -46,34 +46,60 @@ context('Feature: Update Cards Cover', () => {
 		When(
 			'usuario envía el request de Update a Card con el siguiente parámetro: {string} en {string} {string}',
 			(datos, parámetro1, parámetro2) => {
-				//Enviar request con colores validos
-				if (parámetro1 == 'color') {
-					cy.request('PUT', urlBaseTrello + '/1/cards/' + idCard, {
-						key: key,
-						token: token,
-						cover: { color: datos },
+				if (datos == 'que contiene números') {
+					cy.request({
+						method: 'PUT',
+						url: urlBaseTrello + '/1/cards/' + idCard,
+						qs: {
+							key: key,
+							token: token,
+						},
+						body: { cover: { color: 'yellow4' } },
+						headers: {
+							Accept: 'application/json',
+						},
+						failOnStatusCode: false,
+					}).should((response) => {
+						expect(response.status).to.eq(400)
+						expect(response.body.message).to.eq('invalid cover color')
+					})
+				} else if (datos == 'que contiene caracteres especiales') {
+					cy.request({
+						method: 'PUT',
+						url: urlBaseTrello + '/1/cards/' + idCard,
+						qs: {
+							key: key,
+							token: token,
+						},
+						body: { cover: { color: 'azul' } },
+						headers: {
+							Accept: 'application/json',
+						},
+						failOnStatusCode: false,
+					}).should((response) => {
+						expect(response.status).to.eq(400)
+						expect(response.body.message).to.eq('invalid cover color')
+					})
+				} else if (parámetro1 == 'color') {
+					cy.request({
+						method: 'PUT',
+						url: urlBaseTrello + '/1/cards/' + idCard,
+						qs: {
+							key: key,
+							token: token,
+						},
+						body: { cover: { color: datos } },
 						headers: {
 							Accept: 'application/json',
 						},
 					}).should((response) => {
 						expect(response.status).to.eq(200)
 					})
-				} //Enviar request con colores no válidos (que contiene números)
-				else if (datos == 'que contiene números') {
-					cy.request('PUT', urlBaseTrello + '/1/cards/' + idCard, {
-						key: key,
-						token: token,
-						cover: { color: 'yellow1' },
-						headers: {
-							Accept: 'application/json',
-						},
-					}).should((response) => {
-						expect(response.status).to.eq(400)
-					})
 				}
 			}
 		)
 		Then('{string} agrega {string} en el parámetro: {string} {string} el cover a la card', (resultado, datos, parámetro1, parámetro2) => {
+			//arreglar assertion para cada caso por ej en el example 9 tiene que ser con la data
 			if (parámetro1 == 'color') {
 				cy.request('GET', urlBaseTrello + '/1/cards/' + idCard, {
 					key: key,

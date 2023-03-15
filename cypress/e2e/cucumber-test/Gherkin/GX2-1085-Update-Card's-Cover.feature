@@ -18,7 +18,7 @@ Feature: Update Cards Cover
             | sky                                       | color                |                        | se           |
             | green                                     | color                |                        | se           |
             | que contiene números                      | color                |                        | no se        |
-            | que está fuera de la documentación        | color                |                        | no se        |
+            | que contiene caracteres especiales        | color                |                        | no se        |
             | dark                                      | brightness           |                        | se           |
             | light                                     | brightness           |                        | se           |
             | null                                      | brightness           |                        | no se        |
