@@ -88,7 +88,7 @@ jobs:
             - name: 🔧Generate Cucumber HTML Report
               if: always()
               run: |
-                  npm run report:cucumber
+                  yarn report:cucumber
 
             - name: 📊Upload Artifact 🍵Cucumber HTML Report
               uses: actions/upload-artifact@v3
