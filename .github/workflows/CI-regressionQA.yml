@@ -56,12 +56,12 @@ jobs:
               with:
                   browser: chrome
                   command: | #NO EDITAR. Es para correr todas las pruebas del Repo.
-                      npm run regression
+                      yarn regression
 
             - name: 📬Generate XML Regression Report
               if: always()
               run: |
-                  npm run report:xml
+                  yarn report:xml
 
             - name: ✅Import Test Results to Xray
               if: always()
@@ -80,7 +80,7 @@ jobs:
               env:
                   SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
                   SLACK_USERNAME: Ari✨
-                  SLACK_MESSAGE: ':test_tube: Tests run in ToolsQA: Regression Testing is Done and updated in Jira :rocket:'
+                  SLACK_MESSAGE: ':test_tube: Tests run in Trello: Regression Testing is Done and updated in Jira :rocket:'
                   SLACK_COLOR: ${{ job.status }}
                   SLACK_ICON: https://i.imgur.com/q9kvQCp_d.webp?maxwidth=760&fidelity=grand
 
@@ -128,13 +128,13 @@ jobs:
               with:
                   browser: chrome
                   command: | #NO EDITAR. Es para correr todas las pruebas del Repo.
-                      npm run regression:report
+                      yarn regression:report
 
             - name: 📬Generate HTML Regression Report
               if: always()
               run: |
-                  npm run report:json
-                  npm run report:html
+                  yarn report:json
+                  yarn report:html
 
             - name: 📊Upload Artifact HTML Report
               if: always()
