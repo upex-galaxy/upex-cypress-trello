@@ -1,6 +1,10 @@
 {
-	"include": ["./node_modules/cypress", "cypress/**/*.js"],
 	"compilerOptions": {
+		"target": "ESNext",
+		"allowJs": true,
+		"outDir": "./dist",
+		"moduleResolution": "node",
+		"esModuleInterop": true,
 		"types": [
 			"cypress",
 			"cypress-file-upload",
@@ -8,12 +12,16 @@
 			"cypress-downloadfile",
 			"cypress-plugin-api",
 			"cypress-wait-until",
-			"@4tw/cypress-drag-drop"
+			"@4tw/cypress-drag-drop",
+			"node"
 		],
+		"baseUrl": ".",
 		"paths": {
-			"@pages/*": ["./cypress/support/pages/*"]
+			"@pages/*": ["./cypress/support/pages/*"],
+			"@helper/*": ["./cypress/support/helper/*"]
 		}
 	},
+	"exclude": ["node_modules", "./dist"],
 	"reporterEnabled": "spec, mocha-junit-reporter, mochawesome",
 	"mochaJunitReporterReporterOptions": {
 		"mochaFile": "reports/test-results.xml",
