@@ -4,7 +4,7 @@ Feature: Update Cards Cover
         Given una card creada dentro de una lista
         And la card no tiene un cover seleccionado aún
 
-    Scenario Outline: 1086 | TC1: Validar que el usuario con acceso a API, agrega un cover para la card
+    Scenario Outline: 1086 | TC1: Validar que el usuario con acceso a API, <resultado> agrega un cover para la card
         When usuario envía el request de Update a Card con el siguiente parámetro: '<datos>' en '<parámetro1>' '<parámetro2>'
         Then '<resultado>' agrega '<datos>' en el parámetro: '<parámetro1>' '<parámetro2>' el cover a la card
         Examples:
@@ -21,11 +21,10 @@ Feature: Update Cards Cover
             | que contiene caracteres especiales        | color                |                        | no se        |
             | dark                                      | brightness           |                        | se           |
             | light                                     | brightness           |                        | se           |
-            | null                                      | brightness           |                        | no se        |
             | que contiene números                      | brightness           |                        | no se        |
-            | que está fuera de la documentación        | brightness           |                        | no se        |
-            | una url de Unsplash                       | idUploadedBackground |                        | se           |
-            | que url que no sea de Unsplash            | idUploadedBackground |                        | no se        |
+            | que contiene caracteres especiales        | brightness           |                        | no se        |
+            | una url de Unsplash                       | url                  |                        | se           |
+            | una url que no sea de Unsplash            | url                  |                        | no se        |
             | un ID válido                              | idAttachment         |                        | se           |
             | un ID de 23 caracteres                    | idAttachment         |                        | no se        |
             | un ID de 25 caracteres                    | idAttachment         |                        | no se        |
