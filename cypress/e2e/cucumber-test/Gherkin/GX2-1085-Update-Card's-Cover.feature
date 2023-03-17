@@ -2,39 +2,37 @@ Feature: Update Cards Cover
 
     Background: Tener acceso a la api de Trello
         Given una card creada dentro de una lista
-        And la card no tiene un cover seleccionado aún
+        And con una imagen como attachment
 
-    Scenario Outline: 1086 | TC1: Validar que el usuario con acceso a API, <resultado> agrega un cover para la card
-        When usuario envía el request de Update a Card con el siguiente parámetro: '<datos>' en '<parámetro1>' '<parámetro2>'
-        Then '<resultado>' agrega '<datos>' en el parámetro: '<parámetro1>' '<parámetro2>' el cover a la card
+    Scenario Outline: 1086 | TC1: Validar que el usuario con acceso a API, <resultado> agrega un cover <parámetro1> para la card
+        Given la card no tiene un cover seleccionado aún
+        When usuario envía el request de Update a Card con un parámetro: '<datos>' en '<parámetro1>'
+        Then '<resultado>' agrega '<datos>' en el parámetro: '<parámetro1>' el cover a la card
         Examples:
-            | datos                                     | parámetro1           | parámetro2             | resultado    |
-            | pink                                      | color                |                        | se           |
-            | yellow                                    | color                |                        | se           |
-            | lime                                      | color                |                        | se           |
-            | black                                     | color                |                        | se           |
-            | red                                       | color                |                        | se           |
-            | purple                                    | color                |                        | se           |
-            | sky                                       | color                |                        | se           |
-            | green                                     | color                |                        | se           |
-            | que contiene números                      | color                |                        | no se        |
-            | que contiene caracteres especiales        | color                |                        | no se        |
-            | dark                                      | brightness           |                        | se           |
-            | light                                     | brightness           |                        | se           |
-            | que contiene números                      | brightness           |                        | no se        |
-            | que contiene caracteres especiales        | brightness           |                        | no se        |
-            | una url de Unsplash                       | url                  |                        | se           |
-            | una url que no sea de Unsplash            | url                  |                        | no se        |
-            | un ID válido                              | idAttachment         |                        | se           |
-            | un ID de 23 caracteres                    | idAttachment         |                        | no se        |
-            | un ID de 25 caracteres                    | idAttachment         |                        | no se        |
-            | un ID que contenga letras después de la f | idAttachment         |                        | no se        |
-            | normal                                    | size                 |                        | se           |
-            | full                                      | size                 |                        | se           |
-            | null                                      | size                 |                        | se           |
-            | null                                      | idUploadedBackground | , idAttachment         | el color se  |
-            | null                                      | color                | , idAttachment         | la imagen se |
-            | null                                      | color                | , idUploadedBackground | la imagen se |
+            | datos                                     | parámetro1   | resultado |
+            | pink                                      | color        | se        |
+            | yellow                                    | color        | se        |
+            | lime                                      | color        | se        |
+            | black                                     | color        | se        |
+            | red                                       | color        | se        |
+            | purple                                    | color        | se        |
+            | sky                                       | color        | se        |
+            | green                                     | color        | se        |
+            | que contiene números                      | color        | no se     |
+            | que contiene caracteres especiales        | color        | no se     |
+            | dark                                      | brightness   | se        |
+            | light                                     | brightness   | se        |
+            | que contiene números                      | brightness   | no se     |
+            | que contiene caracteres especiales        | brightness   | no se     |
+            | una url de Unsplash                       | url          | se        |
+            | una url que no sea de Unsplash            | url          | no se     |
+            | un ID válido                              | idAttachment | se        |
+            | un ID de 23 caracteres                    | idAttachment | no se     |
+            | un ID de 25 caracteres                    | idAttachment | no se     |
+            | un ID que contenga letras después de la f | idAttachment | no se     |
+            | normal                                    | size         | se        |
+            | full                                      | size         | se        |
+            | fuera de la documentación                 | size         | se        |
 
     Scenario: 1086 | TC2: Validar que el usuario actualiza el cover de la card
         Given la card ya tiene un cover seleccionado
