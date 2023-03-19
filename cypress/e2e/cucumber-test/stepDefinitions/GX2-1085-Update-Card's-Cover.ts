@@ -5,6 +5,7 @@ const key = '96c242574c86f25da04099a76d20d5c8';
 const token = 'ATTAed5236cbb1884c8d85d93fc3b288837b6fb25693815d2f53fbfaf4c034eaa0a6DB53888E';
 const idCard = '640676936cf5e3f6bf7dd009';
 const urlAttachment = 'https://i.blogs.es/210615/one-piece-1-/1366_2000.jpeg';
+const urlNoUnsplash = 'https://i.blogs.es/6f44dd/google-2015-1/1366_2000.jpg';
 
 context('Feature: Update Cards Cover', () => {
 	describe('Tener acceso a la api de Trello', () => {
@@ -18,6 +19,7 @@ context('Feature: Update Cards Cover', () => {
 			});
 		});
 		And('con una imagen como attachment', () => {
+			//Se agrega una imagen a la card para utilizarla luego para el cover
 			cy.request({
 				method: 'POST',
 				url: urlBaseTrello + '/1/cards/' + idCard + '/attachments',
@@ -114,6 +116,7 @@ context('Feature: Update Cards Cover', () => {
 						expect(response.status).to.eq(200);
 					});
 				}
+				//Se cambia la opacidad del cover
 			} else if (parámetro1 == 'brightness') {
 				if (datos === 'que contiene números') {
 					cy.request({
@@ -165,6 +168,7 @@ context('Feature: Update Cards Cover', () => {
 						expect(response.status).to.eq(200);
 					});
 				}
+				//Se agrega un cover por url de Unsplash
 			} else if (parámetro1 == 'url') {
 				if (datos == 'una url que no sea de Unsplash') {
 					cy.request({
@@ -174,7 +178,7 @@ context('Feature: Update Cards Cover', () => {
 							key: key,
 							token: token,
 						},
-						body: { cover: { url: 'https://i.blogs.es/6f44dd/google-2015-1/1366_2000.jpg' } },
+						body: { cover: { url: urlNoUnsplash } },
 						headers: {
 							Accept: 'application/json',
 						},
@@ -203,6 +207,7 @@ context('Feature: Update Cards Cover', () => {
 						expect(response.status).to.eq(200);
 					});
 				}
+				//Se agrega una imagen como cover
 			} else if (parámetro1 == 'idAttachment') {
 				if (datos == 'un ID de 23 caracteres') {
 					cy.request({
@@ -272,6 +277,7 @@ context('Feature: Update Cards Cover', () => {
 						expect(response.body.cover.idAttachment).to.eq('6413a6668954ab29e098f3fe');
 					});
 				}
+				//Se cambia el tamaño que ocupa el cover
 			} else if (parámetro1 == 'size') {
 				if (datos == 'fuera de la documentación') {
 					cy.request({
@@ -309,6 +315,7 @@ context('Feature: Update Cards Cover', () => {
 				}
 			}
 		});
+		//Se hacen las validaciones para las pruebas
 		Then('{string} agrega {string} en el parámetro: {string} el cover a la card', (resultado, datos, parámetro1) => {
 			if (parámetro1 == 'color') {
 				if (datos == 'que contiene números' || datos == 'que contiene caracteres especiales') {

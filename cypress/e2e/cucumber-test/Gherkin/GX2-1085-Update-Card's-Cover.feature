@@ -34,10 +34,15 @@ Feature: Update Cards Cover
             | full                                      | size         | se        |
             | fuera de la documentación                 | size         | se        |
 
-    Scenario: 1086 | TC2: Validar que el usuario actualiza el cover de la card
+    Scenario Outline: 1086 | TC2: Validar que el usuario actualiza el cover de la card en el parámetro: <datos>
         Given la card ya tiene un cover seleccionado
-        When el usuario selecciona otro cover
+        When el usuario actualiza <datos>
         Then el cover de la card debe ser actualizado con la nueva imagen/attachment/color.
+        Examples:
+            | datos        |
+            | color        |
+            | imagen       |
+            | idAttachment |
 
     Scenario: 1086 | TC3: Validar que el usuario remueve el cover de la card
         Given la card ya tiene un cover seleccionado
