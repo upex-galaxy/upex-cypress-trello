@@ -1,8 +1,9 @@
-import { generate } from 'multiple-cucumber-html-reporter';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { generate } = require('multiple-cucumber-html-reporter');
 
 generate({
 	jsonDir: 'reports',
-	reportPath: '../reports/cucumber-html-report',
+	reportPath: './reports/cucumber-html-report',
 	metadata: {
 		browser: {
 			name: 'chrome',
