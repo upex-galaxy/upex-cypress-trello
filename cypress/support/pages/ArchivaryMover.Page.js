@@ -1,6 +1,6 @@
 class Precondition {
 	createList(listName, number) {
-		return cy.fixture('data/Archivarymover').then(the => {
+		return cy.fixture('data/ArchivarYmover').then(the => {
 			return cy
 				.api({
 					method: 'POST',
@@ -20,7 +20,7 @@ class Precondition {
 	}
 
 	createCard(cardName, number_idList, numberCard) {
-		return cy.fixture('data/Archivarymover').then(the => {
+		return cy.fixture('data/ArchivarYmover').then(the => {
 			return cy
 				.api({
 					method: 'POST',
