@@ -1,5 +1,5 @@
 describe('GX2-2192', () => {
-	it('TC1', () => {
+	it('2193 | TC1: Validate checkitem option in card', () => {
 		//crear nueva lista
 		const responseList = TrelloAPI.createNewList();
 		cy.get('*').then(() => {

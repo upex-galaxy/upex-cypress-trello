@@ -4,6 +4,7 @@ const idBoards = '63f4dccc919eb736dd5e5824';
 
 class trelloAPI {
 	createNewList() {
+		cy.log('Create New List');
 		let response = [];
 		cy.api({
 			method: 'POST',
@@ -25,6 +26,7 @@ class trelloAPI {
 	}
 
 	createNewCard(IdList) {
+		cy.log('Create New Card');
 		let response = [];
 		cy.api({
 			method: 'POST',
@@ -45,6 +47,7 @@ class trelloAPI {
 		return response;
 	}
 	createNewCheckList(IdCarD) {
+		cy.log('Create New CheckList');
 		let response = [];
 		cy.api({
 			method: 'POST',
@@ -65,6 +68,7 @@ class trelloAPI {
 		return response;
 	}
 	createNewCheckItem(IdcheckList) {
+		cy.log('Create new checkItem');
 		let response = [];
 		cy.api({
 			method: 'POST',
@@ -84,6 +88,7 @@ class trelloAPI {
 		return response;
 	}
 	updateCheckItem({ idCheckItem, idCard, State }) {
+		cy.log('Update to complete or incomplete check Item');
 		let response = [];
 		cy.api({
 			method: 'PUT',
@@ -101,6 +106,7 @@ class trelloAPI {
 		return response;
 	}
 	deleteCheckItem({ idCheckItem, idCard }) {
+		cy.log('Delete checkItem');
 		let response = [];
 		cy.api({
 			method: 'DELETE',
@@ -117,6 +123,7 @@ class trelloAPI {
 		return response;
 	}
 	deleteCheckList({ idCheckList }) {
+		cy.log('Delete CheckList');
 		let response = [];
 		cy.api({
 			method: 'DELETE',
@@ -133,6 +140,7 @@ class trelloAPI {
 		return response;
 	}
 	getCard({ idCard }) {
+		cy.log('Get response of card');
 		cy.api({
 			method: 'GET',
 
@@ -146,6 +154,7 @@ class trelloAPI {
 		});
 	}
 	getCheckList({ idChecklist }) {
+		cy.log('Get response of checkList');
 		let response = [];
 		cy.api({
 			method: 'GET',
@@ -162,6 +171,7 @@ class trelloAPI {
 		return response;
 	}
 	getCheckItem({ idCard, idCheckItem }) {
+		cy.log('Get response of CheckItem');
 		let response = [];
 		cy.api({
 			method: 'GET',
@@ -178,6 +188,7 @@ class trelloAPI {
 		return response;
 	}
 	getCheckItemState({ idCard, idCheckItem }) {
+		cy.log('Get response state (Complete/Incomplete) of checkItem');
 		let response = [];
 		cy.api({
 			method: 'GET',
@@ -193,6 +204,7 @@ class trelloAPI {
 		return response;
 	}
 	getStatusCheckList({ idChecklist }) {
+		cy.log('Get Status of checkList');
 		let response = [];
 		cy.api({
 			method: 'GET',
