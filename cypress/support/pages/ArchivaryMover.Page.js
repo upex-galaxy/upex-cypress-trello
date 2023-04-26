@@ -41,3 +41,7 @@ class Precondition {
 }
 
 export const precondition = new Precondition();
+
+
+
+//Esta linea es comentanda para que se detecte un cambio en el archivo
