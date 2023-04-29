@@ -1,0 +1,14 @@
+{
+
+    "url":{
+        "Dom":"https://api.trello.com/1",
+        "CreateList":"https://api.trello.com/1/lists",
+        "CreateCard":"https://api.trello.com/1/cards"
+    
+    },  
+    
+    "key":"72de2b3501d52faa2bfb70d541a62538",
+    "token":"ATTAf5407481cefae2535b5b68bf6235bc3da9904c81df7507fa7422ced859115666D2713700",
+    "idBoard":"64485eaeb8908c5e0f5f40b9"
+    
+    }
