@@ -1,0 +1,11 @@
+{
+	"url": {
+		"engines": "https://api.openai.com/v1/engines",
+		"chat": "https://api.openai.com/v1/chat/completions"
+	},
+	"headers": {
+		"ContentType": "application/json",
+		"Authorization": "Bearer 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"
+	},
+	"OpenAI_API_KEY": "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"
+}
