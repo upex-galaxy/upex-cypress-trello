@@ -4,7 +4,11 @@
 		"engines_DCodex": "https://api.openai.com/v1/engines/davinci-codex/completions",
 		"chat": "https://api.openai.com/v1/chat/completions"
 	},
-	"model": "gpt-3.5-turbo",
+	"typeModel": {
+		"modelGPT": "gpt-3.5-turbo",
+		"modelDav": "davinci",
+		"modalInvalid": "gpt-"
+	},
 	"messages": [{ "role": "user", "content": "Hello, I want to know how to create a Test in Postman!" }],
 	"headers": {
 		"ContentType": "application/json",

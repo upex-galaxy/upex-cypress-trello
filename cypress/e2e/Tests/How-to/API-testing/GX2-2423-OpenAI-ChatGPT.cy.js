@@ -1,18 +1,17 @@
 describe('✅OpenAI | ChatGPT | API: Create chat completion response', () => {
 	let contentType;
 	let authorization;
-	let model;
+	//let model;
 	let messages;
 	beforeEach('Precondition', () => {
 		cy.fixture('data/chatGPT.json').then(the => {
 			contentType = the.headers.ContentType;
 			authorization = the.headers.Authorization;
-			model = the.model;
+			//model = the.model;
 			messages = the.messages;
 		});
 	});
-
-	it('Validate create a chat completed by API', () => {
+	it('2424 | Validate create a chat completed by API', () => {
 		cy.fixture('data/chatGPT.json').then(the => {
 			cy.api({
 				method: 'POST',
@@ -22,17 +21,15 @@ describe('✅OpenAI | ChatGPT | API: Create chat completion response', () => {
 					Authorization: authorization,
 				},
 				body: {
-					model: model,
+					model: the.typeModel.modelGPT,
 					messages: messages,
 				},
 			}).then(response => {
 				expect(response.status).to.eq(200, 'Status code should be 200');
-
 				expect(response.body).to.have.property('id').exist;
 				//expect(response.body.id).to.be.a('string').and.contain('-').and.exist;
 
 				expect(response.body).to.have.property('object').and.have.include('chat.completion');
-
 				expect(response.body).to.have.property('choices').and.to.be.an('array').and.to.have.lengthOf(1);
 				expect(response.body.choices[0]).to.have.property('index');
 
@@ -49,9 +46,51 @@ describe('✅OpenAI | ChatGPT | API: Create chat completion response', () => {
 			});
 		});
 	});
-	it.skip('2424 | Makes a successful request', () => {
+	it('2424 | Validate not create a chat completed by API with null role', () => {
 		cy.fixture('data/chatGPT.json').then(the => {
 			cy.api({
+				failOnStatusCode: false,
+				method: 'POST',
+				url: the.url.chat,
+				headers: {
+					'Content-Type': contentType,
+					Authorization: authorization,
+				},
+				body: {
+					model: the.typeModel.modelGPT,
+					messages: [{ role: '', content: 'Hello, I want to know how to create a Test in Postman!' }],
+				},
+			}).then(response => {
+				expect(response.status).to.eq(400);
+				expect(response.body.error.message).to.contain('is not one of');
+			});
+		});
+	});
+	it('2424 | Validate not create a chat completed by API with incomplete modal name', () => {
+		cy.fixture('data/chatGPT.json').then(the => {
+			cy.api({
+				failOnStatusCode: false,
+				method: 'POST',
+				url: the.url.chat,
+				headers: {
+					'Content-Type': contentType,
+					Authorization: authorization,
+				},
+				body: {
+					model: the.typeModel.modalInvalid,
+					messages: messages,
+				},
+			}).then(response => {
+				expect(response.status).to.eq(404);
+				expect(response.body.error.message).to.contain('does not exist');
+			});
+		});
+	});
+	it('2424 | Not making a successful request with modal Davinci-Codex does not exist', () => {
+		//Para hacer el Test de Prueba
+		cy.fixture('data/chatGPT.json').then(the => {
+			cy.api({
+				failOnStatusCode: false,
 				method: 'POST',
 				url: the.url.engines_DCodex,
 				headers: {
@@ -59,12 +98,13 @@ describe('✅OpenAI | ChatGPT | API: Create chat completion response', () => {
 					Authorization: authorization,
 				},
 				body: {
-					model: 'gpt-3.5-turbo',
+					//model: the.typeModel.model,
+					/*NOTA: No se paso model por que ya se esta pasando en la url como (davinci-codex)*/
 					messages: [{ role: 'user', content: 'Hello!' }],
 				},
 			}).then(response => {
-				expect(response.status).to.eq(200);
-				expect(response.body).to.have.property('choices');
+				expect(response.status).to.eq(404);
+				expect(response.body.error.message).to.contain('does not exist');
 			});
 		});
 	});
