@@ -1,3 +1,5 @@
+import { Trello } from '@pages/trelloCards.Page';
+
 let idBoard;
 let idListBacklog;
 let idListActive;
@@ -10,79 +12,37 @@ const key = 'ce28ca26fa743f20e37175332e956ce2'; // Nuestra autenticación
 const token = 'ATTA490789ea4f2d87a5fe4a18886e3e00b1f90bebab88bd5e6fac8ec6ee3f1915c392FB0D93'; // la autorización
 
 describe('GX2-2871 | Trello (API) | Cards | Crear, Modificar, Mover y Eliminar Tarjetas de un Tablero', () => {
-	before('PRC 1: Crear Board', () => {
-		cy.api({
-			method: 'POST',
+	before('PRC 1: Crear Board', function () {
+		Trello.precondition();
 
-			url: 'https://api.trello.com/1/boards/',
-			qs: {
-				key: key,
-				token: token,
-				name: 'Nuevo Board creado con Cypress',
-				defaultLists: false,
-			},
-		}).then(response => {
-			expect(response).to.be.an('object');
+		cy.get('@response0').then(response => {
 			expect(response.status).to.eql(200);
 			expect(response.body.name).to.eql('Nuevo Board creado con Cypress');
-			idBoard = response.body.id;
 		});
 	});
 
 	before('PRC 2: Crear tres listas', () => {
-		cy.api({
-			method: 'POST',
-
-			url: 'https://api.trello.com/1/lists',
-			qs: {
-				key: key,
-				token: token,
-				name: 'Backlog',
-				idBoard: idBoard,
-				pos: 1,
-			},
-		}).then(response => {
+		Trello.list('Backlog', 1, 'idListBacklog');
+		cy.get('@Backlog').then(response => {
 			expect(response.status).to.eql(200);
 			expect(response.body.name).to.eql('Backlog');
-			idListBacklog = response.body.id;
 		});
 
-		cy.api({
-			method: 'POST',
-
-			url: 'https://api.trello.com/1/lists',
-			qs: {
-				key: key,
-				token: token,
-				name: 'Active',
-				idBoard: idBoard,
-				pos: 2,
-			},
-		}).then(response => {
+		Trello.list('Active', 2, 'idListActive');
+		cy.get('@Active').then(response => {
 			expect(response.status).to.eql(200);
 			expect(response.body.name).to.eql('Active');
-			idListActive = response.body.id;
 		});
 
-		cy.api({
-			method: 'POST',
-
-			url: 'https://api.trello.com/1/lists',
-			qs: {
-				key: key,
-				token: token,
-				name: 'Done',
-				idBoard: idBoard,
-				pos: 3,
-			},
-		}).then(response => {
+		Trello.list('Done', 3, 'idListDone');
+		cy.get('@Done').then(response => {
 			expect(response.status).to.eql(200);
 			expect(response.body.name).to.eql('Done');
-			idListDone = response.body.id;
 		});
 	});
 
 	it('TC1: Validate new card is created in a list when a name is entered', () => {
+		idListBacklog = Cypress.env('idListBacklog');
 		cy.api({
 			method: 'POST',
 
@@ -109,6 +69,7 @@ describe('GX2-2871 | Trello (API) | Cards | Crear, Modificar, Mover y Eliminar T
 	});
 
 	it(' TC2: Validate new card is created on top of the List', () => {
+		idListBacklog = Cypress.env('idListBacklog');
 		cy.api({
 			method: 'POST',
 			url: 'https://api.trello.com/1/cards',
@@ -137,6 +98,7 @@ describe('GX2-2871 | Trello (API) | Cards | Crear, Modificar, Mover y Eliminar T
 	});
 
 	it(' TC3: Validate new card is created on bottom of the List when position paramether is on default', () => {
+		idListBacklog = Cypress.env('idListBacklog');
 		cy.api({
 			method: 'POST',
 			url: 'https://api.trello.com/1/cards',
@@ -178,6 +140,9 @@ describe('GX2-2871 | Trello (API) | Cards | Crear, Modificar, Mover y Eliminar T
 				start: '08/25/2023',
 				//cover: { 'color': 'yellow' },
 			},
+			body: {
+				cover: { color: 'yellow' },
+			},
 		}).then(response => {
 			expect(response.status).equal(200);
 			expect(response.body.name).equal('Cambiando card name');
@@ -186,6 +151,8 @@ describe('GX2-2871 | Trello (API) | Cards | Crear, Modificar, Mover y Eliminar T
 	});
 
 	it('TC5: Validate card changes from one list to another when drag-and-drop', () => {
+		idListActive = Cypress.env('idListActive');
+		idListDone = Cypress.env('idListDone');
 		cy.api({
 			method: 'PUT',
 			url: 'https://api.trello.com/1/cards/' + idCard1,
@@ -233,6 +200,7 @@ describe('GX2-2871 | Trello (API) | Cards | Crear, Modificar, Mover y Eliminar T
 	});
 
 	after('PC', () => {
+		idBoard = Cypress.env('idBoard');
 		cy.api({
 			method: 'DELETE',
 
