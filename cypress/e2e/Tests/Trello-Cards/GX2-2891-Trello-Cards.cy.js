@@ -9,9 +9,6 @@ let idCard1;
 let idCard2;
 let idCard3;
 
-const key = 'ce28ca26fa743f20e37175332e956ce2'; // Nuestra autenticación
-const token = 'ATTA490789ea4f2d87a5fe4a18886e3e00b1f90bebab88bd5e6fac8ec6ee3f1915c392FB0D93'; // la autorización
-
 describe('GX2-2871 | Trello (API) | Cards | Crear, Modificar, Mover y Eliminar Tarjetas de un Tablero', () => {
 	before('PRC 1: Crear Board', function () {
 		Trello.precondition();
@@ -44,7 +41,18 @@ describe('GX2-2871 | Trello (API) | Cards | Crear, Modificar, Mover y Eliminar T
 
 	it('TC1: Validate new card is created in a list when a name is entered', () => {
 		idListBacklog = Cypress.env('idListBacklog');
-		Trello.card(fixture.card1.name, fixture.card1.desc, fixture.card1.start, fixture.card1.due, fixture.card1.urlSource);
+
+		Trello.card(
+			idListBacklog,
+			fixture.card1.name,
+			fixture.card1.desc,
+			fixture.card1.pos,
+			fixture.card1.start,
+			fixture.card1.due,
+			fixture.card1.urlSource,
+			fixture.card1.color,
+			fixture.card1.id
+		);
 		cy.get('@Nueva Card').then(response => {
 			expect(response.status).to.equal(200);
 			// expect(response.body.name).to.equal('Nueva Card');
@@ -52,34 +60,21 @@ describe('GX2-2871 | Trello (API) | Cards | Crear, Modificar, Mover y Eliminar T
 			// expect(response.body.badges).to.have.property('start');
 			// expect(response.body.badges).to.have.property('due');
 			// expect(response.body.attachments[0].name).to.equal('http://upexwork.com/');
-			idCard1 = response.body.id;
+			//idCard1 = response.body.id;
 		});
 	});
 
 	it(' TC2: Validate new card is created on top of the List', () => {
 		idListBacklog = Cypress.env('idListBacklog');
-		cy.api({
-			method: 'POST',
-			url: 'https://api.trello.com/1/cards',
-			qs: {
-				key: key,
-				token: token,
-				idList: idListBacklog,
-				pos: 'top',
-				name: 'Card on top',
-			},
-		}).then(responseTop => {
+		idCard1 = Cypress.env('idCard1');
+
+		Trello.cardPos(idListBacklog, fixture.cardTop.pos, fixture.cardTop.name, fixture.cardTop.id);
+		cy.get('@Card on top').then(responseTop => {
 			expect(responseTop.status).equal(200);
 			expect(responseTop.body.name).equal('Card on top');
-			idCard2 = responseTop.body.id;
-			cy.api({
-				method: 'GET',
-				url: 'https://api.trello.com/1/cards/' + idCard1,
-				qs: {
-					key: key,
-					token: token,
-				},
-			}).then(responseBottom => {
+
+			Trello.getCard(idCard1);
+			cy.get('@getCard').then(responseBottom => {
 				expect(responseBottom.body.pos).to.be.greaterThan(responseTop.body.pos);
 			});
 		});
@@ -87,51 +82,36 @@ describe('GX2-2871 | Trello (API) | Cards | Crear, Modificar, Mover y Eliminar T
 
 	it(' TC3: Validate new card is created on bottom of the List when position paramether is on default', () => {
 		idListBacklog = Cypress.env('idListBacklog');
-		cy.api({
-			method: 'POST',
-			url: 'https://api.trello.com/1/cards',
-			qs: {
-				key: key,
-				token: token,
-				idList: idListBacklog,
-				name: 'Card on bottom',
-			},
-		}).then(responseBottom => {
+
+		Trello.cardPos(idListBacklog, fixture.cardBottom.pos, fixture.cardBottom.name, fixture.cardBottom.id);
+		cy.get('@Card on bottom').then(responseBottom => {
 			expect(responseBottom.status).equal(200);
 			expect(responseBottom.body.name).equal('Card on bottom');
-			idCard3 = responseBottom.body.id;
-			cy.api({
-				method: 'GET',
-				url: 'https://api.trello.com/1/cards/' + idCard2,
-				qs: {
-					key: key,
-					token: token,
-				},
-			}).then(responseTop => {
+
+			Trello.getCard(idCard1);
+			cy.get('@getCard').then(responseTop => {
 				expect(responseTop.body.pos).to.be.lessThan(responseBottom.body.pos);
 			});
 		});
 	});
 
 	it('TC4: Validate card information changes when data is modified', () => {
-		cy.api({
-			method: 'PUT',
-			url: 'https://api.trello.com/1/cards/' + idCard1,
+		idListBacklog = Cypress.env('idListBacklog');
+		idCard1 = Cypress.env('idCard1');
+		cy.log(idCard1);
 
-			qs: {
-				key: key,
-				token: token,
-				name: 'Cambiando card name',
-				desc: 'Update desc',
-				pos: 1,
-				due: '07/25/2024',
-				start: '08/25/2023',
-				//cover: { 'color': 'yellow' },
-			},
-			body: {
-				cover: { color: 'yellow' },
-			},
-		}).then(response => {
+		Trello.putCard(
+			fixture.putCard1.name,
+			fixture.putCard1.desc,
+			fixture.putCard1.pos,
+			fixture.putCard1.due,
+			fixture.putCard1.start,
+			fixture.putCard1.color,
+			idCard1,
+			idListBacklog
+		);
+
+		cy.get('@Cambiando card name').then(response => {
 			expect(response.status).equal(200);
 			expect(response.body.name).equal('Cambiando card name');
 			expect(response.body.desc).equal('Update desc');
@@ -139,33 +119,38 @@ describe('GX2-2871 | Trello (API) | Cards | Crear, Modificar, Mover y Eliminar T
 	});
 
 	it('TC5: Validate card changes from one list to another when drag-and-drop', () => {
+		idListBacklog = Cypress.env('idListBacklog');
 		idListActive = Cypress.env('idListActive');
 		idListDone = Cypress.env('idListDone');
-		cy.api({
-			method: 'PUT',
-			url: 'https://api.trello.com/1/cards/' + idCard1,
+		idCard1 = Cypress.env('idCard1');
 
-			qs: {
-				key: key,
-				token: token,
-				idList: idListActive,
-				name: 'Cambiando card name (y de lista)',
-			},
-		}).then(response => {
+		Trello.putCard(
+			fixture.putCard2.name,
+			fixture.putCard2.desc,
+			fixture.putCard2.pos,
+			fixture.putCard2.due,
+			fixture.putCard2.start,
+			fixture.putCard2.color,
+			idCard1,
+			idListActive
+		);
+
+		cy.get('@Cambiando de lista').then(response => {
 			expect(response.status).equal(200);
 			expect(response.body.idList).eql(idListActive);
 
-			cy.api({
-				method: 'PUT',
-				url: 'https://api.trello.com/1/cards/' + idCard1,
+			Trello.putCard(
+				fixture.putCard3.name,
+				fixture.putCard3.desc,
+				fixture.putCard3.pos,
+				fixture.putCard3.due,
+				fixture.putCard3.start,
+				fixture.putCard3.color,
+				idCard1,
+				idListDone
+			);
 
-				qs: {
-					key: key,
-					token: token,
-					idList: idListDone,
-					name: 'Cambiando card name (y de lista)',
-				},
-			}).then(response2 => {
+			cy.get('@Cambiando de nuevo').then(response2 => {
 				expect(response2.status).equal(200);
 				expect(response2.body.idList).eql(idListDone);
 			});
@@ -178,8 +163,8 @@ describe('GX2-2871 | Trello (API) | Cards | Crear, Modificar, Mover y Eliminar T
 			url: 'https://api.trello.com/1/cards/' + idCard1,
 
 			qs: {
-				key: key,
-				token: token,
+				key: fixture.key,
+				token: fixture.token,
 			},
 		}).then(response => {
 			expect(response.status).equal(200);
@@ -194,8 +179,8 @@ describe('GX2-2871 | Trello (API) | Cards | Crear, Modificar, Mover y Eliminar T
 
 			url: 'https://api.trello.com/1/boards/' + idBoard,
 			qs: {
-				key: key,
-				token: token,
+				key: fixture.key,
+				token: fixture.token,
 			},
 		});
 	});

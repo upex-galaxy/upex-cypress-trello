@@ -5,7 +5,7 @@
 	"url": {
 		"board": "https://api.trello.com/1/boards/",
 		"list": "https://api.trello.com/1/lists",
-		"card": "https://api.trello.com/1/cards"
+		"card": "https://api.trello.com/1/cards/"
 	},
 
 	"board": {
@@ -36,8 +36,58 @@
 		"idList": "idListBacklog",
 		"name": "Nueva Card",
 		"desc": "Esta card es creada para testear la api por Cypress",
+		"pos": "",
 		"start": "5/19/2023",
 		"due": "6/19/2023",
-		"urlSource": "http://upexwork.com/"
+		"urlSource": "http://upexwork.com/",
+		"color": "blue",
+		"id": "idCard1"
+	},
+
+	"cardTop": {
+		"idList": "idListBacklog",
+		"pos": "top",
+		"name": "Card on top",
+		"id": "idCard2"
+	},
+
+	"cardBottom": {
+		"idList": "idListBacklog",
+		"pos": "bottom",
+		"name": "Card on bottom",
+		"id": "idCard3"
+	},
+
+	"putCard1": {
+		"name": "Cambiando card name",
+		"desc": "Update desc",
+		"pos": 1,
+		"due": "07/25/2024",
+		"start": "08/25/2023",
+		"color": "yellow",
+		"idList": "idListBacklog",
+		"idCard": "idCard1"
+	},
+
+	"putCard2": {
+		"name": "Cambiando de lista",
+		"desc": "Update desc",
+		"pos": 1,
+		"due": "07/25/2024",
+		"start": "08/25/2023",
+		"color": "yellow",
+		"idList": "idListActive",
+		"idCard": "idCard1"
+	},
+
+	"putCard3": {
+		"name": "Cambiando de nuevo",
+		"desc": "Update desc",
+		"pos": 1,
+		"due": "07/25/2024",
+		"start": "08/25/2023",
+		"color": "yellow",
+		"idList": "idListActive",
+		"idCard": "idCard1"
 	}
 }

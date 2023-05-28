@@ -46,8 +46,7 @@ class trello {
 			});
 	}
 
-	card(name, desc, start, due, urlSource) {
-		idListBacklog = Cypress.env('idListBacklog');
+	card(idList, name, desc, pos, start, due, urlSource, color, id) {
 		cy.api({
 			method: 'POST',
 
@@ -55,18 +54,76 @@ class trello {
 			qs: {
 				key: fixture.key,
 				token: fixture.token,
-				idList: idListBacklog,
+				idList: idList,
 				name: name,
 				desc: desc,
+				pos: pos,
 				start: start,
 				due: due,
 				urlSource: urlSource,
 			},
+			body: {
+				cover: { color: color },
+			},
 		})
 			.as(name)
 			.then(response => {
-				Cypress.env('idCard1', response.body.id);
+				Cypress.env(id, response.body.id);
 			});
+	}
+
+	cardPos(idList, pos, name, id) {
+		cy.api({
+			method: 'POST',
+			url: fixture.url.card,
+			qs: {
+				key: fixture.key,
+				token: fixture.token,
+				idList: idList,
+				pos: pos,
+				name: name,
+			},
+		})
+			.as(name)
+			.then(response => {
+				Cypress.env(id, response.body.id);
+			});
+	}
+
+	getCard(idCard) {
+		cy.api({
+			method: 'GET',
+			url: fixture.url.card + idCard,
+			qs: {
+				key: fixture.key,
+				token: fixture.token,
+			},
+		}).as('getCard');
+	}
+
+	putCard(name, desc, pos, due, start, color, idCard, idList) {
+		idCard1 = Cypress.env('idCard1');
+		cy.log(idCard1);
+		idListActive = Cypress.env('idListActive');
+
+		cy.api({
+			method: 'PUT',
+			url: fixture.url.card + idCard,
+
+			qs: {
+				key: fixture.key,
+				token: fixture.token,
+				name: name,
+				desc: desc,
+				pos: pos,
+				due: due,
+				start: start,
+				idList: idList,
+			},
+			body: {
+				cover: { color: color },
+			},
+		}).as(name);
 	}
 }
 
