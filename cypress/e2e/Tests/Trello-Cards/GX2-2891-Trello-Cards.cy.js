@@ -6,8 +6,6 @@ let idListBacklog;
 let idListActive;
 let idListDone;
 let idCard1;
-let idCard2;
-let idCard3;
 
 describe('GX2-2871 | Trello (API) | Cards | Crear, Modificar, Mover y Eliminar Tarjetas de un Tablero', () => {
 	before('PRC 1: Crear Board', function () {
@@ -55,12 +53,11 @@ describe('GX2-2871 | Trello (API) | Cards | Crear, Modificar, Mover y Eliminar T
 		);
 		cy.get('@Nueva Card').then(response => {
 			expect(response.status).to.equal(200);
-			// expect(response.body.name).to.equal('Nueva Card');
-			// expect(response.body.desc).to.equal('Esta card es creada para testear la api por Cypress');
-			// expect(response.body.badges).to.have.property('start');
-			// expect(response.body.badges).to.have.property('due');
-			// expect(response.body.attachments[0].name).to.equal('http://upexwork.com/');
-			//idCard1 = response.body.id;
+			expect(response.body.name).to.equal('Nueva Card');
+			expect(response.body.desc).to.equal('Esta card es creada para testear la api por Cypress');
+			expect(response.body.badges).to.have.property('start');
+			expect(response.body.badges).to.have.property('due');
+			expect(response.body.attachments[0].name).to.equal('http://upexwork.com/');
 		});
 	});
 
@@ -98,7 +95,6 @@ describe('GX2-2871 | Trello (API) | Cards | Crear, Modificar, Mover y Eliminar T
 	it('TC4: Validate card information changes when data is modified', () => {
 		idListBacklog = Cypress.env('idListBacklog');
 		idCard1 = Cypress.env('idCard1');
-		cy.log(idCard1);
 
 		Trello.putCard(
 			fixture.putCard1.name,
@@ -119,7 +115,6 @@ describe('GX2-2871 | Trello (API) | Cards | Crear, Modificar, Mover y Eliminar T
 	});
 
 	it('TC5: Validate card changes from one list to another when drag-and-drop', () => {
-		idListBacklog = Cypress.env('idListBacklog');
 		idListActive = Cypress.env('idListActive');
 		idListDone = Cypress.env('idListDone');
 		idCard1 = Cypress.env('idCard1');
@@ -158,15 +153,10 @@ describe('GX2-2871 | Trello (API) | Cards | Crear, Modificar, Mover y Eliminar T
 	});
 
 	it('TC6: Validate card is deleted ', () => {
-		cy.api({
-			method: 'DELETE',
-			url: 'https://api.trello.com/1/cards/' + idCard1,
+		idCard1 = Cypress.env('idCard1');
+		Trello.deleteCard(idCard1);
 
-			qs: {
-				key: fixture.key,
-				token: fixture.token,
-			},
-		}).then(response => {
+		cy.get('@delete').then(response => {
 			expect(response.status).equal(200);
 			expect(response.body.id).to.not.exist;
 		});
@@ -174,15 +164,7 @@ describe('GX2-2871 | Trello (API) | Cards | Crear, Modificar, Mover y Eliminar T
 
 	after('PC', () => {
 		idBoard = Cypress.env('idBoard');
-		cy.api({
-			method: 'DELETE',
-
-			url: 'https://api.trello.com/1/boards/' + idBoard,
-			qs: {
-				key: fixture.key,
-				token: fixture.token,
-			},
-		});
+		Trello.deleteBoard();
 	});
 });
 

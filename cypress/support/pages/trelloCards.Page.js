@@ -125,6 +125,30 @@ class trello {
 			},
 		}).as(name);
 	}
+
+	deleteCard(idCard) {
+		cy.api({
+			method: 'DELETE',
+			url: fixture.url.card + idCard,
+
+			qs: {
+				key: fixture.key,
+				token: fixture.token,
+			},
+		}).as('delete');
+	}
+
+	deleteBoard() {
+		cy.api({
+			method: 'DELETE',
+
+			url: 'https://api.trello.com/1/boards/' + idBoard,
+			qs: {
+				key: fixture.key,
+				token: fixture.token,
+			},
+		});
+	}
 }
 
 export const Trello = new trello();
