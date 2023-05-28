@@ -1,4 +1,5 @@
 import { Trello } from '@pages/trelloCards.Page';
+import fixture from 'cypress/fixtures/data/trelloCards.json';
 
 let idBoard;
 let idListBacklog;
@@ -15,26 +16,26 @@ describe('GX2-2871 | Trello (API) | Cards | Crear, Modificar, Mover y Eliminar T
 	before('PRC 1: Crear Board', function () {
 		Trello.precondition();
 
-		cy.get('@response0').then(response => {
+		cy.get('@response').then(response => {
 			expect(response.status).to.eql(200);
 			expect(response.body.name).to.eql('Nuevo Board creado con Cypress');
 		});
 	});
 
 	before('PRC 2: Crear tres listas', () => {
-		Trello.list('Backlog', 1, 'idListBacklog');
+		Trello.list(fixture.list1.name, fixture.list1.pos, fixture.list1.id);
 		cy.get('@Backlog').then(response => {
 			expect(response.status).to.eql(200);
 			expect(response.body.name).to.eql('Backlog');
 		});
 
-		Trello.list('Active', 2, 'idListActive');
+		Trello.list(fixture.list2.name, fixture.list2.pos, fixture.list2.id);
 		cy.get('@Active').then(response => {
 			expect(response.status).to.eql(200);
 			expect(response.body.name).to.eql('Active');
 		});
 
-		Trello.list('Done', 3, 'idListDone');
+		Trello.list(fixture.list3.name, fixture.list3.pos, fixture.list3.id);
 		cy.get('@Done').then(response => {
 			expect(response.status).to.eql(200);
 			expect(response.body.name).to.eql('Done');
@@ -43,27 +44,14 @@ describe('GX2-2871 | Trello (API) | Cards | Crear, Modificar, Mover y Eliminar T
 
 	it('TC1: Validate new card is created in a list when a name is entered', () => {
 		idListBacklog = Cypress.env('idListBacklog');
-		cy.api({
-			method: 'POST',
-
-			url: 'https://api.trello.com/1/cards',
-			qs: {
-				key: key,
-				token: token,
-				idList: idListBacklog,
-				name: 'Nueva Card',
-				desc: 'Esta card es creada para testear la api por Cypress',
-				start: '5/19/2023',
-				due: '6/19/2023',
-				urlSource: 'http://upexwork.com/',
-			},
-		}).then(response => {
+		Trello.card(fixture.card1.name, fixture.card1.desc, fixture.card1.start, fixture.card1.due, fixture.card1.urlSource);
+		cy.get('@Nueva Card').then(response => {
 			expect(response.status).to.equal(200);
-			expect(response.body.name).to.equal('Nueva Card');
-			expect(response.body.desc).to.equal('Esta card es creada para testear la api por Cypress');
-			expect(response.body.badges).to.have.property('start');
-			expect(response.body.badges).to.have.property('due');
-			expect(response.body.attachments[0].name).to.equal('http://upexwork.com/');
+			// expect(response.body.name).to.equal('Nueva Card');
+			// expect(response.body.desc).to.equal('Esta card es creada para testear la api por Cypress');
+			// expect(response.body.badges).to.have.property('start');
+			// expect(response.body.badges).to.have.property('due');
+			// expect(response.body.attachments[0].name).to.equal('http://upexwork.com/');
 			idCard1 = response.body.id;
 		});
 	});

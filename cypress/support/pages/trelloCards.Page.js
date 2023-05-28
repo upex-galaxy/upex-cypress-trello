@@ -6,23 +6,21 @@ let idCard1;
 let idCard2;
 let idCard3;
 
-const key = 'ce28ca26fa743f20e37175332e956ce2'; // Nuestra autenticación
-const token = 'ATTA490789ea4f2d87a5fe4a18886e3e00b1f90bebab88bd5e6fac8ec6ee3f1915c392FB0D93';
-
+import fixture from 'cypress/fixtures/data/trelloCards.json';
 class trello {
 	precondition() {
 		cy.api({
 			method: 'POST',
 
-			url: 'https://api.trello.com/1/boards/',
+			url: fixture.url.board,
 			qs: {
-				key: key,
-				token: token,
-				name: 'Nuevo Board creado con Cypress',
-				defaultLists: false,
+				key: fixture.key,
+				token: fixture.token,
+				name: fixture.board.name,
+				defaultLists: fixture.board.defaultLists,
 			},
 		})
-			.as('response0')
+			.as('response')
 			.then(response => {
 				Cypress.env('idBoard', response.body.id);
 			});
@@ -33,10 +31,10 @@ class trello {
 		cy.api({
 			method: 'POST',
 
-			url: 'https://api.trello.com/1/lists',
+			url: fixture.url.list,
 			qs: {
-				key: key,
-				token: token,
+				key: fixture.key,
+				token: fixture.token,
 				name: name,
 				idBoard: idBoard,
 				pos: pos,
@@ -48,41 +46,26 @@ class trello {
 			});
 	}
 
-	list2() {
+	card(name, desc, start, due, urlSource) {
+		idListBacklog = Cypress.env('idListBacklog');
 		cy.api({
 			method: 'POST',
 
-			url: 'https://api.trello.com/1/lists',
+			url: fixture.url.card,
 			qs: {
-				key: key,
-				token: token,
-				name: 'Active',
-				idBoard: idBoard,
-				pos: 2,
+				key: fixture.key,
+				token: fixture.token,
+				idList: idListBacklog,
+				name: name,
+				desc: desc,
+				start: start,
+				due: due,
+				urlSource: urlSource,
 			},
 		})
-			.as('response2')
+			.as(name)
 			.then(response => {
-				idListActive = response.body.id;
-			});
-	}
-
-	list3() {
-		cy.api({
-			method: 'POST',
-
-			url: 'https://api.trello.com/1/lists',
-			qs: {
-				key: key,
-				token: token,
-				name: 'Done',
-				idBoard: idBoard,
-				pos: 3,
-			},
-		})
-			.as('response3')
-			.then(response => {
-				idListDone = response.body.id;
+				Cypress.env('idCard1', response.body.id);
 			});
 	}
 }

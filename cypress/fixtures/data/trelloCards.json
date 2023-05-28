@@ -1,0 +1,43 @@
+{
+	"key": "ce28ca26fa743f20e37175332e956ce2",
+	"token": "ATTA490789ea4f2d87a5fe4a18886e3e00b1f90bebab88bd5e6fac8ec6ee3f1915c392FB0D93",
+
+	"url": {
+		"board": "https://api.trello.com/1/boards/",
+		"list": "https://api.trello.com/1/lists",
+		"card": "https://api.trello.com/1/cards"
+	},
+
+	"board": {
+		"url": "https://api.trello.com/1/boards/",
+		"name": "Nuevo Board creado con Cypress",
+		"defaultLists": false
+	},
+
+	"list1": {
+		"name": "Backlog",
+		"pos": 1,
+		"id": "idListBacklog"
+	},
+
+	"list2": {
+		"name": "Active",
+		"pos": 2,
+		"id": "idListActive"
+	},
+
+	"list3": {
+		"name": "Done",
+		"pos": 3,
+		"id": "idListDone"
+	},
+
+	"card1": {
+		"idList": "idListBacklog",
+		"name": "Nueva Card",
+		"desc": "Esta card es creada para testear la api por Cypress",
+		"start": "5/19/2023",
+		"due": "6/19/2023",
+		"urlSource": "http://upexwork.com/"
+	}
+}
