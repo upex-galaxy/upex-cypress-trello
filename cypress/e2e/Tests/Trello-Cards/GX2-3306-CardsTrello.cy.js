@@ -1,6 +1,5 @@
 import { cards } from '@pages/cardsPage';
-const key = '3a71d9fbbd711e00d79697c7d811cb27'; // Nuestra autenticación
-const token = 'ATTA7f7562055ec5d05e60143f697462126328138cc8964faadab4d0665f4532b8c0998A5D23';
+
 const listA = '64763489c099ccfa084a821a';
 const listB = '64752275edf99f729f6bb69e';
 const listC = '64752277195322ca2ecb57f6';
@@ -22,7 +21,7 @@ describe('GX2-3306 | Trello (API) | Cards | Create, Modify, Move and Delete card
 		});
 	});
 
-	it('3307 | TC1: Validate create a Card in the Board List.', () => {
+	it('3307 | TC1: Validate create a Card in BACKLOG list, be located at the bottom and contain the name entered ', () => {
 		let arrayCards = [];
 		cards.createCard().then(response => {
 			expect(response).to.be.an('object');
