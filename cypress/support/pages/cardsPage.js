@@ -1,6 +1,6 @@
 const key = '3a71d9fbbd711e00d79697c7d811cb27'; // Nuestra autenticación
 const token = 'ATTA7f7562055ec5d05e60143f697462126328138cc8964faadab4d0665f4532b8c0998A5D23'; // la autorización
-const listA = '64752271782fb7323d0a56c5';
+const listA = '64763489c099ccfa084a821a';
 const listB = '64752275edf99f729f6bb69e';
 const listC = '64752277195322ca2ecb57f6';
 
@@ -100,6 +100,17 @@ class Cards {
 			body: {
 				key: key,
 				token: token,
+			},
+		});
+	}
+	getListCards() {
+		return cy.api({
+			method: 'GET',
+			url: `https://api.trello.com/1/lists/${listA}/cards`,
+			qs: {
+				key: key,
+				token: token,
+				id: Cypress.env('cardID'),
 			},
 		});
 	}

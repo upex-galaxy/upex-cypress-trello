@@ -1,6 +1,7 @@
 import { cards } from '@pages/cardsPage';
-
-const listA = '64752271782fb7323d0a56c5';
+const key = '3a71d9fbbd711e00d79697c7d811cb27'; // Nuestra autenticación
+const token = 'ATTA7f7562055ec5d05e60143f697462126328138cc8964faadab4d0665f4532b8c0998A5D23';
+const listA = '64763489c099ccfa084a821a';
 const listB = '64752275edf99f729f6bb69e';
 const listC = '64752277195322ca2ecb57f6';
 let cardID;
@@ -22,12 +23,19 @@ describe('GX2-3306 | Trello (API) | Cards | Create, Modify, Move and Delete card
 	});
 
 	it('3307 | TC1: Validate create a Card in the Board List.', () => {
+		let arrayCards = [];
 		cards.createCard().then(response => {
 			expect(response).to.be.an('object');
 			expect(response.body.idList).to.include(listA);
 			expect(response.status).to.eql(200);
 			expect(response.body.name).to.include('Insert Card');
 			cardID = Cypress.env('cardID', response.body.id);
+		});
+		cards.getListCards().then(response => {
+			arrayCards.push(response.body);
+			let lastArray = arrayCards[0];
+			let lastArray1 = lastArray[lastArray.length - 1];
+			expect(response.body[lastArray.length - 1]).to.eql(lastArray1);
 		});
 	});
 	it('3307 | TC2: Validate update the card information', () => {
@@ -60,6 +68,7 @@ describe('GX2-3306 | Trello (API) | Cards | Create, Modify, Move and Delete card
 	});
 	it('3307 | TC5: Validate delete a card', () => {
 		cards.deleteCard().then(response => {
+			expect(response.body.limits).to.be.empty;
 			expect(response.status).to.eql(200);
 		});
 	});
