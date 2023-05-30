@@ -6,7 +6,7 @@ const listC = '64752277195322ca2ecb57f6';
 let cardID;
 
 describe('GX2-3306 | Trello (API) | Cards | Create, Modify, Move and Delete cards', () => {
-	beforeEach('Preconditions: ', () => {
+	beforeEach('User have access to Trello and 3 Lists are displayed (Backlog-Active-Done) ', () => {
 		cards.getListA().then(response => {
 			expect(response.status).to.eql(200);
 			expect(response.body.name).to.eql('BACKLOG');
