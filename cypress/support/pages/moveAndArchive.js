@@ -3,9 +3,6 @@ const token = 'ATTA7f7562055ec5d05e60143f697462126328138cc8964faadab4d0665f4532b
 const listA = '6476665fc6132f819210b657';
 const listB = '647666649a8212d12e69047c';
 const listC = '64766667bbbddd634d45201f';
-const card1 = '647666821d85b3c51110b6e2';
-const card2 = '647666879118d09d55b1f7c3';
-const card3 = '6476668cf653244c103f3ccc';
 const board = '6475222592f14dbb1aeba0f5';
 class MoveAndArchive {
 	getListA() {
@@ -85,6 +82,30 @@ class MoveAndArchive {
 			body: {
 				key: key,
 				token: token,
+			},
+		});
+	}
+	moveCardsToListB() {
+		return cy.api({
+			method: 'POST',
+			url: `https://api.trello.com/1/lists/${listA}/moveAllCards`,
+			body: {
+				key: key,
+				token: token,
+				idList: listB,
+				idBoard: board,
+			},
+		});
+	}
+	moveCardsToListC() {
+		return cy.api({
+			method: 'POST',
+			url: `https://api.trello.com/1/lists/${listB}/moveAllCards`,
+			body: {
+				key: key,
+				token: token,
+				idList: listC,
+				idBoard: board,
 			},
 		});
 	}
