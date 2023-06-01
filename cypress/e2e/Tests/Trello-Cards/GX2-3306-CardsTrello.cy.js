@@ -1,21 +1,23 @@
 import { cards } from '@pages/cardsPage';
 
-const listA = '64763489c099ccfa084a821a';
-const listB = '64752275edf99f729f6bb69e';
-const listC = '64752277195322ca2ecb57f6';
-let cardID;
-
 describe('GX2-3306 | Trello (API) | Cards | Create, Modify, Move and Delete cards', () => {
+	let cardID;
+	let data;
+	before('Fixture', () => {
+		cy.fixture('/data/cards').then(dato => {
+			data = dato;
+		});
+	});
 	beforeEach('User have access to Trello and 3 Lists are displayed (Backlog-Active-Done) ', () => {
-		cards.getListA().then(response => {
+		cards.getBacklogList().then(response => {
 			expect(response.status).to.eql(200);
 			expect(response.body.name).to.eql('BACKLOG');
 		});
-		cards.getListB().then(response => {
+		cards.getActiveList().then(response => {
 			expect(response.status).to.eql(200);
 			expect(response.body.name).to.eql('ACTIVE');
 		});
-		cards.getListC().then(response => {
+		cards.getDoneList().then(response => {
 			expect(response.status).to.eql(200);
 			expect(response.body.name).to.eql('DONE');
 		});
@@ -25,7 +27,7 @@ describe('GX2-3306 | Trello (API) | Cards | Create, Modify, Move and Delete card
 		let arrayCards = [];
 		cards.createCard().then(response => {
 			expect(response).to.be.an('object');
-			expect(response.body.idList).to.include(listA);
+			expect(response.body.idList).to.include(data.backlogList);
 			expect(response.status).to.eql(200);
 			expect(response.body.name).to.include('Insert Card');
 			cardID = Cypress.env('cardID', response.body.id);
@@ -50,7 +52,7 @@ describe('GX2-3306 | Trello (API) | Cards | Create, Modify, Move and Delete card
 	it('3307 | TC3: Validate drag and drop a card to "ACTIVE list"', () => {
 		cards.moveCardActive().then(response => {
 			expect(response).to.be.an('object');
-			expect(response.body.idList).to.eql(listB);
+			expect(response.body.idList).to.eql(data.doneList);
 			expect(response.body.name).to.be.equal('Modify Card');
 			expect(response.body.desc).to.eql('Adding description');
 			expect(response.body.cover).to.include({ color: 'green' });
@@ -59,7 +61,7 @@ describe('GX2-3306 | Trello (API) | Cards | Create, Modify, Move and Delete card
 	it('3307 | TC4: Validate drag and drop a card to "DONE list"', () => {
 		cards.moveCardDone().then(response => {
 			expect(response).to.be.an('object');
-			expect(response.body.idList).to.eql(listC);
+			expect(response.body.idList).to.eql(data.activeList);
 			expect(response.body.name).to.be.equal('Modify Card');
 			expect(response.body.desc).to.eql('Adding description');
 			expect(response.body.cover).to.include({ color: 'green' });
