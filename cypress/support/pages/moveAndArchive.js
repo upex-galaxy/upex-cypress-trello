@@ -1,9 +1,10 @@
-const key = '3a71d9fbbd711e00d79697c7d811cb27'; // Nuestra autenticación
-const token = 'ATTA7f7562055ec5d05e60143f697462126328138cc8964faadab4d0665f4532b8c0998A5D23';
-const listA = '6476665fc6132f819210b657';
-const listB = '647666649a8212d12e69047c';
-const listC = '64766667bbbddd634d45201f';
-const board = '6475222592f14dbb1aeba0f5';
+import { key } from '../../fixtures/data/moveAndArchive.json';
+import { token } from '../../fixtures/data/moveAndArchive.json';
+import { listA } from '../../fixtures/data/moveAndArchive.json';
+import { listB } from '../../fixtures/data/moveAndArchive.json';
+import { listC } from '../../fixtures/data/moveAndArchive.json';
+import { board } from '../../fixtures/data/moveAndArchive.json';
+
 class MoveAndArchive {
 	getListA() {
 		return cy.api({
