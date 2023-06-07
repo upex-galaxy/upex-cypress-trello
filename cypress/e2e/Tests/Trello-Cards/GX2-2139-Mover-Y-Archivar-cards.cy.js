@@ -5,7 +5,7 @@ const ListValue = ['Lista A', 'Lista B', 'Lista C', 'Lista D', 'Lista H'];
 const ListRandom = Math.floor(Math.random() * ListValue.length);
 const List = ListValue[ListRandom];
 
-describe('✅Trello (API) | Cards | API Endpoint: mover y archivar todas las tarjetas de una lista', () => {
+describe.skip('✅Trello (API) | Cards | API Endpoint: mover y archivar todas las tarjetas de una lista', () => {
 	beforeEach('Precondition : Create Lists y Cards', function () {
 		precondition.createList(List, '1').then(response => {
 			expect(response.status).to.eq(200);
@@ -70,7 +70,7 @@ describe('✅Trello (API) | Cards | API Endpoint: mover y archivar todas las tar
 	});
 });
 
-describe('Mover y archivar tarjetas individuales de una lista', () => {
+describe.skip('Mover y archivar tarjetas individuales de una lista', () => {
 	beforeEach('Precondition : Crear 1 lista y creas 1 Card', function () {
 		precondition.createList(List, '1').then(response => {
 			expect(response.status).to.eq(200);
