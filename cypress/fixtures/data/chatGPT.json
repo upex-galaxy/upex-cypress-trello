@@ -1,0 +1,20 @@
+{
+	"url": {
+		"engines": "https://api.openai.com/v1/engines",
+		"engines_DCodex": "https://api.openai.com/v1/engines/davinci-codex/completions",
+		"chat": "https://api.openai.com/v1/chat/completions",
+		"completions": "https://api.openai.com/v1/completions"
+	},
+	"typeModel": {
+		"modelGPT": "gpt-3.5-turbo",
+		"modelDav": "davinci",
+		"modalInvalid": "gpt-"
+	},
+	"prompt": "Hello, why are you OpenAI?",
+	"messages": [{ "role": "user", "content": "Hello, I want to know how to create a Test in Cypress!" }],
+	"headers": {
+		"ContentType": "application/json",
+		"Authorization": "Bearer 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"
+	},
+	"openAI_API_KEY": "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"
+}
