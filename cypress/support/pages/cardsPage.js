@@ -1,14 +1,14 @@
-const key = '3a71d9fbbd711e00d79697c7d811cb27'; // Nuestra autenticación
-const token = 'ATTA7f7562055ec5d05e60143f697462126328138cc8964faadab4d0665f4532b8c0998A5D23'; // la autorización
-const listA = '64763489c099ccfa084a821a';
-const listB = '64752275edf99f729f6bb69e';
-const listC = '64752277195322ca2ecb57f6';
+import { backlogList } from '../../fixtures/data/cards.json';
+import { doneList } from '../../fixtures/data/cards.json';
+import { activeList } from '../../fixtures/data/cards.json';
+import { key } from '../../fixtures/data/cards.json';
+import { token } from '../../fixtures/data/cards.json';
 
 class Cards {
-	getListA() {
+	getBacklogList() {
 		return cy.api({
 			method: 'GET',
-			url: 'https://api.trello.com/1/lists/' + listA,
+			url: 'https://api.trello.com/1/lists/' + backlogList,
 			qs: {
 				key: key,
 				token: token,
@@ -17,10 +17,10 @@ class Cards {
 		});
 	}
 
-	getListB() {
+	getActiveList() {
 		return cy.api({
 			method: 'GET',
-			url: 'https://api.trello.com/1/lists/' + listB,
+			url: 'https://api.trello.com/1/lists/' + activeList,
 			qs: {
 				key: key,
 				token: token,
@@ -28,10 +28,10 @@ class Cards {
 			},
 		});
 	}
-	getListC() {
+	getDoneList() {
 		return cy.api({
 			method: 'GET',
-			url: 'https://api.trello.com/1/lists/' + listC,
+			url: 'https://api.trello.com/1/lists/' + doneList,
 			qs: {
 				key: key,
 				token: token,
@@ -46,7 +46,7 @@ class Cards {
 			body: {
 				key: key,
 				token: token,
-				idList: listA,
+				idList: backlogList,
 				name: 'Insert Card',
 			},
 		});
@@ -58,7 +58,7 @@ class Cards {
 			body: {
 				key: key,
 				token: token,
-				idList: listA,
+				idList: backlogList,
 				name: 'Modify Card',
 				desc: 'Adding description',
 				cover: { color: 'green' },
@@ -72,7 +72,7 @@ class Cards {
 			body: {
 				key: key,
 				token: token,
-				idList: listB,
+				idList: doneList,
 				name: 'Modify Card',
 				desc: 'Adding description',
 				cover: { color: 'green' },
@@ -86,7 +86,7 @@ class Cards {
 			body: {
 				key: key,
 				token: token,
-				idList: listC,
+				idList: activeList,
 				name: 'Modify Card',
 				desc: 'Adding description',
 				cover: { color: 'green' },
@@ -106,7 +106,7 @@ class Cards {
 	getListCards() {
 		return cy.api({
 			method: 'GET',
-			url: `https://api.trello.com/1/lists/${listA}/cards`,
+			url: `https://api.trello.com/1/lists/${backlogList}/cards`,
 			qs: {
 				key: key,
 				token: token,
