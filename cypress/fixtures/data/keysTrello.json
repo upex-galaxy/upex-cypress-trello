@@ -1,9 +1,9 @@
 {
 	"apikey": "f0c798c90d9b1572ec04804875899b3e",
 	"secret": "52aecb5d88290d6bbd0ed386c40ca25189ce4981a1e4100bfdad6ef68cd87eae",
-	"token": "ATTA64cdbeb1e9a0d1bcc2861fb5ab56bf45fcfa5ded26f0b0bfa8ec52b594125c5a4ADD8431",
+	"token": "ATTA1ac5b1fd3f270e837c06f0426b070b17a3f326f674aee1bcf515a9721c9c1ab52062D3AA",
 	"idBoard": "6489176c54c99aae57b5d7ef",
-	"idListToDo": "",
-	"idListDoing": "",
-	"idListDone": ""
+	"idListToDo": "648a206d3380ae9533dd50f6",
+	"idListDoing": "648a205893e0504f80a2e19f",
+	"idListDone": "648a203a90c02d2e0ac4b853"
 }
