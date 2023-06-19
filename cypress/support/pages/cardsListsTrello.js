@@ -10,10 +10,13 @@ export class CardsListsTrello {
 	deleteAllLists() {
 		//borrar las listas despues de ejecutar los tests
 		return new Promise(resolve => {
+			cy.log(JSON.stringify(this.ids));
+
 			cy.wrap(this.listNames).each(element => {
+				cy.log('abajo de esto deberia imprimir un id de una lista -----');
 				cy.request({
 					method: 'PUT',
-					url: `https://api.trello.com/1/lists/${element}/closed?key=${apikey}&token=${token}`,
+					url: `https://api.trello.com/1/lists/${this.ids[element]}/closed?key=${apikey}&token=${token}`,
 				}).then(response => {
 					resolve(response);
 				});
