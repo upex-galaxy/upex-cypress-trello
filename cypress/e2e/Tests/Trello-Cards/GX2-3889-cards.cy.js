@@ -22,7 +22,7 @@ describe('US GX2-3889 | TS: Trello (API) | Cards | Crear, Modificar, Mover y Eli
 		});
 	});
 
-	it('3900 | TC1: Validar crear una card en lista "Por hacer”', () => {
+	it('3890 | TC1: Validar crear una card en lista "Por hacer”', () => {
 		cardsListsPage.createCard(listPages[PORHACER]).then(respuesta => {
 			cy.log(respuesta.body.id);
 			idCard = respuesta.body.id;
@@ -31,7 +31,7 @@ describe('US GX2-3889 | TS: Trello (API) | Cards | Crear, Modificar, Mover y Eli
 		});
 	});
 
-	it('3901 | TC2: Validar modificar una card', () => {
+	it('3890 | TC2: Validar modificar una card', () => {
 		cardsListsPage.updateCard(idCard).then(resp => {
 			expect(idCard).to.exist;
 			expect(resp.status).to.be.equal(200);
@@ -40,7 +40,7 @@ describe('US GX2-3889 | TS: Trello (API) | Cards | Crear, Modificar, Mover y Eli
 		});
 	});
 
-	it('3902 | TC3:  Validar mover card de "Por hacer" a "Haciendo", a "Listo"', () => {
+	it('3890 | TC3:  Validar mover card de "Por hacer" a "Haciendo", a "Listo"', () => {
 		cardsListsPage.moveCard(idCard, HACIENDO).then(response => {
 			expect(response.status).to.be.equal(200);
 			expect(response.body.idList).to.equal(listPages[HACIENDO]);
@@ -51,7 +51,7 @@ describe('US GX2-3889 | TS: Trello (API) | Cards | Crear, Modificar, Mover y Eli
 			});
 		});
 	});
-	it('3903 | TC4: Validar eliminar todas las cards en la lista "Listo"', () => {
+	it('3890 | TC4: Validar eliminar todas las cards en la lista "Listo"', () => {
 		cardsListsPage.deleteCards(listPages[LISTO]).then(response => {
 			expect(response.status).to.be.equal(200);
 			expect(response.body).to.be.empty;
