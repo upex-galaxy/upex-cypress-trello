@@ -7,22 +7,6 @@ export class CardsListsTrello {
 		this.listNames = listNames;
 	}
 
-	deleteAllLists() {
-		//borrar las listas despues de ejecutar los tests
-		return new Promise(resolve => {
-			cy.log(JSON.stringify(this.ids));
-
-			cy.wrap(this.listNames).each(element => {
-				cy.log('abajo de esto deberia imprimir un id de una lista -----');
-				cy.request({
-					method: 'PUT',
-					url: `https://api.trello.com/1/lists/${this.ids[element]}/closed?key=${apikey}&token=${token}`,
-				}).then(response => {
-					resolve(response);
-				});
-			});
-		});
-	}
 	// Crear las listas "por hacer", "haciendo", "listo"
 	createLists() {
 		return new Promise(resolve => {
@@ -73,16 +57,10 @@ export class CardsListsTrello {
 		});
 	}
 
-	moveList(valueCard, listName) {
-		return new Promise(resolve => {
-			const idListValue = this.ids[listName];
-
-			cy.request({
-				method: 'PUT',
-				url: `https://api.trello.com/1/cards/${valueCard}?key=${apikey}&token=${token}&idList=${idListValue}`,
-			}).then(response => {
-				resolve(response);
-			});
+	moveCard(cardId, nameList) {
+		return cy.request({
+			method: 'PUT',
+			url: `https://api.trello.com/1/cards/${cardId}?key=${apikey}&token=${token}&idList=${this.ids[nameList]}`,
 		});
 	}
 
@@ -93,6 +71,22 @@ export class CardsListsTrello {
 				url: `https://api.trello.com/1/lists/${list}/archiveAllCards?key=${apikey}&token=${token}`,
 			}).then(response => {
 				resolve(response);
+			});
+		});
+	}
+
+	deleteAllLists() {
+		//borrar las listas despues de ejecutar los tests
+		return new Promise(resolve => {
+			cy.log(JSON.stringify(this.ids));
+
+			cy.wrap(this.listNames).each(element => {
+				cy.request({
+					method: 'PUT',
+					url: `https://api.trello.com/1/lists/${this.ids[element]}/closed?key=${apikey}&token=${token}&value=true`,
+				}).then(response => {
+					resolve(response);
+				});
 			});
 		});
 	}

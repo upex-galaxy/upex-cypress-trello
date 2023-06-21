@@ -27,28 +27,34 @@ describe('US GX2-3889 | TS: Trello (API) | Cards | Crear, Modificar, Mover y Eli
 			cy.log(respuesta.body.id);
 			idCard = respuesta.body.id;
 			expect(respuesta.status).to.be.equal(200);
-			// expect(respuesta.body).to.have.keys('name'); // por alguna razon no funciona
+			expect(respuesta.body.name).to.exist;
 		});
 	});
 
 	it('3901 | TC2: Validar modificar una card', () => {
 		cardsListsPage.updateCard(idCard).then(resp => {
-			cy.log(idCard);
-
 			expect(idCard).to.exist;
 			expect(resp.status).to.be.equal(200);
-			//expect(resp.body).to.have.keys('cardId', 'apikey', 'token'); // Se hace asi esto?
+			expect(resp.body.name).to.exist;
+			expect(resp.body.desc).to.exist;
 		});
 	});
 
 	it('3902 | TC3:  Validar mover card de "Por hacer" a "Haciendo", a "Listo"', () => {
-		cardsListsPage.moveList(idCard, HACIENDO).then(response => {
+		cardsListsPage.moveCard(idCard, HACIENDO).then(response => {
 			expect(response.status).to.be.equal(200);
+			expect(response.body.idList).to.equal(listPages[HACIENDO]);
+
+			cardsListsPage.moveCard(idCard, LISTO).then(response => {
+				expect(response.status).to.be.equal(200);
+				expect(response.body.idList).to.equal(listPages[LISTO]);
+			});
 		});
 	});
 	it('3903 | TC4: Validar eliminar todas las cards en la lista "Listo"', () => {
 		cardsListsPage.deleteCards(listPages[LISTO]).then(response => {
 			expect(response.status).to.be.equal(200);
+			expect(response.body).to.be.empty;
 		});
 	});
 });
