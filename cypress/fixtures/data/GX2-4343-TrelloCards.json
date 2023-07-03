@@ -1,0 +1,21 @@
+{
+	"url": {
+		"Boards": "/boards/",
+		"Lists": "/lists/",
+		"Cards": "/cards/"
+	},
+	"board": {
+		"Name": "Crear, Modificar, Mover y Eliminar"
+	},
+	"lists": {
+		"List1": "BackLog",
+		"List2": "Active",
+		"List3": "Done"
+	},
+	"key": "d1610a021b73e89f814769df9048c102",
+	"token": "ATTA20cb28a2249d5dd3b9924fbbee9f17b917e316c7fb54e4d183bd2b9cdb128dc3B964D834",
+	"card": {
+		"idLabels": "64a30cc18b05e865ec1718a1",
+		"idMembers": "6453aa0ecb3d191f7be1583a"
+	}
+}
