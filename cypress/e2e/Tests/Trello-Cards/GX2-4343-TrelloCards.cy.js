@@ -1,88 +1,85 @@
 import { TrelloCardsPage } from 'cypress/support/pages/GX2-4242-TrelloCards';
 import the from 'cypress/fixtures/data/GX2-4343-TrelloCards.json';
 import { faker } from '@faker-js/faker';
-const randomName = faker.name.firstName();
+const randomName1 = faker.name.firstName();
+const randomName2 = faker.animal.cat();
+const randomName3 = faker.animal.dog();
 const randomDesc = faker.commerce.product();
-//let cardId;
 
 describe('✅Trello (API) | Cards | Crear, Modificar, Mover y Eliminar Tarjetas de un Tablero', () => {
 	before('Precondición: Usuario posee acceso al tablero de Trello', () => {
-		TrelloCardsPage.PostBoard();
-		// .then(response => {
-		// 	expect(response.status).to.eq(200);
-		// 	expect(response.body.name).to.eql(the.board.Name);
-		// });
+		TrelloCardsPage.CreateBoard().then(response => {
+			expect(response.status).to.eql(200);
+			expect(response.body.name).to.eql(the.board.Name);
+		});
 	});
 	before('Precondición: Usuario posee 3 listas disponibles: Backlog, Active y Done', () => {
-		TrelloCardsPage.PostList1();
-		// .then(response => {
-		// 	expect(response.status).to.eq(200);
-		// 	expect(response.body.name).to.eql(the.lists.List1);
-		// });
-		TrelloCardsPage.PostList2();
-		// .then(response => {
-		// 	expect(response.status).to.eq(200);
-		// 	expect(response.body.name).to.eql(the.lists.List2);
-		// });
+		TrelloCardsPage.CreateList1().then(response => {
+			expect(response.status).to.eql(200);
+			expect(response.body.name).to.eql(the.lists.List1);
+		});
+		TrelloCardsPage.CreateList2().then(response => {
+			expect(response.status).to.eql(200);
+			expect(response.body.name).to.eql(the.lists.List2);
+		});
 
-		TrelloCardsPage.PostList3();
-		// .then(response => {
-		// 	expect(response.status).to.eq(200);
-		// 	expect(response.body.name).to.eql(the.lists.List3);
-		// });
+		TrelloCardsPage.CreateList3().then(response => {
+			expect(response.status).to.eql(200);
+			expect(response.body.name).to.eql(the.lists.List3);
+		});
 	});
 	it('TC01 - Validar usuario crea una card en una lista', () => {
-		TrelloCardsPage.CreateCard(randomName);
-		// .then(response => {
-		// 	expect(response.status).to.eq(200);
-		// 	expect(response.body.name).to.eql(randomName);
-		// });
-	});
-	it('TC02 - Validar usuario modifica la información de una card', () => {
-		TrelloCardsPage.ModifyCard(randomDesc);
-		// .then(response => {
-		// 	expect(response.status).to.eq(200);
-		// 	expect(response.body.desc).to.eql(randomDesc);
-		// });
-	});
-	it.skip('TC03 - Validar usuario mueve una card de una lista a otra', () => {
-		cy.get('@list1Id').then(list1Id => {
-			cy.api('POST', the.url.Cards, {
-				idList: list1Id,
-				key: the.key,
-				token: the.token,
-				name: randomName,
-			}).then(response => {
-				const cardId = response.body.id;
-				cy.wrap(cardId).as('cardId');
-				expect(response.status).to.eq(200);
-				expect(response.body.name).to.eql(randomName);
-			});
+		TrelloCardsPage.CreateCard(randomName1).then(response => {
+			expect(response.status).to.eql(200);
+			expect(response.body.name).to.eql(randomName1);
 		});
 	});
-	it.skip('TC04 - Validar usuario elimina una card', () => {
-		cy.get('@list1Id').then(list1Id => {
-			cy.api('POST', the.url.Cards, {
-				idList: list1Id,
-				key: the.key,
-				token: the.token,
-				name: randomName,
-			}).then(response => {
-				const cardId = response.body.id;
-				cy.wrap(cardId).as('cardId');
-				expect(response.status).to.eq(200);
-				expect(response.body.name).to.eql(randomName);
-			});
+
+	it('TC02 - Validar usuario crea una card en la parte inferior de una lista', () => {
+		TrelloCardsPage.CreateBottomCard(randomName2).then(response => {
+			expect(response.status).to.eql(200);
+			expect(response.body.name).to.eql(randomName2);
+			expect(response.body.pos).to.greaterThan(Cypress.env.PosCard);
 		});
 	});
-	// after('Eliminar Board', () => {
-	// 	cy.get('@boardId').then(boardId => {
-	// 		cy.api('DELETE', the.url.Boards + boardId, {
-	// 			key: the.key,
-	// 			token: the.token,
-	// 		}).then(response => {
-	// 			expect(response.status).to.eq(200);
-	// 		});
-	// 	});
-	// });
+
+	it('TC03 - Validar usuario crea una card en la parte superior de una lista', () => {
+		TrelloCardsPage.CreateTopCard(randomName3).then(response => {
+			expect(response.status).to.eql(200);
+			expect(response.body.name).to.eql(randomName3);
+			expect(response.body.pos).to.lessThan(Cypress.env.BottomCard);
+		});
+	});
+	it('TC04 - Validar usuario modifica la información de una card', () => {
+		TrelloCardsPage.ModifyCard(randomDesc).then(response => {
+			expect(response.status).to.eql(200);
+			expect(response.body.desc).to.eql(randomDesc);
+			expect(response.body.idMembers).to.eql([the.card.idMembers]);
+			expect(response.body.cover).to.include({ color: the.card.Cover.Color });
+		});
+	});
+	it('TC05 - Validar usuario mueve una card de una lista a otra', () => {
+		TrelloCardsPage.MoveCardToList2().then(response => {
+			expect(response.status).to.eql(200);
+			expect(response.body.idList).to.eq(Cypress.env.list2Id);
+		});
+		TrelloCardsPage.MoveCardToList3().then(response => {
+			expect(response.status).to.eql(200);
+			expect(response.body.idList).to.eq(Cypress.env.list3Id);
+		});
+		TrelloCardsPage.MoveCardToList1().then(response => {
+			expect(response.status).to.eql(200);
+			expect(response.body.idList).to.eql(Cypress.env.list1Id);
+		});
+	});
+	it('TC06 - Validar usuario elimina una card', () => {
+		TrelloCardsPage.DeleteCard().then(response => {
+			expect(response.status).to.eql(200);
+		});
+	});
+	after('Postcondición: Eliminar Board', () => {
+		TrelloCardsPage.DeleteBoard().then(response => {
+			expect(response.status).to.eql(200);
+		});
+	});
 });
