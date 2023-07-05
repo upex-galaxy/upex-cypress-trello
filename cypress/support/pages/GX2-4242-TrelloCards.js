@@ -13,6 +13,13 @@ class TrelloCards {
 			});
 	}
 
+	GetBoard() {
+		return cy.api('GET', the.url.Boards + Cypress.env.boardId, {
+			key: the.key,
+			token: the.token,
+		});
+	}
+
 	CreateList1() {
 		return cy
 			.api('POST', the.url.Lists, {
@@ -52,6 +59,25 @@ class TrelloCards {
 			});
 	}
 
+	GetList1() {
+		return cy.api('GET', the.url.Lists + Cypress.env.list1Id, {
+			key: the.key,
+			token: the.token,
+		});
+	}
+	GetList2() {
+		return cy.api('GET', the.url.Lists + Cypress.env.list2Id, {
+			key: the.key,
+			token: the.token,
+		});
+	}
+	GetList3() {
+		return cy.api('GET', the.url.Lists + Cypress.env.list3Id, {
+			key: the.key,
+			token: the.token,
+		});
+	}
+
 	CreateCard(randomName1) {
 		return cy
 			.api('POST', the.url.Cards, {
@@ -77,6 +103,7 @@ class TrelloCards {
 			})
 			.then(response => {
 				Cypress.env.BottomCard = response.body.pos;
+				Cypress.env.BottomCardId = response.body.id;
 			});
 	}
 
@@ -91,7 +118,26 @@ class TrelloCards {
 			})
 			.then(response => {
 				Cypress.env.TopCard = response.body.pos;
+				Cypress.env.TopCardId = response.body.id;
 			});
+	}
+	GetCard() {
+		return cy.api('GET', the.url.Cards + Cypress.env.cardId, {
+			key: the.key,
+			token: the.token,
+		});
+	}
+	GetBottomCard() {
+		return cy.api('GET', the.url.Cards + Cypress.env.BottomCardId, {
+			key: the.key,
+			token: the.token,
+		});
+	}
+	GetTopCard() {
+		return cy.api('GET', the.url.Cards + Cypress.env.TopCardId, {
+			key: the.key,
+			token: the.token,
+		});
 	}
 
 	ModifyCard(randomDesc) {
