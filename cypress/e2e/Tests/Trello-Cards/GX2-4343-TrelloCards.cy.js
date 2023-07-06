@@ -1,4 +1,4 @@
-import { TrelloCardsPage } from 'cypress/support/pages/GX2-4242-TrelloCards';
+import { TrelloCardsPage } from '@pages/GX2-4343-TrelloCards';
 import the from 'cypress/fixtures/data/GX2-4343-TrelloCards.json';
 import { faker } from '@faker-js/faker';
 const randomName1 = faker.name.firstName();
