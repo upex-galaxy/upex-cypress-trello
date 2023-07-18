@@ -53,5 +53,13 @@
 		"pete-happy"
 	],
 
-	"urlCustomImage": "https://trello-stickers.s3.amazonaws.com/627061e20d413d4d4664da9a/160x160/0427494b5ad86a74737367ff171885af/upexImg.jpg"
+	"urlCustomImage": "https://trello-stickers.s3.amazonaws.com/627061e20d413d4d4664da9a/160x160/0427494b5ad86a74737367ff171885af/upexImg.jpg",
+	"maxValue": 100,
+	"minValue": -60,
+	"maxRotate": 360,
+	"minRotate": 0,
+	"maxInvalid": 101,
+	"minInvalid": -59,
+	"maxInvalidRotate": 361,
+	"minInvalidRotate": -1
 }

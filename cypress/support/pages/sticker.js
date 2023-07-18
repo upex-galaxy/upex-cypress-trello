@@ -1,15 +1,10 @@
 import { key, token, stickerList, arrayStickers, customImage, urlCustomImage } from '../../fixtures/data/sticker.json';
-const randomSticker = Math.floor(Math.random() * arrayStickers.length);
-const randomPosition = Math.floor(Math.random() * (100 - 60)); // limit values for top and left
-
+const randomPosition = Math.floor(Math.random() * (100 - 60));
 class Sticker {
-	get = {
-		stickerList: () => cy.get('[class^="sticker-list"]'),
-	};
 	getListA() {
 		return cy.api({
 			method: 'GET',
-			url: 'https://trello.com/1/lists/' + stickerList,
+			url: `https://trello.com/1/lists/${stickerList}`,
 			qs: {
 				key,
 				token,
@@ -31,8 +26,7 @@ class Sticker {
 				},
 			})
 			.then(response => {
-				const cardID = response.body.id;
-				Cypress.env('cardId', cardID);
+				Cypress.env('cardId', response.body.id);
 			});
 	}
 
@@ -49,12 +43,13 @@ class Sticker {
 				},
 			})
 			.then(response => {
-				const cardID2 = response.body.id;
-				Cypress.env('cardId2', cardID2);
+				Cypress.env('cardId2', response.body.id);
 			});
 	}
 
 	addRandomSticker() {
+		const randomSticker = Math.floor(Math.random() * arrayStickers.length);
+
 		return cy
 			.api({
 				method: 'POST',
@@ -69,10 +64,8 @@ class Sticker {
 				},
 			})
 			.then(response => {
-				const stickerName = response.body.image;
-				const stickerId = response.body.id;
-				Cypress.env('stickerName', stickerName);
-				Cypress.env('stickerId', stickerId);
+				Cypress.env('stickerName', response.body.image);
+				Cypress.env('stickerId', response.body.id);
 			});
 	}
 
@@ -90,21 +83,65 @@ class Sticker {
 			},
 		});
 	}
-	updateSticker() {
+
+	updateStickerMaxMin(values, rotates, index = 0, responses = []) {
+		const value = values[index];
+		const rotateValue = rotates[index];
+
+		if (value === undefined || rotateValue === undefined) {
+			return responses;
+		}
+
+		return cy
+			.api({
+				method: 'PUT',
+				url: `https://api.trello.com/1/cards/${Cypress.env('cardId')}/stickers/${Cypress.env('stickerId')}`,
+				qs: {
+					top: value,
+					left: value,
+					zIndex: 2,
+					key,
+					token,
+					rotate: rotateValue,
+				},
+			})
+			.then(response => {
+				responses.push(response);
+				return this.updateStickerMaxMin(values, rotates, index + 1, responses);
+			});
+	}
+	updateInvalidMaxValues() {
 		return cy.api({
 			method: 'PUT',
 			url: `https://api.trello.com/1/cards/${Cypress.env('cardId')}/stickers/${Cypress.env('stickerId')}`,
-
+			failOnStatusCode: false,
 			qs: {
-				top: randomPosition,
-				left: randomPosition,
+				top: 101,
+				left: 101,
 				zIndex: 2,
 				key,
 				token,
-				rotate: 100,
+				rotate: 361,
 			},
 		});
 	}
+
+	updateInvalidMinValues() {
+		return cy.api({
+			method: 'PUT',
+			url: `https://api.trello.com/1/cards/${Cypress.env('cardId')}/stickers/${Cypress.env('stickerId')}`,
+			failOnStatusCode: false,
+			qs: {
+				top: -59,
+				left: -59,
+				zIndex: 2,
+				key,
+				token,
+				rotate: -1,
+			},
+		});
+	}
+
 	getStickers() {
 		return cy.api({
 			method: 'GET',
@@ -115,6 +152,7 @@ class Sticker {
 			},
 		});
 	}
+
 	getCustomStickers() {
 		return cy.api({
 			method: 'GET',
@@ -126,6 +164,7 @@ class Sticker {
 			},
 		});
 	}
+
 	deleteSticker() {
 		return cy.api({
 			method: 'DELETE',
