@@ -1,4 +1,4 @@
-import { sticker } from '@pages/sticker';
+import { sticker } from '@pages/GX2-4787-stickerPage';
 import data from '../../../fixtures/data/sticker.json';
 
 describe('GX2-4787 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, Delete a Sticker on a Card', () => {
