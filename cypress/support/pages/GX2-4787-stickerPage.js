@@ -1,4 +1,4 @@
-import { key, token, stickerList, arrayStickers, customImage, urlCustomImage } from '../../fixtures/data/sticker.json';
+import { key, token, stickerList, arrayStickers, customImage, urlCustomImage } from '../../fixtures/data/GX2-4787.sticker.json';
 const randomPosition = Math.floor(Math.random() * (100 - 60));
 class Sticker {
 	getListA() {
