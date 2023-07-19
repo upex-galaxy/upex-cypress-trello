@@ -1,6 +1,3 @@
-import { backlogList } from '../../fixtures/data/cards.json';
-import { doneList } from '../../fixtures/data/cards.json';
-import { activeList } from '../../fixtures/data/cards.json';
 import { key } from '../../fixtures/data/cards.json';
 import { token } from '../../fixtures/data/cards.json';
 
