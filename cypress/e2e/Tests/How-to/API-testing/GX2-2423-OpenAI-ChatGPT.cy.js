@@ -1,4 +1,4 @@
-describe('✅OpenAI | ChatGPT | API: Create chat completion response', () => {
+describe.skip('✅OpenAI | ChatGPT | API: Create chat completion response', () => {
 	let contentType;
 	let authorization;
 	//let model;

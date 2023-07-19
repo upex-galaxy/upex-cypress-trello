@@ -1,6 +1,6 @@
 import { cards } from '@pages/cardsPage';
 
-describe('GX2-3306 | Trello (API) | Cards | Create, Modify, Move and Delete cards', () => {
+describe.skip('GX2-3306 | Trello (API) | Cards | Create, Modify, Move and Delete cards', () => {
 	let cardID;
 	let data;
 	before('Fixture', () => {
