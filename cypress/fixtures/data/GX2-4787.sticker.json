@@ -4,7 +4,7 @@
 	"stickerList": "64b580b66782178a0c56ca2e",
 	"cardID": "64adc914e1c4683a521d6a74",
 	"idBoard": "64ad897a6a466b9d99e5d63f",
-	"customImage": "64b166929faee9633e674b53",
+	"customImage": "64babbc811791d66ec1609ec",
 	"arrayStickers": [
 		"rocketship",
 		"star",
@@ -53,7 +53,7 @@
 		"pete-happy"
 	],
 
-	"urlCustomImage": "https://trello-stickers.s3.amazonaws.com/627061e20d413d4d4664da9a/160x160/0427494b5ad86a74737367ff171885af/upexImg.jpg",
+	"urlCustomImage": "https://trello-stickers.s3.amazonaws.com/627061e20d413d4d4664da9a/160x160/7883d92385b0a34c2c1f838e9f9789ff/upexlogo.png",
 	"maxValue": 100,
 	"minValue": -60,
 	"maxRotate": 360,
