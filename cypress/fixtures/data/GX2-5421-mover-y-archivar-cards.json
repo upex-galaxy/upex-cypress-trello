@@ -7,5 +7,18 @@
 	"board": {
 		"name": "galaxy",
 		"id": "648b6d3518a0cb1ed06921f4"
+	},
+
+	"lists": {
+		"listOne": {
+			"id": "64d5757eace48cc0f4a7a8dd",
+			"name": "Lista Uno",
+			"idBoard": "648b6d3518a0cb1ed06921f4"
+		},
+		"listTwo": {
+			"id": "64d5758194c098b787b118c4",
+			"name": "Lista Dos",
+			"idBoard": "648b6d3518a0cb1ed06921f4"
+		}
 	}
 }
