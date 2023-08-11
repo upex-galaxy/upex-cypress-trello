@@ -19,17 +19,21 @@ class TrelloAPI {
 	}
 
 	moveAllCards(idList, id) {
-		cy.api({
-			//Donde el param. id es el id de la lista en la que se encuentran las cards
-			method: 'POST',
-			url: `https://api.trello.com/1/lists/${id}/moveAllCards`,
-			qs: {
-				idBoard: board.id, //id del board al que deberían moverse las cards
-				idList: idList, //id de la lista a la que deberían moverse las cards
-				key: global.key,
-				token: global.token,
-			},
-		});
+		return cy
+			.api({
+				//Donde el param. id es el id de la lista en la que se encuentran las cards
+				method: 'POST',
+				url: `https://api.trello.com/1/lists/${id}/moveAllCards`,
+				qs: {
+					idBoard: board.id, //id del board al que deberían moverse las cards
+					idList: idList, //id de la lista a la que deberían moverse las cards
+					key: global.key,
+					token: global.token,
+				},
+			})
+			.then(response => {
+				return response;
+			});
 		//NOTA: validar que la respuesta sea status 200
 	}
 
