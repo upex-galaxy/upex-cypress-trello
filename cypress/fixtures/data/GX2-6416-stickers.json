@@ -1,0 +1,60 @@
+{
+	"credentials": {
+		"key": "a43da4dc603cfb2d230856304bde6d13",
+		"token": "ATTA4f7c83e463f81f13d29a09a8ccaeefd899bad75b32505488c1a9c47ad353337eC1463483"
+	},
+
+	"boardData": {
+		"name": "ApiTrelloSticker",
+		"desc": "Testing in Cypress using the Trello API."
+	},
+
+	"listData": {
+		"name": "Api-Trello-Cypress List"
+	},
+
+	"cardData": [
+		{
+			"name": "TrelloCypress"
+		},
+		{
+			"name": "TrelloCypress - ValoresLimites"
+		},
+		{
+			"name": "TrelloCypress - ValoresNoValidos"
+		}
+	],
+
+	"cardIdStickerData": [
+		{ "defaultSticker": "65023f7d5c155fc52ec0a994" },
+		{ "dynamicSticker": "64ff7316ec33c5cf50628c3b" },
+		{ "customStickers": "64ff7412db1163cecb933da9" }
+	],
+
+	"parametersSticker": {
+		"top": {
+			"limits": [-60, 100]
+		},
+
+		"left": {
+			"limits": [-60, 100]
+		},
+
+		
+
+		"rotate": {
+			"limits": [0, 360]
+		}
+	},
+
+	"parametersStickerInvalid": {
+		"top": [-61, 101],
+		"left": [-61, 101],
+		"rotate": [-1, 361]
+	},
+
+	"statusCodes": {
+		"OK": 200,
+		"BadRequest": 400
+	}
+}
