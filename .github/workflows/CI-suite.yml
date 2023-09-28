@@ -32,6 +32,7 @@ jobs:
               run: |
                   npm install -g yarn
                   yarn
+                  yarn cypress cache list
                   yarn list
 
             - name: 💾Download Cucumber-Formatter
@@ -66,10 +67,10 @@ jobs:
                         }
                       }
 
-            - name: 🧪Cypress Run Test Coverage in Chrome
+            - name: 🧪Cypress Run Test Coverage in electron
               uses: cypress-io/github-action@v4
               with:
-                  browser: chrome
+                  browser: electron
                   command: | #EDITAR AQUÍ EL ARCHIVO SUITE A EJECUTAR:
                       yarn file cypress/e2e/Tests/Trello-Cards/GX2-5421-mover-y-archivar-cards.cy.js
 

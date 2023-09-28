@@ -29,6 +29,7 @@ jobs:
               run: |
                   npm install -g yarn 
                   yarn
+                  yarn cypress cache list      
                   yarn list
 
             - name: 🔌Cucumber Preprocessor JSON Setup
@@ -51,10 +52,10 @@ jobs:
                         }
                       }
 
-            - name: 🧪Cypress E2E Regression Test in Chrome
+            - name: 🧪Cypress E2E Regression Test in electron
               uses: cypress-io/github-action@v4
               with:
-                  browser: chrome
+                  browser: electron
                   command: | #NO EDITAR. Es para correr todas las pruebas del Repo.
                       yarn regression
 
@@ -101,6 +102,7 @@ jobs:
               run: |
                   npm install -g yarn 
                   yarn
+                  yarn cypress cache list      
                   yarn list
 
             - name: 🔌Cucumber Preprocessor JSON Setup
@@ -123,10 +125,10 @@ jobs:
                         }
                       }
 
-            - name: 🧪VERIFICATION Cypress E2E Regression Test in Chrome
+            - name: 🧪VERIFICATION Cypress E2E Regression Test in electron
               uses: cypress-io/github-action@v4
               with:
-                  browser: chrome
+                  browser: electron
                   command: | #NO EDITAR. Es para correr todas las pruebas del Repo.
                       yarn regression:report
 
