@@ -1,12 +1,13 @@
-import data from '../../fixtures/data/GX2-8301-UpdateDeleteCheckItems.json';
+import data from '../../fixtures/data/GX2-9033-UpdateDeleteCheckItem.json';
 
 class CheckItems {
 	get() {
 		this.boardId = null;
 		this.listId = null;
 		this.CardId = null;
-		this.checkListId =null;
-		this.checkItemsId1=null;
+		this.checkListId = null;
+		this.checkItemsId1 = null;
+		this.checkItemIds = null;
 	}
 
 	createBoard(nombre) {
@@ -83,38 +84,90 @@ class CheckItems {
 			.then(response => {
 				expect(response.status).to.equal(200);
 				this.checkListId = response.body.id;
-				Cypress.env('checkListIdGlobal', this.checkListId);
+				//Cypress.env('checkListIdGlobal', this.checkListId);
 			});
 	}
 
-	
-	createCheckItem() {
-		//const idCheck = Cypress.env('checkListIdGlobal');
+	createCheckItem(nombre, pos, state) {
 		return cy
 			.request({
 				method: 'POST',
-			    url: `https://api.trello.com/1/checklists/${this.checkListId}/checkItems`,
+				url: `https://api.trello.com/1/checklists/${this.checkListId}/checkItems`,
 				body: {
-					
-					'name': 'test 1',
-					'nameData': {
-						'emoji': '😀'
+					name: nombre,
+					nameData: {
+						emoji: {},
 					},
-					'pos': 16697,
-					'state': 'incomplete',
-					'idChecklist': this.checkListId,
+					pos: pos,
+					state: state,
+					idChecklist: this.checkListId,
 					key: data.key,
 					token: data.token,
-					
-				}
-
-				
+				},
 			})
 			.then(response => {
 				expect(response.status).to.equal(200);
-				this.checkItemsId1 = response.body.id;
-				Cypress.env('checkItemIdGlobal', this.checkItemsId1);
+				this.checkItemIds = response.body.id;
+				return this.checkItemIds;
+			});
+	}
+
+	modifyCheckItem(nombre, pos, state, item) {
+	
+		return cy
+			.request({
+				method: 'PUT',
+				url: `https://trello.com/1/cards/${this.CardId}/checklist/${this.checkListId}/checkItem/${item}`,
+				body: {
+					name: nombre,
+					nameData: {
+						emoji: {},
+					},
+					pos: pos,
+					state: state,
+					idChecklist: this.checkListId,
+					idCheckItem:item,
+					key: data.key,
+					token: data.token,
+				},
+			})
+			.then(response => {
+				expect(response.status).to.equal(200);
+			    
+			});
+	}
+
+	deleteCheckItem(Item) {
+		
+		return cy
+			.request({
+				method: 'DELETE',
+				url: `https://api.trello.com/1/checklists/${this.checkListId}/checkItems/${Item}`,
+				body: {
+					key: data.key,
+					token: data.token,
+				},
+			})
+			.then(response => {
+				expect(response.status).to.equal(200);
+			});
+	}
+
+	getCheckItem(item) {
+		const checkItemIds = Cypress.env('checkItemIdsGlobal');
+		return cy
+			.request({
+				method: 'GET',
+				url: `https://api.trello.com/1/cards/${this.CardId}/checkItem/${item}`,
+				body: {
+					key: data.key,
+					token: data.token,
+				},
+			})
+			.then(response => {
+				expect(response.status).to.equal(200);
 			});
 	}
 }
+
 export const checkItems = new CheckItems();
