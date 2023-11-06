@@ -1,14 +1,22 @@
 import data from '../../fixtures/data/GX2-9033-UpdateDeleteCheckItem.json';
-
+		
 class CheckItems {
-	get() {
-		this.boardId = null;
+	constructor(){	this.boardId = null;
 		this.listId = null;
 		this.CardId = null;
 		this.checkListId = null;
 		this.checkItemsId1 = null;
 		this.checkItemIds = null;
 	}
+	get= {
+	
+		item:() => cy.get('[class="checklist-item-details-text markeddown js-checkitem-name"]'),
+		userName: ()=> cy.get('#username'),
+		password: ()=> cy.get('#password'),
+		botonSubmit:()=> cy.get('#login-submit'),
+		barra:()=> cy.get('span.checklist-progress-percentage'),
+
+	};
 
 	createBoard(nombre) {
 		return cy
@@ -17,7 +25,6 @@ class CheckItems {
 				url: 'https://api.trello.com/1/boards',
 				body: {
 					name: nombre,
-					//idOrganization: data.organizationId,
 					key: data.key,
 					token: data.token,
 				},
@@ -159,6 +166,23 @@ class CheckItems {
 			.request({
 				method: 'GET',
 				url: `https://api.trello.com/1/cards/${this.CardId}/checkItem/${item}`,
+				body: {
+					key: data.key,
+					token: data.token,
+				},
+			})
+			.then(response => {
+				expect(response.status).to.equal(200);
+				return response;
+			});
+	}
+	
+	getCheckList() {
+		
+		return cy
+			.request({
+				method: 'GET',
+				url: `https://api.trello.com/1/checklists/${this.checkListId}`,
 				body: {
 					key: data.key,
 					token: data.token,
