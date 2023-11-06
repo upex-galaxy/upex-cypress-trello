@@ -1,6 +1,8 @@
 import { checkItems } from '../../../support/pages/GX2-9033-UpdateDeleteCheckItems.page';
 import data from '../../../fixtures/data/GX2-9033-UpdateDeleteCheckItem.json';
-
+Cypress.on('uncaught:exception', () => {
+	return false;
+});
 describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Checkitems on Checklist', () => {
 	let name;
 	let item;
@@ -119,10 +121,8 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 		});
 	});
 
-	it('90384 | TC13:  Validar que cambia la barra de progreso', () => {
-		Cypress.on('uncaught:exception', () => {
-			return false;
-		});
+	it('9034 | TC13:  Validar que cambia la barra de progreso', () => {
+		
 		cy.visit(
 			'https://id.atlassian.com/login?application=trello&continue=https%3A%2F%2Ftrello.com%2Fauth%2Fatlassian%2Fcallback%3Fdisplay%3DeyJ2ZXJpZmljYXRpb25TdHJhdGVneSI6InNvZnQifQ%253D%253D&display=eyJ2ZXJpZmljYXRpb25TdHJhdGVneSI6InNvZnQifQ%3D%3D'
 		);
@@ -134,7 +134,7 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 		cy.contains('Test para Hacer').click();
 		checkItems.get.barra().should('have.text', '29%');
 	});
-	
+
 	it('9034 | TC14: Validar agregar un emoji al título', () => {
 		checkItems.modifyCheckItem(data.name10, data.posTop, data.stateComplete, itemUnCaracter).then(() => {
 			checkItems.getCheckItem(itemUnCaracter).then(response => {
