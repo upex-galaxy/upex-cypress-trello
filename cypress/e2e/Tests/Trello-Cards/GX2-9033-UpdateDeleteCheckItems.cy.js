@@ -143,7 +143,7 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 
 	it('9034 | TC14:  Validar que cambia la barra de progreso', () =>{
 		
-		
+		cy.contains('Board').click();
 		cy.contains('Lista de Pendientes').click();
 		cy.contains('Test para Hacer').click();
 		checkItems.get.barra().should('have.text', '43%');
