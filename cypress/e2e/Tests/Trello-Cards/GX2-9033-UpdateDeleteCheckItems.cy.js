@@ -19,10 +19,21 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 			checkItems.createList('Pendientes de Hoy').then(() => {
 				checkItems.createCard('Test para Hacer').then(() => {
 					checkItems.createCheckList('Test Manuales');
+					
 				});
 			});
 		});
 	});
+        beforeEach(()=> {
+		cy.visit('https://id.atlassian.com/login?application=trello&continue=https%3A%2F%2Ftrello.com%2Fauth%2Fatlassian%2Fcallback%3Fdisplay%3DeyJ2ZXJpZmljYXRpb25TdHJhdGVneSI6InNvZnQifQ%253D%253D&display=eyJ2ZXJpZmljYXRpb25TdHJhdGVneSI6InNvZnQifQ%3D%3D');
+		
+		checkItems.get.userName().type(data.userName);
+		checkItems.get.botonSubmit().click();
+		checkItems.get.password().type(data.password);
+		checkItems.get.botonSubmit().click();
+
+		
+});
 
 	it('9034 | TC1: Validar crear un CheckItem', () => {
 		checkItems.createCheckItem(data.name1, data.posTop, data.stateIncomplete).then(checkItemIds => {
@@ -92,6 +103,7 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 			itemBottom = checkItemIds;
 			checkItems.getCheckItem(itemBottom).then(response => {
 				expect(response.body.pos).to.equal(data.posBottomValue);
+				
 			});
 		});
 	});
@@ -119,29 +131,22 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 		checkItems.getCheckItem(itemTop).then(response => {
 			expect(response.body.state).to.equal(data.stateComplete);
 		});
-	});
+	});	
 
-	it('9034 | TC13:  Validar que cambia la barra de progreso', () => {
-		
-		cy.visit(
-			'https://id.atlassian.com/login?application=trello&continue=https%3A%2F%2Ftrello.com%2Fauth%2Fatlassian%2Fcallback%3Fdisplay%3DeyJ2ZXJpZmljYXRpb25TdHJhdGVneSI6InNvZnQifQ%253D%253D&display=eyJ2ZXJpZmljYXRpb25TdHJhdGVneSI6InNvZnQifQ%3D%3D'
-		);
-		checkItems.get.userName().type(data.userName);
-		checkItems.get.botonSubmit().click();
-		checkItems.get.password().type(data.password);
-		checkItems.get.botonSubmit().click();
-		cy.contains('Lista de Pendientes').click();
-		cy.contains('Test para Hacer').click();
-		checkItems.get.barra().should('have.text', '29%');
-	});
-
-	it('9034 | TC14: Validar agregar un emoji al título', () => {
+	it('9034 | TC13: Validar agregar un emoji al título', () => {
 		checkItems.modifyCheckItem(data.name10, data.posTop, data.stateComplete, itemUnCaracter).then(() => {
 			checkItems.getCheckItem(itemUnCaracter).then(response => {
-				expect(response.body.name).to.equal(data.name10); // 	// Verifica que el estado del elemento modificado sea 'complete'
+				expect(response.body.name).to.equal(data.name10); 
 			});
-		});
-
-		// // Espera a que la modificación se complete (puedes ajustar el tiempo de espera según tus necesidades)
+		});		
 	});
+
+	it('9034 | TC14:  Validar que cambia la barra de progreso', () =>{
+		
+		cy.contains('tableros').click();
+		cy.contains('Lista de Pendientes').click();
+		cy.contains('Test para Hacer').click();
+		checkItems.get.barra().should('have.text', '43%');
+		});
+	
 });
