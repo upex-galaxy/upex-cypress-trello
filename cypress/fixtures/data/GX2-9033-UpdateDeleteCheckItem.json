@@ -24,13 +24,14 @@
     "name6":"CheckItemPos20",
     "pos20":20,
     "posTopValue":12.5,
-    "posBottomValue":16584,
+    "posBottomValue":32768,
     "name7":"CheckItemIncomplete",
     "name8":"a",
     "name9":"",
     "userName": "mariavirginianovarese@gmail.com",
     "password": "Mila120313",
-    "name10":":smile: Test 1"
+    "name10":":smile: Test 1",
+    "name11":"Item para Borrar"
 
 
     }

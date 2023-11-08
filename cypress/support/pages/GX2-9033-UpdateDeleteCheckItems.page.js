@@ -1,13 +1,13 @@
 import data from '../../fixtures/data/GX2-9033-UpdateDeleteCheckItem.json';
-		
+
+let boardId = null;
+let listId = null;
+let CardId = null;
+let checkListId = null;
+let checkItemIds = null;
 class CheckItems {
-	constructor(){	this.boardId = null;
-		this.listId = null;
-		this.CardId = null;
-		this.checkListId = null;
-		this.checkItemsId1 = null;
-		this.checkItemIds = null;
-	}
+		
+	
 	get= {
 	
 		item:() => cy.get('[class="checklist-item-details-text markeddown js-checkitem-name"]'),
@@ -31,29 +31,28 @@ class CheckItems {
 			})
 			.then(response => {
 				expect(response.status).to.equal(200);
-				this.boardId = response.body.id;
-				Cypress.env('boardIdPrincipal', this.boardId);
+				boardId = response.body.id;	
 				return this.boardId;
 			});
 	}
 
 	createList(nombre) {
-		cy.log(this.boardId);
+		
 		return cy
 			.request({
 				method: 'POST',
 				url: 'https://api.trello.com/1/lists',
 				body: {
 					name: nombre,
-					idBoard: this.boardId,
+					idBoard: boardId,
 					key: data.key,
 					token: data.token,
 				},
 			})
 			.then(response => {
 				expect(response.status).to.equal(200);
-				this.listId = response.body.id;
-				Cypress.env('listIdGlobal', this.listId);
+				listId = response.body.id;
+				Cypress.env('listIdGlobal', listId);
 			});
 	}
 
@@ -64,15 +63,15 @@ class CheckItems {
 				url: 'https://api.trello.com/1/Cards',
 				body: {
 					name: nombre,
-					idList: this.listId,
+					idList: listId,
 					key: data.key,
 					token: data.token,
 				},
 			})
 			.then(response => {
 				expect(response.status).to.equal(200);
-				this.CardId = response.body.id;
-				Cypress.env('cardIdGlobal', this.CardId);
+				CardId = response.body.id;
+				
 			});
 	}
 
@@ -83,15 +82,15 @@ class CheckItems {
 				url: 'https://api.trello.com/1/checklists',
 				body: {
 					name: nombre,
-					idCard: this.CardId,
+					idCard: CardId,
 					key: data.key,
 					token: data.token,
 				},
 			})
 			.then(response => {
 				expect(response.status).to.equal(200);
-				this.checkListId = response.body.id;
-				//Cypress.env('checkListIdGlobal', this.checkListId);
+				checkListId = response.body.id;
+				
 			});
 	}
 
@@ -99,7 +98,7 @@ class CheckItems {
 		return cy
 			.request({
 				method: 'POST',
-				url: `https://api.trello.com/1/checklists/${this.checkListId}/checkItems`,
+				url: `https://api.trello.com/1/checklists/${checkListId}/checkItems`,
 				body: {
 					name: nombre,
 					nameData: {
@@ -107,15 +106,15 @@ class CheckItems {
 					},
 					pos: pos,
 					state: state,
-					idChecklist: this.checkListId,
+					idChecklist: checkListId,
 					key: data.key,
 					token: data.token,
 				},
 			})
 			.then(response => {
 				expect(response.status).to.equal(200);
-				this.checkItemIds = response.body.id;
-				return this.checkItemIds;
+				checkItemIds = response.body.id;
+				return checkItemIds;
 			});
 	}
 
@@ -124,7 +123,7 @@ class CheckItems {
 		return cy
 			.request({
 				method: 'PUT',
-				url: `https://trello.com/1/cards/${this.CardId}/checklist/${this.checkListId}/checkItem/${item}`,
+				url: `https://trello.com/1/cards/${CardId}/checklist/${checkListId}/checkItem/${item}`,
 				body: {
 					name: nombre,
 					nameData: {
@@ -132,7 +131,7 @@ class CheckItems {
 					},
 					pos: pos,
 					state: state,
-					idChecklist: this.checkListId,
+					idChecklist: checkListId,
 					idCheckItem:item,
 					key: data.key,
 					token: data.token,
@@ -149,7 +148,23 @@ class CheckItems {
 		return cy
 			.request({
 				method: 'DELETE',
-				url: `https://api.trello.com/1/checklists/${this.checkListId}/checkItems/${Item}`,
+				url: `https://api.trello.com/1/checklists/${checkListId}/checkItems/${Item}`,
+				body: {
+					key: data.key,
+					token: data.token,
+				},
+			})
+			.then(response => {
+				expect(response.status).to.equal(200);
+			});
+	}
+	
+	deleteBoard() {
+		
+		return cy
+			.request({
+				method: 'DELETE',
+				url: `https://api.trello.com/1/Boards/${boardId}`,
 				body: {
 					key: data.key,
 					token: data.token,
@@ -160,12 +175,57 @@ class CheckItems {
 			});
 	}
 
+	deleteList(listId) {
+		
+		return cy
+			.request({
+				method: 'DELETE',
+				url: `https://api.trello.com/1/lists/${listId}`,
+				body: {
+					key: data.key,
+					token: data.token,
+				},
+			})
+			.then(response => {
+				expect(response.status).to.equal(200);
+			});
+	}
+	deleteCheckList(checkListId) {
+		
+		return cy
+			.request({
+				method: 'DELETE',
+				url: `https://api.trello.com/1/Boards/${checkListId}`,
+				body: {
+					key: data.key,
+					token: data.token,
+				},
+			})
+			.then(response => {
+				expect(response.status).to.equal(200);
+			});
+	}
+	deleteCard(cardId) {
+		
+		return cy
+			.request({
+				method: 'DELETE',
+				url: `https://api.trello.com/1/Boards/${cardId}`,
+				body: {
+					key: data.key,
+					token: data.token,
+				},
+			})
+			.then(response => {
+				expect(response.status).to.equal(200);
+			});
+	}
 	getCheckItem(item) {
-		const checkItemIds = Cypress.env('checkItemIdsGlobal');
+		
 		return cy
 			.request({
 				method: 'GET',
-				url: `https://api.trello.com/1/cards/${this.CardId}/checkItem/${item}`,
+				url: `https://api.trello.com/1/cards/${CardId}/checkItem/${item}`,
 				body: {
 					key: data.key,
 					token: data.token,
@@ -182,7 +242,7 @@ class CheckItems {
 		return cy
 			.request({
 				method: 'GET',
-				url: `https://api.trello.com/1/checklists/${this.checkListId}`,
+				url: `https://api.trello.com/1/checklists/${checkListId}`,
 				body: {
 					key: data.key,
 					token: data.token,
