@@ -32,7 +32,7 @@ class CheckItems {
 			.then(response => {
 				expect(response.status).to.equal(200);
 				boardId = response.body.id;	
-				return this.boardId;
+				return boardId;
 			});
 	}
 
