@@ -3,6 +3,7 @@ import data from '../../../fixtures/data/GX2-9033-UpdateDeleteCheckItem.json';
 Cypress.on('uncaught:exception', () => {
 	return false;
 });
+let board;
 describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Checkitems on Checklist', () => {
 	context('Test para el Backend', () => {
 		let name;
@@ -15,9 +16,11 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 		let itemNumeroEntero;
 		let itemIncomplete;
 		let itemParaBorrar;
+		
 
 		before(() => {
-			checkItems.createBoard('Lista de Pendientes').then(() => {
+			checkItems.createBoard('Lista de Pendientes').then(boardId => {
+				board = boardId;
 				checkItems.createList('Pendientes de Hoy').then(() => {
 					checkItems.createCard('Test para Hacer').then(() => {
 						checkItems.createCheckList('Test Manuales');
@@ -135,6 +138,8 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 	});
 
 	context('Test para el Frontend', () => {
+		
+
 		before(() => {
 			cy.visit(
 				'https://id.atlassian.com/login?application=trello&continue=https%3A%2F%2Ftrello.com%2Fauth%2Fatlassian%2Fcallback%3Fdisplay%3DeyJ2ZXJpZmljYXRpb25TdHJhdGVneSI6InNvZnQifQ%253D%253D&display=eyJ2ZXJpZmljYXRpb25TdHJhdGVneSI6InNvZnQifQ%3D%3D'
@@ -145,15 +150,14 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 			checkItems.get.password().type(data.password);
 			checkItems.get.botonSubmit().click();
 		});
-		
+
 		it('9034 | TC14:  Validar que cambia la barra de progreso', () => {
-			
 			cy.contains('Lista de Pendientes').click();
 			cy.contains('Test para Hacer').click();
 			checkItems.get.barra().should('have.text', '38%');
 		});
 	});
 	after(() => {
-		checkItems.deleteBoard();
+		checkItems.deleteBoard(board);
 	});
 });
