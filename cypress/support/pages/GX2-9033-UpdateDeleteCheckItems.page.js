@@ -159,12 +159,12 @@ class CheckItems {
 			});
 	}
 	
-	deleteBoard(boardId) {
+	deleteBoard(boardabo) {
 		
 		return cy
 			.request({
 				method: 'DELETE',
-				url: `https://api.trello.com/1/Boards/${boardId}`,
+				url: `https://api.trello.com/1/Boards/${boardabo}`,
 				body: {
 					key: data.key,
 					token: data.token,
