@@ -157,12 +157,18 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 			cy.contains('Test para Hacer').click();
 			checkItems.get.barra().should('have.text', '38%');
 			cy.log(board);
+			
+					
+		});
+		it('9034| TC15:Eliminar tablero',()=> {
 			checkItems.deleteBoard(board);
-			cy.wait(3000);
+
+		});
+			
+
 			
 				
-			
-		});
+	
 	});
 	
 });
