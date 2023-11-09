@@ -21,9 +21,8 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 		
 
 		before(() => {
-			checkItems.createBoard('Lista de Pendientes').then(boardId => {
-				board = boardId;
-				cy.log(board);
+			checkItems.createBoard('Lista de Pendientes').then((boardId) => {
+				board=boardId;
 				checkItems.createList('Pendientes de Hoy').then(() => {
 					checkItems.createCard('Test para Hacer').then(() => {
 						checkItems.createCheckList('Test Manuales');
@@ -158,7 +157,10 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 			cy.contains('Lista de Pendientes').click();
 			cy.contains('Test para Hacer').click();
 			checkItems.get.barra().should('have.text', '38%');
-			checkItems.deleteBoard(board);
+			checkItems.deleteBoard(board).then(()=> {
+				cy.wait(2000);
+			});
+			
 		});
 	});
 	
