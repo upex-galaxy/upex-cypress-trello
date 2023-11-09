@@ -50,6 +50,7 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 				itemParaBorrar = checkItemIds;
 				checkItems.deleteCheckItem(itemParaBorrar);
 				checkItems.get.item().should('not.exist');
+
 			});
 		});
 		it('9034 | TC4: Validar que el nombre del nuevo CheckItem tiene 1 caracter.', () => {
@@ -155,9 +156,11 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 			cy.contains('Lista de Pendientes').click();
 			cy.contains('Test para Hacer').click();
 			checkItems.get.barra().should('have.text', '38%');
-			checkItems.deleteBoard(board).then(()=> {
-				cy.wait(2000);
-			});
+			cy.log(board);
+			checkItems.deleteBoard(board);
+			cy.wait(3000);
+			
+				
 			
 		});
 	});

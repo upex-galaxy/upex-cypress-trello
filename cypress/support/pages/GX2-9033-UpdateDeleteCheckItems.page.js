@@ -253,22 +253,7 @@ class CheckItems {
 			});
 	}
 
-	getBoard() {
-		
-		return cy
-			.request({
-				method: 'GET',
-				url: `https://api.trello.com/1/boards/${boardId}`,
-				body: {
-					key: data.key,
-					token: data.token,
-				},
-			})
-			.then(response => {
-				expect(response.status).to.equal(200);
-				
-			});
-	}
+	
 }
 
 export const checkItems = new CheckItems();
