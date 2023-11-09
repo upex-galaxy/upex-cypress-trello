@@ -2,9 +2,7 @@ import { removeLogs } from '@helper/RemoveLogs';
 removeLogs();
 import { checkItems } from '../../../support/pages/GX2-9033-UpdateDeleteCheckItems.page';
 import data from '../../../fixtures/data/GX2-9033-UpdateDeleteCheckItem.json';
-Cypress.on('uncaught:exception', () => {
-	return false;
-});
+
 let board;
 describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Checkitems on Checklist', () => {
 	context('Test para el Backend', () => {
