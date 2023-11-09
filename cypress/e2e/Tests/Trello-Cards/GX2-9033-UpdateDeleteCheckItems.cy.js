@@ -1,3 +1,5 @@
+import { removeLogs } from '@helper/RemoveLogs';
+removeLogs();
 import { checkItems } from '../../../support/pages/GX2-9033-UpdateDeleteCheckItems.page';
 import data from '../../../fixtures/data/GX2-9033-UpdateDeleteCheckItem.json';
 Cypress.on('uncaught:exception', () => {
@@ -21,6 +23,7 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 		before(() => {
 			checkItems.createBoard('Lista de Pendientes').then(boardId => {
 				board = boardId;
+				cy.log(board);
 				checkItems.createList('Pendientes de Hoy').then(() => {
 					checkItems.createCard('Test para Hacer').then(() => {
 						checkItems.createCheckList('Test Manuales');
@@ -155,9 +158,8 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 			cy.contains('Lista de Pendientes').click();
 			cy.contains('Test para Hacer').click();
 			checkItems.get.barra().should('have.text', '38%');
+			checkItems.deleteBoard(board);
 		});
 	});
-	after(() => {
-		checkItems.deleteBoard(board);
-	});
+	
 });

@@ -159,7 +159,7 @@ class CheckItems {
 			});
 	}
 	
-	deleteBoard() {
+	deleteBoard(boardId) {
 		
 		return cy
 			.request({
