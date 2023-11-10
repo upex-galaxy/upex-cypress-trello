@@ -16,11 +16,10 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 		let itemNumeroEntero;
 		let itemIncomplete;
 		let itemParaBorrar;
-		
 
 		before(() => {
-			checkItems.createBoard('Lista de Pendientes').then((boardId) => {
-				board=boardId;
+			checkItems.createBoard('Lista de Pendientes').then(boardId => {
+				board = boardId;
 				checkItems.createList('Pendientes de Hoy').then(() => {
 					checkItems.createCard('Test para Hacer').then(() => {
 						checkItems.createCheckList('Test Manuales');
@@ -50,7 +49,6 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 				itemParaBorrar = checkItemIds;
 				checkItems.deleteCheckItem(itemParaBorrar);
 				checkItems.get.item().should('not.exist');
-
 			});
 		});
 		it('9034 | TC4: Validar que el nombre del nuevo CheckItem tiene 1 caracter.', () => {
@@ -139,8 +137,6 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 	});
 
 	context('Test para el Frontend', () => {
-		
-
 		beforeEach(() => {
 			cy.visit(
 				'https://id.atlassian.com/login?application=trello&continue=https%3A%2F%2Ftrello.com%2Fauth%2Fatlassian%2Fcallback%3Fdisplay%3DeyJ2ZXJpZmljYXRpb25TdHJhdGVneSI6InNvZnQifQ%253D%253D&display=eyJ2ZXJpZmljYXRpb25TdHJhdGVneSI6InNvZnQifQ%3D%3D'
@@ -157,18 +153,11 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 			cy.contains('Test para Hacer').click();
 			checkItems.get.barra().should('have.text', '38%');
 			cy.log(board);
-			
-					
 		});
-		it('9034| TC15:Eliminar tablero',()=> {
-			checkItems.deleteBoard(board);
-
-		});
-			
-
-			
-				
-	
 	});
-	
+	context('Test para eliminar el Board desde el backend', () => {
+		it('9034| TC15:Eliminar tablero', () => {
+			checkItems.deleteBoard(board);
+		});
+	});
 });
