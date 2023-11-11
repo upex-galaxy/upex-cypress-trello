@@ -159,12 +159,12 @@ class CheckItems {
 			});
 	}
 	
-	deleteBoard(boardabo) {
+	deleteBoard() {
 		
 		return cy
 			.request({
 				method: 'DELETE',
-				url: `https://api.trello.com/1/Boards/${boardabo}`,
+				url: `https://api.trello.com/1/Boards/${boardId}`,
 				body: {
 					key: data.key,
 					token: data.token,
@@ -174,52 +174,26 @@ class CheckItems {
 				expect(response.status).to.equal(200);
 			});
 	}
+	getBoard() {
+		
+		return cy
+			.request({
+				method: 'GET',
+				url: `https://api.trello.com/1/boards/${boardId}`,
+				body: {
+					key: data.key,
+					token: data.token,
+				},
+			})
+			.then(response => {
+				expect(response.status).to.equal(404);
+				return response;
+			});
+	}
+	
+	
 
-	deleteList(listId) {
-		
-		return cy
-			.request({
-				method: 'DELETE',
-				url: `https://api.trello.com/1/lists/${listId}`,
-				body: {
-					key: data.key,
-					token: data.token,
-				},
-			})
-			.then(response => {
-				expect(response.status).to.equal(200);
-			});
-	}
-	deleteCheckList(checkListId) {
-		
-		return cy
-			.request({
-				method: 'DELETE',
-				url: `https://api.trello.com/1/Boards/${checkListId}`,
-				body: {
-					key: data.key,
-					token: data.token,
-				},
-			})
-			.then(response => {
-				expect(response.status).to.equal(200);
-			});
-	}
-	deleteCard(cardId) {
-		
-		return cy
-			.request({
-				method: 'DELETE',
-				url: `https://api.trello.com/1/Boards/${cardId}`,
-				body: {
-					key: data.key,
-					token: data.token,
-				},
-			})
-			.then(response => {
-				expect(response.status).to.equal(200);
-			});
-	}
+	
 	getCheckItem(item) {
 		
 		return cy
@@ -232,7 +206,7 @@ class CheckItems {
 				},
 			})
 			.then(response => {
-				expect(response.status).to.equal(200);
+				expect(response.status).to.equal(404);
 				return response;
 			});
 	}

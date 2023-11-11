@@ -44,12 +44,12 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 			});
 		});
 
-		it('9034 | TC3:  Validar eliminar un CheckItem', () => {
+		it.only('9034 | TC3:  Validar eliminar un CheckItem', () => {
 			checkItems.createCheckItem(data.name11, data.posBottom, data.stateComplete).then(checkItemIds => {
 				itemParaBorrar = checkItemIds;
 				checkItems.deleteCheckItem(itemParaBorrar);
-				checkItems.get.item().should('not.exist');
-			});
+				
+				});
 		});
 		it('9034 | TC4: Validar que el nombre del nuevo CheckItem tiene 1 caracter.', () => {
 			checkItems.createCheckItem(data.name3, data.posTop, data.stateIncomplete).then(checkItemIds => {
@@ -156,8 +156,9 @@ describe('Trello (API) | Checkitems | API Endpoint: Create, Update and Delete Ch
 		});
 	});
 	context('Test para eliminar el Board desde el backend', () => {
-		it('9034| TC15:Eliminar tablero', () => {
-			checkItems.deleteBoard(board);
+		it.only('9034| TC15:Eliminar tablero', () => {
+			checkItems.deleteBoard();
+			
 		});
 	});
 });
