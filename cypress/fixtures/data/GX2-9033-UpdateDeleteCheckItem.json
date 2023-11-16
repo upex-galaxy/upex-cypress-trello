@@ -1,0 +1,37 @@
+{
+
+    "url":{
+        "Dom":"https://api.trello.com/1",
+        "CreateList":"https://api.trello.com/1/lists",
+        "CreateCard":"https://api.trello.com/1/cards",
+        "createCheckList":"https://api.trello.com/1/checklists"
+    
+    },  
+    
+    "key":"bdc884dd346b8521f4690d858d9cdab4",
+    "token":"ATTA38a2da0a3e657eae14d1b728b7b5b93793f9b871549fa6daa25d23525f311c6260FBCCF8",
+    "idBoard":"6534d9cc700a080ba59776cf",
+    "organizationId":"5a999cd36066c584c097f193",
+    "name1":"Test 1",
+	"posTop": "top",
+	"stateIncomplete":"incomplete",
+    "stateComplete":"complete",
+    "posBottom": "bottom",
+    "name2":"Test 2",
+    "name3":"Test 3",
+    "name4":"CheckItemTop",
+    "name5":"CheckItemBottom",
+    "name6":"CheckItemPos20",
+    "pos20":20,
+    "posTopValue":12.5,
+    "posBottomValue":32768,
+    "name7":"CheckItemIncomplete",
+    "name8":"a",
+    "name9":"",
+    "userName": "mariavirginianovarese@gmail.com",
+    "password": "Mila120313",
+    "name10":":smile: Test 1",
+    "name11":"Item para Borrar"
+
+
+    }
