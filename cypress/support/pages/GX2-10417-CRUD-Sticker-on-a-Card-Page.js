@@ -17,7 +17,7 @@ const randomIndexSticker = Math.floor(Math.random() * arrayStickers.length);
 class StickerOnCardPage {
 	get() {
 		this.cardID = null;
-		this.stickerName = null;
+		this.stickerImage = null;
 		this.stickerId = null;
 	}
 
@@ -55,9 +55,24 @@ class StickerOnCardPage {
 				},
 			})
 			.then(response => {
-				this.stickerName = response.body.name;
+				this.stickerImage = response.body.image;
 				this.stickerId = response.body.id;
 			});
+	}
+
+	updateStickerToCard() {
+		return cy.api({
+			method: 'PUT',
+			url: `/cards/${this.cardID}/stickers/${this.stickerId}`,
+			qs: {
+				key: APIkey,
+				token: APItoken,
+				top: randomTop,
+				left: randomLeft,
+				zIndex: randomZIndex,
+				rotate: randomRotate,
+			},
+		});
 	}
 }
 
