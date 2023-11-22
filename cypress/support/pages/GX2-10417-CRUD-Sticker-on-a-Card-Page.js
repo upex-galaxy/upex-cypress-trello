@@ -1,18 +1,23 @@
-import { APIkey, APItoken, idList, arrayStickers } from 'cypress/fixtures/data/GX2-10417-CRUDStickerOnACard.json';
+import {
+	APIkey,
+	APItoken,
+	idList,
+	arrayStickers,
+	leftMin,
+	leftMax,
+	topMin,
+	topMax,
+	zIndexMin,
+	zIndexMax,
+	rotateMin,
+	rotateMax,
+} from 'cypress/fixtures/data/GX2-10417-CRUDStickerOnACard.json';
 
-const leftMin = -60;
-const leftMax = 100;
-const topMin = -60;
-const topMax = 100;
-const zIndexMin = 1;
-const zIndexMax = 5;
-const rotateMin = 0;
-const rotateMax = 360;
-const randomLeft = Math.floor(Math.random() * (leftMax - leftMin + 1) + leftMin);
-const randomTop = Math.floor(Math.random() * (topMax - topMin + 1) + topMin);
-const randomZIndex = Math.floor(Math.random() * (zIndexMax - zIndexMin + 1) + zIndexMin);
-const randomRotate = Math.floor(Math.random() * (rotateMax - rotateMin + 1) + rotateMin);
-const randomIndexSticker = Math.floor(Math.random() * arrayStickers.length);
+let randomLeft = Math.floor(Math.random() * (leftMax - leftMin + 1) + leftMin);
+let randomTop = Math.floor(Math.random() * (topMax - topMin + 1) + topMin);
+let randomZIndex = Math.floor(Math.random() * (zIndexMax - zIndexMin + 1) + zIndexMin);
+let randomRotate = Math.floor(Math.random() * (rotateMax - rotateMin + 1) + rotateMin);
+let randomIndexSticker = Math.floor(Math.random() * arrayStickers.length);
 
 class StickerOnCardPage {
 	get() {
@@ -31,7 +36,7 @@ class StickerOnCardPage {
 					token: APItoken,
 					idList: idList,
 					name: 'CARD 1',
-					desc: 'probando 1 2 3',
+					desc: 'Testing 1 2 3',
 				},
 			})
 			.then(response => {
@@ -60,17 +65,67 @@ class StickerOnCardPage {
 			});
 	}
 
-	updateStickerToCard() {
+	addRandomStickerToCardUsingInferiorLimitValid() {
+		return cy
+			.api({
+				method: 'POST',
+				url: `/cards/${this.cardID}/stickers`,
+				qs: {
+					key: APIkey,
+					token: APItoken,
+					top: topMin,
+					left: leftMin,
+					zIndex: zIndexMin,
+					rotate: rotateMin,
+					image: arrayStickers[randomIndexSticker],
+				},
+			})
+			.then(response => {
+				this.stickerImage = response.body.image;
+				this.stickerId = response.body.id;
+			});
+	}
+
+	updateStickerToACard() {
+		return cy
+			.api({
+				method: 'PUT',
+				url: `/cards/${this.cardID}/stickers/${this.stickerId}`,
+				qs: {
+					key: APIkey,
+					token: APItoken,
+					top: topMin,
+					left: leftMin,
+					zIndex: zIndexMin,
+					rotate: rotateMin,
+					image: arrayStickers[randomIndexSticker],
+				},
+			})
+			.then(response => {
+				this.stickerImage = response.body.image;
+				this.stickerId = response.body.id;
+			});
+	}
+
+	getStickers() {
 		return cy.api({
-			method: 'PUT',
+			method: 'GET',
 			url: `/cards/${this.cardID}/stickers/${this.stickerId}`,
 			qs: {
 				key: APIkey,
 				token: APItoken,
-				top: randomTop,
-				left: randomLeft,
-				zIndex: randomZIndex,
-				rotate: randomRotate,
+				image: arrayStickers[randomIndexSticker],
+			},
+		});
+	}
+
+	deleteSticker() {
+		return cy.api({
+			method: 'DELETE',
+			url: `https://api.trello.com/1/cards/${this.cardID}/stickers/${this.stickerId}`,
+			qs: {
+				key: APIkey,
+				token: APItoken,
 			},
 		});
 	}
