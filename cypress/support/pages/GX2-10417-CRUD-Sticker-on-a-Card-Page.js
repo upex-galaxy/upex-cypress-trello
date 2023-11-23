@@ -11,7 +11,9 @@ import {
 	zIndexMax,
 	rotateMin,
 	rotateMax,
-} from 'cypress/fixtures/data/GX2-10417-CRUDStickerOnACard.json';
+	cardDescription,
+	newCardName,
+} from '../../fixtures/data/GX2-10417-CRUDStickerOnACard.json';
 
 let randomLeft = Math.floor(Math.random() * (leftMax - leftMin + 1) + leftMin);
 let randomTop = Math.floor(Math.random() * (topMax - topMin + 1) + topMin);
@@ -35,8 +37,8 @@ class StickerOnCardPage {
 					key: APIkey,
 					token: APItoken,
 					idList: idList,
-					name: 'CARD 1',
-					desc: 'Testing 1 2 3',
+					name: newCardName,
+					desc: cardDescription,
 				},
 			})
 			.then(response => {
@@ -123,6 +125,17 @@ class StickerOnCardPage {
 		return cy.api({
 			method: 'DELETE',
 			url: `https://api.trello.com/1/cards/${this.cardID}/stickers/${this.stickerId}`,
+			qs: {
+				key: APIkey,
+				token: APItoken,
+			},
+		});
+	}
+
+	deleteCardWithSticker() {
+		return cy.api({
+			method: 'DELETE',
+			url: `/cards/${this.cardID}`,
 			qs: {
 				key: APIkey,
 				token: APItoken,

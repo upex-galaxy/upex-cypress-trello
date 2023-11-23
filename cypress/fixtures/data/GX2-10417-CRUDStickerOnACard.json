@@ -4,6 +4,18 @@
 	"idBoard": "655bb6350be7dce0a4481a2e",
 	"nameBoard": "Cypress API Board",
 	"idList": "655bb7b0fd993241f1f2f4a6",
+	"newCardName": "✨CARD: Practicing API with Cypress",
+	"cardDescription": "Testing 1 2 3",
+	"successful": 200,
+	"leftMin": -60,
+	"leftMax": 100,
+	"topMin": -60,
+	"topMax": 100,
+	"zIndexMin": 1,
+	"zIndexMax": 5,
+	"rotateMin": 0,
+	"rotateMax": 360,
+	"urlCustomImage": "https://trello-stickers.s3.amazonaws.com/627061e20d413d4d4664da9a/160x160/7883d92385b0a34c2c1f838e9f9789ff/upexlogo.png",
 	"arrayStickers": [
 		"rocketship",
 		"star",
@@ -50,14 +62,5 @@
 		"pete-broken",
 		"pete-love",
 		"pete-happy"
-	],
-	"leftMin": -60,
-	"leftMax": 100,
-	"topMin": -60,
-	"topMax": 100,
-	"zIndexMin": 1,
-	"zIndexMax": 5,
-	"rotateMin": 0,
-	"rotateMax": 360,
-	"urlCustomImage": "https://trello-stickers.s3.amazonaws.com/627061e20d413d4d4664da9a/160x160/7883d92385b0a34c2c1f838e9f9789ff/upexlogo.png"
+	]
 }
