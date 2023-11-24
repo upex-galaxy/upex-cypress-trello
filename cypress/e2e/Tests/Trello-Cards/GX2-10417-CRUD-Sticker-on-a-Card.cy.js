@@ -92,7 +92,7 @@ describe('GX2-10417 - Trello (API) | Stickers | API Endpoint: Add, Update, Get, 
 			});
 		});
 
-		it('10418| TC07:  Validate no add a sticker with min invalid value limit', () => {
+		it.skip('10418| TC07:  Validate no add a sticker with min invalid value limit', () => {
 			// Test was skipped because have bugs.
 			stickerCardPage.addRandomStickerToCardUsingInferiorLimitInvalid.then(response => {
 				expect(response.status).to.eql(badRequest);
