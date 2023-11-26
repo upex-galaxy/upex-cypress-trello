@@ -30,7 +30,7 @@ describe('GX2-10417 - Trello (API) | Stickers | API Endpoint: Add, Update, Get, 
 				});
 		});
 
-		it('10418 | TC01: Should updated a sticker on a card using valid values', () => {
+		it('10418 | TC01: Should update a sticker on a card using valid values', () => {
 			return stickerCardPage.updateStickerToACard().then(response => {
 				expect(response.status).to.be.equal(successful);
 				expect(response.body.image).to.be.equal(stickerCardPage.stickerImage);
@@ -43,7 +43,7 @@ describe('GX2-10417 - Trello (API) | Stickers | API Endpoint: Add, Update, Get, 
 			});
 		});
 
-		it('10418 | TC03: Should deleted a sticker on a card using valid values', () => {
+		it('10418 | TC03: Should delete a sticker on a card using valid values', () => {
 			stickerCardPage.deleteSticker().then(response => {
 				expect(response.status).to.eql(successful);
 				expect(response.body.stickers).to.be.empty;
@@ -85,14 +85,14 @@ describe('GX2-10417 - Trello (API) | Stickers | API Endpoint: Add, Update, Get, 
 			});
 		});
 
-		it('10418| TC06: Validate no add a sticker with max invalid value limits', () => {
+		it('10418| TC06: Should no add a sticker with max invalid value limits', () => {
 			stickerCardPage.addRandomStickerToCardUsingSuperiorLimitInvalid().then(response => {
 				expect(response.status).to.eql(badRequest);
 				expect(response.body).to.be.equal('invalid value for image');
 			});
 		});
 
-		it.skip('10418| TC07:  Validate no add a sticker with min invalid value limit', () => {
+		it.skip('10418| TC07: Should no add a sticker with min invalid value limit', () => {
 			// Test was skipped because have bugs.
 			stickerCardPage.addRandomStickerToCardUsingInferiorLimitInvalid.then(response => {
 				expect(response.status).to.eql(badRequest);
