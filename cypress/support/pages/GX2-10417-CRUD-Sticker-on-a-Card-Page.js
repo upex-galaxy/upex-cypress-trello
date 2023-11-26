@@ -120,8 +120,6 @@ class StickerOnCardPage {
 			});
 	}
 
-	//*-----------------------------
-
 	addRandomStickerToCardUsingInferiorLimitInvalid() {
 		return cy.api({
 			method: 'PUT',
@@ -137,7 +135,6 @@ class StickerOnCardPage {
 			},
 		});
 	}
-	//*-----------------------------
 
 	addRandomStickerToCardUsingSuperiorLimitInvalid() {
 		return cy.api({
