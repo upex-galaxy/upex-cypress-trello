@@ -29,7 +29,7 @@ describe('GX2-10969-trello-api-CRUD', () => {
 		});
 	});
 
-	it('10970 | TC1: Validar crear una carta en la lista Backlog.', function () {
+	it('10970 | TC1: Validarr crear una carta en la lista Backlog.', function () {
 		trelloCards.createCard({ idList: idList1, cardName: 'Card 1' }).then(({ status, body }) => {
 			idCard = body.id;
 			cy.wrap(idCard).as('idCard');
