@@ -38,11 +38,22 @@ class TrelloApi {
 			},
 		});
 	}
-
-	archiveAllCardsInList({ idList }) {
+	moveCardToList({ idCard, idListToMove }) {
 		return cy.api({
-			method: 'POST',
-			url: `/lists/${idList}/archiveAllCards`,
+			method: 'PUT',
+			url: `/cards/${idCard}`,
+			qs: {
+				key: key,
+				token: token,
+				idList: idListToMove,
+			},
+		});
+	}
+
+	deleteCard({ idCard }) {
+		return cy.api({
+			method: 'DELETE',
+			url: `/cards/${idCard}`,
 			qs: {
 				key: key,
 				token: token,
