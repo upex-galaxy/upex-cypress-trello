@@ -20,10 +20,10 @@ let randomTop = Math.floor(Math.random() * (topMax - topMin + 1) + topMin);
 let randomZIndex = Math.floor(Math.random() * (zIndexMax - zIndexMin + 1) + zIndexMin);
 let randomRotate = Math.floor(Math.random() * (rotateMax - rotateMin + 1) + rotateMin);
 
-let randomValueBelowMinLeft = Math.floor(Math.random() * (leftMin - Number.MIN_SAFE_INTEGER) + Number.MIN_SAFE_INTEGER);
-let randomValueBelowMinTop = Math.floor(Math.random() * (topMin - Number.MIN_SAFE_INTEGER) + Number.MIN_SAFE_INTEGER);
-let randomValueBelowMinZIndex = Math.floor(Math.random() * (zIndexMin - Number.MIN_SAFE_INTEGER) + Number.MIN_SAFE_INTEGER);
-let randomValueBelowMinRotate = Math.floor(Math.random() * (rotateMin - Number.MIN_SAFE_INTEGER) + Number.MIN_SAFE_INTEGER);
+let randomValueBelowMinLeft = Cypress._.random(-80, -61);
+let randomValueBelowMinTop = Cypress._.random(-80, -61);
+let randomValueBelowMinZIndex = Cypress._.random(-0, 0);
+let randomValueBelowMinRotate = Cypress._.random(-20, -1);
 
 let randomValueAboveMaxLeft = Math.floor(Math.random() * (Number.MAX_SAFE_INTEGER - leftMax) + leftMax);
 let randomValueAboveMaxTop = Math.floor(Math.random() * (Number.MAX_SAFE_INTEGER - topMax) + topMax);
@@ -122,7 +122,7 @@ class StickerOnCardPage {
 
 	addRandomStickerToCardUsingInferiorLimitInvalid() {
 		return cy.api({
-			method: 'PUT',
+			method: 'POST',
 			url: `/cards/${this.cardID}/stickers`,
 			failOnStatusCode: false,
 			qs: {
