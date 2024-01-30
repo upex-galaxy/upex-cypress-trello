@@ -29,6 +29,7 @@
 		"donjayamanne.githistory",
 		"eamodio.gitlens",
 		//! General Frameworks:
+		"Postman.postman-for-vscode",
 		"CucumberOpen.cucumber-official",
 		"ms-vscode.vscode-typescript-next",
 		"xabikos.JavaScriptSnippets",
