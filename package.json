@@ -3,7 +3,7 @@
 	"version": "4",
 	"description": "Cypress Automation",
 	"main": "index.js",
-	"homepage": "https://github.com/upex-galaxy/cypress-blackhole#readme",
+	"homepage": "https://github.com/upex-galaxy/upex-cypress-trello/blob/main/readme.md",
 	"scripts": {
 		"test": "cypress open",
 		"test:run": "cypress run --browser electron --spec",

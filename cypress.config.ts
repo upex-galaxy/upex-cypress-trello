@@ -4,10 +4,10 @@ import 'dotenv/config';
 
 export default defineConfig({
 	// @Ely: CYPRESS DASHBOARD PARA VER NUESTRAS EJECUCIONES EN LA WEB:
-	projectId: '7n2zun',
+	//projectId: '7n2zun',
 	// 1280×720 is considered to be the most suitable screen resolution for the desktop website version:
-	viewportWidth: 1280,
-	viewportHeight: 720,
+	viewportWidth: 1920,
+	viewportHeight: 1080,
 	downloadsFolder: 'cypress/downloads',
 	videosFolder: 'cypress/videos',
 	screenshotsFolder: 'cypress/screenshots',
@@ -28,7 +28,7 @@ export default defineConfig({
 	},
 	// E2E Testing runner
 	e2e: {
-		baseUrl: 'https://demoqa.com',
+		baseUrl: 'https://api.trello.com/1',
 		// Glob pattern to determine what test files to load:
 		specPattern: [ 'cypress/e2e/**/*.cy.{js,jsx,ts,tsx}' ],
 		excludeSpecPattern: [ 'cypress/e2e/**/*.example.cy.js' ],
