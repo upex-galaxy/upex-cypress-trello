@@ -4,7 +4,7 @@ import 'dotenv/config';
 
 export default defineConfig({
 	// @Ely: CYPRESS DASHBOARD PARA VER NUESTRAS EJECUCIONES EN LA WEB:
-	//projectId: '7n2zun',
+	projectId: '7n2zun',
 	// 1280×720 is considered to be the most suitable screen resolution for the desktop website version:
 	viewportWidth: 1920,
 	viewportHeight: 1080,
