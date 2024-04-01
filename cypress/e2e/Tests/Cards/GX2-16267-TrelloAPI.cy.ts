@@ -1,17 +1,17 @@
 import { TrelloCardApi } from '@pages/GX2-16267-cards.Page';
-import type { GetListByIdResponse } from '../../../support/types/responseType';
+import type { GetListByIdResponse, GetCardByIdResponse } from '../../../support/types/responseType';
 const listBacklog = '654a353c5b36a089e49656b5';
 const listActive = '6556516a7ecd359fc7ea7ea3';
 const listDone = '6556516dc2003862888d3238';
 
-let idCardA;
+let idCardA: string;
 let idCardB;
 
 
 describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 	it.only('TC1: Check that BACKLOG list is visible on the board', () => {
 		// URL "https://api.trello.com/1/lists/{idList}?key={key}&token={token}"
-		TrelloCardApi.getListById('GET', listBacklog)
+		TrelloCardApi.getById('GET', 'lists', listBacklog)
 			.then(response => {
 				const responseBody: GetListByIdResponse = response.body;
 				expect(response).to.be.an('object');
@@ -28,7 +28,7 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 	});
 	it.only('TC2: Check that ACTIVE list is visible on the board', () => {
 		// URL "https://api.trello.com/1/lists/{idList}?key={key}&token={token}"
-		TrelloCardApi.getListById('GET', listActive)
+		TrelloCardApi.getById('GET','lists', listActive)
 			.then(response => {
 				const responseBody: GetListByIdResponse = response.body;
 				expect(response).to.be.an('object');
@@ -45,7 +45,7 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 	});
 	it.only('TC3: Check that DONE list is visible on the board', () => {
 		// URL "https://api.trello.com/1/lists/{idList}?key={key}&token={token}"
-		TrelloCardApi.getListById('GET', listDone)
+		TrelloCardApi.getById('GET', 'lists', listDone)
 			.then(response => {
 				const responseBody: GetListByIdResponse = response.body;
 				expect(response).to.be.an('object');
@@ -60,22 +60,26 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 				expect(responseBody).to.have.property('pos').that.is.a('number');
 			});
 	});
-	it('TC4: Check that the user can create Card A on the Backlog list', () => {
+	it.only('TC4: Check that the user can create Card A on the Backlog list', () => {
 		// URL "https://api.trello.com/1/cards/{idList}?key={key}&token={token}"
 		const cardName = 'Card A';
-		trelloCardApi.createCardOnList(listBacklog, cardName)
+		TrelloCardApi.createCardOnList('POST', listBacklog, cardName)
 			.then(response => {
+				const responseBody: GetCardByIdResponse = response.body;
 				expect(response).to.be.an('object');
 				expect(response.status).to.eql(200);
 				expect(response.body.idList).to.eql(listBacklog);
 				expect(response.body.name).to.eql(cardName);
+				expect(responseBody).to.have.property('id').that.is.a('string');
+				expect(responseBody).to.have.property('closed').that.is.a('boolean');
+				expect(responseBody).to.have.property('idList').that.is.a('string');
 				idCardA = response.body.id;
 			});
 	});
 	it('TC5: Check that the user can create Card B on the Active list', () => {
 		// URL "https://api.trello.com/1/cards/{idList}?key={key}&token={token}"
 		const cardName = 'Card B';
-		trelloCardApi.createCardOnList(listActive, cardName)
+		TrelloCardApi.createCardOnList('POST', listActive, cardName)
 			.then(response => {
 				expect(response).to.be.an('object');
 				expect(response.status).to.eql(200);
@@ -118,9 +122,9 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 				expect(response.body.idList).to.eql(listDone);
 			});
 	});
-	it('TC9: Check that card A has status closed: false', () => {
-		// URL "https://api.trello.com/1/cards/{idList}?key={key}&token={token}"
-		trelloCardApi.getCardById(idCardA)
+	it.only('TC9: Check that card A has status closed: false', () => {
+		// URL "https://api.trello.com/1/cards/{idCard}?key={key}&token={token}"
+		TrelloCardApi.getById('GET', 'cards', idCardA)
 			.then(response => {
 				expect(response.body.closed).to.eql(false);
 			});
