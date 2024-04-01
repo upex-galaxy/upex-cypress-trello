@@ -1,4 +1,5 @@
 import { TrelloCardApi } from '@pages/GX2-16267-cards.Page';
+import type { GetListByIdResponse } from '../../../support/types/responseType';
 const listBacklog = '654a353c5b36a089e49656b5';
 const listActive = '6556516a7ecd359fc7ea7ea3';
 const listDone = '6556516dc2003862888d3238';
@@ -8,14 +9,21 @@ let idCardB;
 
 
 describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
-	const trelloCardApi = new TrelloCardApi('https://api.trello.com');
-	it('TC1: Check that BACKLOG list is visible on the board', () => {
+	it.only('TC1: Check that BACKLOG list is visible on the board', () => {
 		// URL "https://api.trello.com/1/lists/{idList}?key={key}&token={token}"
-		trelloCardApi.getListById(listBacklog)
+		TrelloCardApi.getListById('GET', listBacklog)
 			.then(response => {
+				const responseBody: GetListByIdResponse = response.body;
 				expect(response).to.be.an('object');
 				expect(response.status).to.eq(200);
 				expect(response.body.name).to.eq('BACKLOG');
+				expect(responseBody.id).to.eq(listBacklog);
+				expect(responseBody).to.have.property('id').that.is.a('string');
+				expect(responseBody).to.have.property('name').that.is.a('string');
+				expect(responseBody).to.have.property('closed').that.is.a('boolean');
+				expect(responseBody).to.have.property('color').that.is.oneOf([null, 'string']);
+				expect(responseBody).to.have.property('idBoard').that.is.a('string');
+				expect(responseBody).to.have.property('pos').that.is.a('number');
 			});
 	});
 	it('TC2: Check that ACTIVE list is visible on the board', () => {
