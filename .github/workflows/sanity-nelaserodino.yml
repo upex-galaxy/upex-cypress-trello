@@ -32,7 +32,7 @@ jobs:
       with:
         browser: chrome
         command: | #todo: EDITAR AQUÍ EL ARCHIVO SUITE A EJECUTAR:
-          bun run test:chrome cypress/e2e/How-to/API-testing/GX2-16267-TrelloAPI.cy.js
+          bun run test:chrome cypress/e2e/Tests/Cards/GX2-16267-TrelloAPI.cy.ts
 
     - name: 📬Generate JUnit/Mocha Report
       if: always()

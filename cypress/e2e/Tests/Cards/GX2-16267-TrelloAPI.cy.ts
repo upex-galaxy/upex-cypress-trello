@@ -1,4 +1,4 @@
-import TrelloCardApi from '../../../support/pages/TrelloAPI.Page';
+import { TrelloCardApi } from '@pages/GX2-16267-cards.Page';
 const listBacklog = '654a353c5b36a089e49656b5';
 const listActive = '6556516a7ecd359fc7ea7ea3';
 const listDone = '6556516dc2003862888d3238';

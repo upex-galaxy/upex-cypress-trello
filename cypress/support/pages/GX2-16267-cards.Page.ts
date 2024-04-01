@@ -1,4 +1,4 @@
-class TrelloCardApi {
+export class TrelloCardApi {
 	constructor(baseUrl) {
 		this.baseUrl = baseUrl;
 		this.key = 'ae2792af729826db3fed7b353719dfba';
@@ -76,4 +76,3 @@ class TrelloCardApi {
 		});
 	}
 }
-export default TrelloCardApi;
