@@ -26,22 +26,38 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 				expect(responseBody).to.have.property('pos').that.is.a('number');
 			});
 	});
-	it('TC2: Check that ACTIVE list is visible on the board', () => {
+	it.only('TC2: Check that ACTIVE list is visible on the board', () => {
 		// URL "https://api.trello.com/1/lists/{idList}?key={key}&token={token}"
-		trelloCardApi.getListById(listActive)
+		TrelloCardApi.getListById('GET', listActive)
 			.then(response => {
+				const responseBody: GetListByIdResponse = response.body;
 				expect(response).to.be.an('object');
 				expect(response.status).to.eq(200);
 				expect(response.body.name).to.eq('ACTIVE');
+				expect(responseBody.id).to.eq(listActive);
+				expect(responseBody).to.have.property('id').that.is.a('string');
+				expect(responseBody).to.have.property('name').that.is.a('string');
+				expect(responseBody).to.have.property('closed').that.is.a('boolean');
+				expect(responseBody).to.have.property('color').that.is.oneOf([null, 'string']);
+				expect(responseBody).to.have.property('idBoard').that.is.a('string');
+				expect(responseBody).to.have.property('pos').that.is.a('number');
 			});
 	});
-	it('TC3: Check that DONE list is visible on the board', () => {
+	it.only('TC3: Check that DONE list is visible on the board', () => {
 		// URL "https://api.trello.com/1/lists/{idList}?key={key}&token={token}"
-		trelloCardApi.getListById(listDone)
+		TrelloCardApi.getListById('GET', listDone)
 			.then(response => {
+				const responseBody: GetListByIdResponse = response.body;
 				expect(response).to.be.an('object');
 				expect(response.status).to.eq(200);
 				expect(response.body.name).to.eq('DONE');
+				expect(responseBody.id).to.eq(listDone);
+				expect(responseBody).to.have.property('id').that.is.a('string');
+				expect(responseBody).to.have.property('name').that.is.a('string');
+				expect(responseBody).to.have.property('closed').that.is.a('boolean');
+				expect(responseBody).to.have.property('color').that.is.oneOf([null, 'string']);
+				expect(responseBody).to.have.property('idBoard').that.is.a('string');
+				expect(responseBody).to.have.property('pos').that.is.a('number');
 			});
 	});
 	it('TC4: Check that the user can create Card A on the Backlog list', () => {
