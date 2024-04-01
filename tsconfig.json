@@ -21,7 +21,7 @@
 		"paths": {
 			"@pages/*": ["./cypress/support/pages/*"],
 			"@helper/*": ["./cypress/support/helper/*"],
-			"@data/*": ["./cypress/fixtures/data/*"]
+			"@data/*": ["./cypress/fixtures/data/*"],
 		}
 	},
 	"include": ["./cypress.config.ts", "./cypress.d.ts", "**/*.ts", "**/*.Page.ts"],
