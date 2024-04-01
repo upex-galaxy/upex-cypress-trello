@@ -5,8 +5,9 @@ const data = {
 export class TrelloCardApi {
 	static request(
 		method: string,
-		listsOrCards: string,
+		endpoint: string,
 		id?:string,
+		body?: Record<string, any> // Optional body for PUT/POST requests
 	) {
 		const qsParams = {
 			key : data.key,
@@ -14,17 +15,16 @@ export class TrelloCardApi {
 		};
 		return cy.api({
 			method: method,
-			url: `https://api.trello.com/1/${listsOrCards}/${id}?key=${data.key}&token=${data.token}`,
+			url: `https://api.trello.com/1/${endpoint}/${id}?key=${data.key}&token=${data.token}`,
 			qs: qsParams,
+			body: method === 'PUT' || method === 'POST' ? body : undefined,
 		});
 	}
 
 	static requestCard(
 		method: string,
-		// url: string,
 		cardName?: string,
 		idList?:string,
-		idCard?: string,
 	) {
 		const qsParams = {
 			key : data.key,
@@ -43,38 +43,21 @@ export class TrelloCardApi {
 	}
 
 	// Method to get a List
-	static getById(method: string, listOrCard: string, idList: string) {
-		return TrelloCardApi.request(method, listOrCard, idList);
+	static getById(method: string, endpoint: string, idList: string) {
+		return TrelloCardApi.request(method, endpoint, idList);
 	}
 	static createCardOnList(method: string,cardName: string, idList: string ) {
 		return TrelloCardApi.requestCard(method, idList, cardName);
 	}
+	static updateCard(method: string, endpoint: string, idCard: string, updateFields: Record<string, any>) {
+		return TrelloCardApi.request(method, endpoint, idCard, updateFields);
+	}
+	static deleteCard(method: string, endpoint: string, idCard: string) {
+		return TrelloCardApi.request(method, endpoint, idCard);
+	}
 }
-// getCardById(idCard) {
-// 	const qsParams = {
-// 		key: this.key,
-// 		token: this.token,
-// 	};
-// 	return cy.api({
-// 		method: 'GET',
-// 		url: `${this.baseUrl}/1/cards/${idCard}`,
-// 		qs: qsParams,
-// 	});
-// }
 
-// updateCard(idCard, updates) {
-// 	 return cy.api({
-// 		method: 'PUT',
-// 		url: `${this.baseUrl}/1/cards/${idCard}`,
-// 		qs: {
-// 			key: this.key,
-// 			token: this.token,
-// 		},
-// 		body: {
-// 			...updates,
-// 		},
-// 	});
-// }
+
 // deleteCardById(idCard) {
 // 	return cy.api({
 // 		method: 'DELETE',
