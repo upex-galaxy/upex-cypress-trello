@@ -1,7 +1,11 @@
-const data = {
-	key: 'ae2792af729826db3fed7b353719dfba',
-	token: 'ATTA8173e9967d92d6239b9fe42c1276cfaeac467beca5b5a0ed92dbf2dd2c5070fa84A0F87C'
-};
+interface TrelloData {
+  key: string;
+  token: string;
+}
+
+import dataJson from '../../fixtures/data/GX2-16267-Cards.json';
+const data: TrelloData = dataJson as TrelloData;
+
 export class TrelloCardApi {
 	static request(
 		method: string,
