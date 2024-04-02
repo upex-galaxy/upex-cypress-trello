@@ -12,14 +12,15 @@ interface TrelloData {
 import { TrelloCardApi } from '@pages/GX2-16267-cards.Page';
 import type { GetListByIdResponse, GetCardByIdResponse } from '../../../support/types/responseType';
 import dataJson from '../../../fixtures/data/GX2-16267-Cards.json';
+import { urlList } from 'cypress/support/types/urlData';
 const data: TrelloData = dataJson as TrelloData;
 
 
 
 describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
-	it('TC1: Check that BACKLOG list is visible on the board', () => {
+	it.only('TC1: Check that BACKLOG list is visible on the board', () => {
 		// URL "https://api.trello.com/1/lists/{idList}?key={key}&token={token}"
-		TrelloCardApi.getById('GET', 'lists',  data.listBacklog)
+		TrelloCardApi.request('GET', urlList.getList,  data.listBacklog)
 			.then(response => {
 				const responseBody: GetListByIdResponse = response.body;
 				expect(response).to.be.an('object');
@@ -34,9 +35,9 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 				expect(responseBody).to.have.property('pos').that.is.a('number');
 			});
 	});
-	it('TC2: Check that ACTIVE list is visible on the board', () => {
+	it.only('TC2: Check that ACTIVE list is visible on the board', () => {
 		// URL "https://api.trello.com/1/lists/{idList}?key={key}&token={token}"
-		TrelloCardApi.getById('GET','lists', data.listActive)
+		TrelloCardApi.request('GET', urlList.getList, data.listActive)
 			.then(response => {
 				const responseBody: GetListByIdResponse = response.body;
 				expect(response).to.be.an('object');
@@ -51,9 +52,9 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 				expect(responseBody).to.have.property('pos').that.is.a('number');
 			});
 	});
-	it('TC3: Check that DONE list is visible on the board', () => {
+	it.only('TC3: Check that DONE list is visible on the board', () => {
 		// URL "https://api.trello.com/1/lists/{idList}?key={key}&token={token}"
-		TrelloCardApi.getById('GET', 'lists', data.listDone)
+		TrelloCardApi.request('GET', urlList.getList, data.listDone)
 			.then(response => {
 				const responseBody: GetListByIdResponse = response.body;
 				expect(response).to.be.an('object');
@@ -68,14 +69,13 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 				expect(responseBody).to.have.property('pos').that.is.a('number');
 			});
 	});
-	it('TC4: Check that the user can create Card A on the Backlog list', () => {
+	it.only('TC4: Check that the user can create Card A on the Backlog list', () => {
 		// URL "https://api.trello.com/1/cards/{idList}?key={key}&token={token}"
 		const options = {
-			idList: data.listBacklog,
 			name: data.nameCardA,
 			desc: data.descriptionCardA,
 		};
-		TrelloCardApi.createCardOnList('POST', 'cards', options)
+		TrelloCardApi.request('POST',urlList.createCard, data.listBacklog, options)
 			.then(response => {
 				const responseBody: GetCardByIdResponse = response.body;
 				expect(response).to.be.an('object');
