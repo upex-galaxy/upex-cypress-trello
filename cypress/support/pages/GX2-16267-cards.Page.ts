@@ -7,47 +7,32 @@ export class TrelloCardApi {
 		method: string,
 		endpoint: string,
 		id?:string,
-		body?: Record<string, any> // Optional body for PUT/POST requests
+		body?: Record<string, any>// Optional body for PUT/POST requests
 	) {
 		const qsParams = {
 			key : data.key,
 			token: data.token,
 		};
+		 let url = `https://api.trello.com/1/${endpoint}`;
+		 if (id && method === 'POST' && endpoint === 'lists') {
+			url += `/${id}/archiveAllCards`;
+		} else if (id) {
+			url += `/${id}`;
+		}
+		url += `?key=${data.key}&token=${data.token}`;
 		return cy.api({
 			method: method,
-			url: `https://api.trello.com/1/${endpoint}/${id}?key=${data.key}&token=${data.token}`,
+			url: url,
 			qs: qsParams,
 			body: method === 'PUT' || method === 'POST' ? body : undefined,
 		});
 	}
 
-	static requestCard(
-		method: string,
-		cardName?: string,
-		idList?:string,
-	) {
-		const qsParams = {
-			key : data.key,
-			token: data.token,
-		};
-		const body = {
-			name : cardName,
-			idList: idList,
-		};
-		return cy.api({
-			method: method,
-			url: 'https://api.trello.com/1/cards',
-			qs: qsParams,
-			body: body,
-		});
-	}
-
-	// Method to get a List
 	static getById(method: string, endpoint: string, idList: string) {
 		return TrelloCardApi.request(method, endpoint, idList);
 	}
-	static createCardOnList(method: string,cardName: string, idList: string ) {
-		return TrelloCardApi.requestCard(method, idList, cardName);
+	static createCardOnList(method: string, endpoint: string, options: Record<string, any>) {
+		return TrelloCardApi.request(method, endpoint, undefined, options);
 	}
 	static updateCard(method: string, endpoint: string, idCard: string, updateFields: Record<string, any>) {
 		return TrelloCardApi.request(method, endpoint, idCard, updateFields);
@@ -55,27 +40,7 @@ export class TrelloCardApi {
 	static deleteCard(method: string, endpoint: string, idCard: string) {
 		return TrelloCardApi.request(method, endpoint, idCard);
 	}
+	static deleteList(method: string, endpoint: string, idList: string) {
+		return TrelloCardApi.request(method, endpoint, idList);
+	}
 }
-
-
-// deleteCardById(idCard) {
-// 	return cy.api({
-// 		method: 'DELETE',
-// 		url: `${this.baseUrl}/1/cards/${idCard}`,
-// 		qs: {
-// 			key: this.key,
-// 			token: this.token,
-// 		},
-// 	});
-// }
-// deleteAllCardsFromList(listId) {
-// 	return cy.api({
-// 		method: 'POST',
-// 		url: `${this.baseUrl}/1/lists/${listId}/archiveAllCards`,
-// 		qs: {
-// 			key: this.key,
-// 			token: this.token,
-// 		},
-// 	});
-// }
-
