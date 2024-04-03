@@ -18,7 +18,7 @@ const data: TrelloData = dataJson as TrelloData;
 
 
 describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
-	it.only('TC1: Check that BACKLOG list is visible on the board', () => {
+	it('TC1: Check that BACKLOG list is visible on the board', () => {
 		// URL "https://api.trello.com/1/lists/{idList}?key={key}&token={token}"
 		TrelloCardApi.request('GET', urlList.getList,  data.listBacklog)
 			.then(response => {
@@ -35,7 +35,7 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 				expect(responseBody).to.have.property('pos').that.is.a('number');
 			});
 	});
-	it.only('TC2: Check that ACTIVE list is visible on the board', () => {
+	it('TC2: Check that ACTIVE list is visible on the board', () => {
 		// URL "https://api.trello.com/1/lists/{idList}?key={key}&token={token}"
 		TrelloCardApi.request('GET', urlList.getList, data.listActive)
 			.then(response => {
@@ -52,7 +52,7 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 				expect(responseBody).to.have.property('pos').that.is.a('number');
 			});
 	});
-	it.only('TC3: Check that DONE list is visible on the board', () => {
+	it('TC3: Check that DONE list is visible on the board', () => {
 		// URL "https://api.trello.com/1/lists/{idList}?key={key}&token={token}"
 		TrelloCardApi.request('GET', urlList.getList, data.listDone)
 			.then(response => {
@@ -69,7 +69,7 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 				expect(responseBody).to.have.property('pos').that.is.a('number');
 			});
 	});
-	it.only('TC4: Check that the user can create Card A on the Backlog list', () => {
+	it('TC4: Check that the user can create Card A on the Backlog list', () => {
 		// URL "https://api.trello.com/1/cards/{idList}?key={key}&token={token}"
 		const options = {
 			name: data.nameCardA,
@@ -91,16 +91,19 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 	it('TC5: Check that the user can create Card B on the Active list', () => {
 		// URL "https://api.trello.com/1/cards/{idList}?key={key}&token={token}"
 		const options = {
-			idList: data.listActive,
 			name: data.nameCardB,
 			desc: data.descriptionCardB,
 		};
-		TrelloCardApi.createCardOnList('POST', 'cards', options)
+		TrelloCardApi.request('POST', urlList.createCard, data.listActive, options)
 			.then(response => {
+				const responseBody: GetCardByIdResponse = response.body;
 				expect(response).to.be.an('object');
 				expect(response.status).to.eql(200);
 				expect(response.body.idList).to.eql(data.listActive);
 				expect(response.body.name).to.eql(options.name);
+				expect(responseBody).to.have.property('id').that.is.a('string');
+				expect(responseBody).to.have.property('closed').that.is.a('boolean');
+				expect(responseBody).to.have.property('idList').that.is.a('string');
 				data.idCardB = response.body.id;
 			});
 	});
@@ -111,7 +114,7 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 			name: 'Updated Card A',
 			desc: 'This is the updated description for Card A',
 		};
-		TrelloCardApi.updateCard('PUT', '/cards/', data.idCardA, updates)
+		TrelloCardApi.request('PUT', urlList.updateCard, data.idCardA, updates)
 			.then(response => {
 				expect(response).to.be.an('object');
 				expect(response.status).to.eql(200);
@@ -125,7 +128,7 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 		const update = {
 			idList: data.listActive,
 		};
-		TrelloCardApi.updateCard('PUT', '/cards/', data.idCardA, update)
+		TrelloCardApi.request('PUT', urlList.updateCard, data.idCardA, update)
 			.then(response => {
 				expect(response).to.be.an('object');
 				expect(response.status).to.eql(200);
@@ -137,7 +140,7 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 		const update = {
 			idList: data.listDone,
 		};
-		TrelloCardApi.updateCard('PUT', '/cards/', data.idCardA, update)
+		TrelloCardApi.request('PUT', urlList.updateCard, data.idCardA, update)
 			.then(response => {
 				expect(response).to.be.an('object');
 				expect(response.status).to.eql(200);
@@ -146,7 +149,7 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 	});
 	it('TC9: Check that card A has status closed: false', () => {
 		// URL "https://api.trello.com/1/cards/{idCard}?key={key}&token={token}"
-		TrelloCardApi.getById('GET', 'cards', data.idCardA)
+		TrelloCardApi.request('GET', urlList.getCard, data.idCardA)
 			.then(response => {
 				expect(response.body.closed).to.eql(false);
 			});
@@ -156,7 +159,7 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 		const update = {
 			closed: true,
 		};
-		TrelloCardApi.updateCard('PUT', '/cards/', data.idCardA, update)
+		TrelloCardApi.request('PUT', urlList.getCard, data.idCardA, update)
 			.then(response => {
 				expect(response).to.be.an('object');
 				expect(response.status).to.eql(200);
@@ -168,7 +171,7 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 		const update = {
 			closed: false,
 		};
-		TrelloCardApi.updateCard('PUT', '/cards/', data.idCardA, update)
+		TrelloCardApi.request('PUT', urlList.getCard, data.idCardA, update)
 			.then(response => {
 				expect(response).to.be.an('object');
 				expect(response.status).to.eql(200);
@@ -177,14 +180,14 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 	});
 	it('TC12: Check that the user can delete a card', () => {
 		// URL "https://api.trello.com/1/cards/{cardId}?key={key}&token={token}"
-		TrelloCardApi.deleteCard('DELETE', '/cards/', data.idCardA)
+		TrelloCardApi.request('DELETE', urlList.deleteCard, data.idCardA)
 			.then(response => {
 				expect(response.body.id).to.not.exist;
 			});
 	});
 	it('TC13: Check that the user can delete all cards from Active List', () => {
 		// URL "https://api.trello.com/1/lists/{idList}/archiveAllCards?key={key}&token={token}"
-		TrelloCardApi.deleteList('POST', 'lists', data.listActive)
+		TrelloCardApi.request('POST', urlList.archiveCardsInList, data.listActive)
 			.then(response => {
 				expect(response).to.be.an('object');
 				expect(response.status).to.eql(200);
