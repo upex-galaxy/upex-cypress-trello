@@ -1,13 +1,12 @@
 {
 	"key": "ae2792af729826db3fed7b353719dfba",
 	"token": "ATTA8173e9967d92d6239b9fe42c1276cfaeac467beca5b5a0ed92dbf2dd2c5070fa84A0F87C",
-	"listBacklog": "654a353c5b36a089e49656b5",
-	"listActive": "6556516a7ecd359fc7ea7ea3",
-	"listDone": "6556516dc2003862888d3238",
-	"nameCardA": "Card A", 
-	"nameCardB": "Card B", 
-	"descriptionCardA": "Description for Card A",
-	"descriptionCardB": "Description for Card B",
+	"listBacklogId": "654a353c5b36a089e49656b5",
+	"listActiveId": "6556516a7ecd359fc7ea7ea3",
+	"listDoneId": "6556516dc2003862888d3238",
+	"listOneName": "BACKLOG",
+	"listTwoName": "ACTIVE",
+	"listThreeName": "DONE",
 	"idCardA": "",
 	"idCardB": ""
 }

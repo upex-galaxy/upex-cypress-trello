@@ -6,6 +6,13 @@ export enum urlList {
 	updateCard = '/cards/{idCard}?&key={key}&token={token}',
 	deleteCard = '/cards/{idCard}?&key={key}&token={token}'
 }
+export enum method {
+	GET = 'GET',
+	POST = 'POST',
+	PUT = 'PUT',
+	DELETE = 'DELETE',
+	PATCH = 'PATCH'
+}
 export function processUrl(endpointKey: urlList, params: { [key: string]: any }): string {
 	let template = `https://api.trello.com/1${endpointKey}`;
 	for (const key in params) {

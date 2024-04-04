@@ -38,4 +38,14 @@ export type GetCardByIdResponse = {
   cover: any; // Generic object type for simplicity
   isTemplate: boolean;
   cardRole: null | string;
-  }
+}
+export interface TrelloData {
+  listBacklogId: string;
+  listActiveId: string;
+  listDoneId: string;
+  listOneName: string,
+	listTwoName: string,
+	listThreeName : string,
+  idCardA: string;
+  idCardB: string;
+}
