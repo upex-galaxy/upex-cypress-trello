@@ -5,7 +5,7 @@ export type GetListByIdResponse = {
     color: string | null;
     idBoard: string;
     pos: number;
-  }
+}
 export type GetCardByIdResponse = {
   id: string;
   badges: any;
@@ -38,6 +38,16 @@ export type GetCardByIdResponse = {
   cover: any; // Generic object type for simplicity
   isTemplate: boolean;
   cardRole: null | string;
+}
+export type GetStickerByIdResponse = {
+  id: string;
+  top: number;
+  left: number;
+  zIndex: number;
+  rotate: number;
+  image: string;
+  imageUrl: string;
+  imageScaled: any[];
 }
 export interface TrelloDataParams {
   key: string;
