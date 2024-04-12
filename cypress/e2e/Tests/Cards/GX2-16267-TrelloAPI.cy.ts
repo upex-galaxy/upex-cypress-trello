@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { TrelloCardApi } from '@pages/GX2-16267-cards.Page';
-import type { GetListByIdResponse, GetCardByIdResponse, TrelloData } from '../../../support/types/responseType';
+import type { GetListByIdResponse, GetCardByIdResponse, TrelloDataQueryParams } from '../../../support/types/responseType';
 import dataJson from '../../../fixtures/data/GX2-16267-Cards.json';
 import { method, urlList } from 'cypress/support/types/urlData';
 import { faker } from '@faker-js/faker';
 
-const data: TrelloData = dataJson as TrelloData;
+const data: TrelloDataQueryParams = dataJson as TrelloDataQueryParams;
 const description : string =  faker.commerce.productDescription();
 const updatedDescription : string =  faker.commerce.productDescription();
 const cardNameA : string =  faker.commerce.productName();
