@@ -39,7 +39,7 @@ export type GetCardByIdResponse = {
   isTemplate: boolean;
   cardRole: null | string;
 }
-export interface TrelloData {
+export interface TrelloDataQueryParams {
   listBacklogId: string;
   listActiveId: string;
   listDoneId: string;
@@ -48,4 +48,13 @@ export interface TrelloData {
 	listThreeName : string,
   idCardA: string;
   idCardB: string;
+  idSticker: string;
+}
+export interface TrelloDataPathParameters {
+  key: string;
+  token: string;
+  image?: string;
+  left?: number;
+  top?: number;
+  zIndex?: number;
 }
