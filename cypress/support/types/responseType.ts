@@ -50,19 +50,22 @@ export type GetStickerByIdResponse = {
   imageScaled: any[];
 }
 export interface TrelloDataParams {
-  key: string;
-  token: string;
-  listBacklogId: string;
-  listActiveId: string;
-  listDoneId: string;
-  listOneName: string,
-	listTwoName: string,
-	listThreeName : string,
-  idCardA: string;
-  idCardB: string;
-  stickerId: string;
-  image?: string;
-  left?: number;
-  top?: number;
-  zIndex?: number;
+  auth: {
+        key: string;
+        token: string;
+    };
+    lists: {
+        backlog: { id: string, name: string };
+        active: { id: string, name: string };
+        done: { id: string, name: string };
+    };
+    cards: {
+        idCardA: string;
+        idCardB: string;
+    };
+    stickers: {
+      id: string;
+      randomStickerName: string;
+      defaultStickers: string[];
+    };
 }
