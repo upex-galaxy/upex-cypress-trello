@@ -1,8 +1,9 @@
+/* eslint-disable no-duplicate-imports */
 import { processUrl } from '../../support/types/urlData';
 import type { urlList } from '../../support/types/urlData';
 import dataJson from '../../fixtures/data/GX2-16267-Cards.json';
-import type { TrelloDataPathParameters } from '../../support/types/responseType';
-const data: TrelloDataPathParameters = dataJson as TrelloDataPathParameters;
+import type { TrelloDataParams } from '../../support/types/responseType';
+const data: TrelloDataParams = dataJson as TrelloDataParams;
 
 export class TrelloCardApi {
 	static request(

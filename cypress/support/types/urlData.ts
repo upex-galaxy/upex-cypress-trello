@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/naming-convention */
 export enum urlList {
 	getList = '/lists/{idList}?key={key}&token={token}',
 	archiveCardsInList = '/lists/{idList}/archiveAllCards?key={key}&token={token}',
