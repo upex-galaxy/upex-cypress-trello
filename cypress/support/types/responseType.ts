@@ -48,7 +48,7 @@ export interface TrelloDataQueryParams {
 	listThreeName : string,
   idCardA: string;
   idCardB: string;
-  idSticker: string;
+  stickerId: string;
 }
 export interface TrelloDataPathParameters {
   key: string;
