@@ -8,16 +8,25 @@ export class TrelloCardApi {
 	static request(
 		method: string,
 		endpointKey: urlList,
-		id?: string,
-		body?: Record<string, any>
+		options?: {
+            idCard?: string,
+			idList?: string,
+            idSticker?: string,
+            image?: string,
+            top?: number,
+            left?: number,
+            zIndex?: number,
+            body?: Record<string, any>
+        }
 	) {
-		const params = { idList: id, idCard: id, idSticker: id, image: data.image, left: data.left, top: data.top, zIndex: data.zIndex, key: data.key, token: data.token };
+		const params: Record<string, any> = { key: data.key, token: data.token };
+		Object.assign(params, options);
 		let url = processUrl(endpointKey, params);
 
 		return cy.api({
 			method: method,
 			url: url,
-			body: body,
+			body: options?.body,
 		});
 	}
 }
