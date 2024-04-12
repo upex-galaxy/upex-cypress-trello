@@ -13,7 +13,11 @@ const cardNameB : string =  faker.commerce.productName();
 const updatedCardNameA : string =  faker.commerce.productName();
 
 function checkListNaming(listId: string, listName: string) {
-	TrelloCardApi.request(method.GET, urlList.getList, listId)
+	const options = {
+		idList: listId,
+		listName: listName
+	};
+	TrelloCardApi.request(method.GET, urlList.getList, options)
 		.then(response => {
 			const responseBody: GetListByIdResponse = response.body;
 			expect(response).to.be.an('object');
@@ -80,57 +84,68 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 	});
 	it('GX2-16274 | TC4: Check that the user can create Card A on the Backlog list', () => {
 		const options = {
-			name: cardNameA,
-			desc: description,
+			idList: data.listBacklogId,
+			body: {
+				name: cardNameA,
+				desc: description,
+			}
 		};
-		TrelloCardApi.request(method.POST, urlList.createCard, data.listBacklogId, options)
+		TrelloCardApi.request(method.POST, urlList.createCard, options)
 			.then(response => {
 				const responseBody: GetCardByIdResponse = response.body;
 				expect(response).to.be.an('object');
 				expect(response.status).to.eql(200);
-				expect(response.body.name).to.eql(options.name);
-				expect(response.body.desc).to.eql(options.desc);
+				expect(response.body.name).to.eql(options.body.name);
+				expect(response.body.desc).to.eql(options.body.desc);
 				data.idCardA = response.body.id;
 				expectedResultCard(data.idCardA, responseBody);
 			});
 	});
 	it('GX2-16274 | TC5: Check that the user can create Card B on the Active list', () => {
 		const options = {
-			name: cardNameB,
-			desc: description,
+			idList: data.listActiveId,
+			body: {
+				name: cardNameB,
+				desc: description,
+			}
 		};
-		TrelloCardApi.request(method.POST, urlList.createCard, data.listActiveId, options)
+		TrelloCardApi.request(method.POST, urlList.createCard, options)
 			.then(response => {
 				const responseBody: GetCardByIdResponse = response.body;
 				expect(response).to.be.an('object');
 				expect(response.status).to.eql(200);
-				expect(response.body.name).to.eql(options.name);
-				expect(response.body.desc).to.eql(options.desc);
+				expect(response.body.name).to.eql(options.body.name);
+				expect(response.body.desc).to.eql(options.body.desc);
 				data.idCardB = response.body.id;
 				expectedResultCard(data.idCardB, responseBody);
 			});
 	});
-
 	it('GX2-16274 | TC6: Check that the user can update Card A', () => {
 		const updates = {
-			name: updatedCardNameA,
-			desc: updatedDescription,
+			idCard: data.idCardA,
+			body: {
+				name: updatedCardNameA,
+				desc: updatedDescription,
+			}
 		};
-		TrelloCardApi.request(method.PUT, urlList.updateCard, data.idCardA, updates)
+		TrelloCardApi.request(method.PUT, urlList.updateCard, updates)
 			.then(response => {
 				const responseBody: GetCardByIdResponse = response.body;
 				expect(response).to.be.an('object');
 				expect(response.status).to.eql(200);
-				expect(response.body.name).to.eql(updates.name);
-				expect(response.body.desc).to.eql(updates.desc);
+				expect(response.body.name).to.eql(updates.body.name);
+				expect(response.body.desc).to.eql(updates.body.desc);
 				expectedResultCard(data.idCardA, responseBody);
 			});
 	});
 	it('GX2-16274 | TC7: Check that the user can move Card A to Active List', () => {
 		const update = {
-			idList: data.listActiveId,
+			idCard: data.idCardA,
+			body:{
+				idList: data.listActiveId
+			}
 		};
-		TrelloCardApi.request(method.PUT, urlList.updateCard, data.idCardA, update)
+		TrelloCardApi.request(method.PUT, urlList.updateCard, update)
 			.then(response => {
 				const responseBody: GetCardByIdResponse = response.body;
 				expect(response).to.be.an('object');
@@ -141,9 +156,12 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 	});
 	it('GX2-16274 | TC8: Check that the user can move Card A to Done List', () => {
 		const update = {
-			idList: data.listDoneId,
+			idCard: data.idCardA,
+			body:{
+				idList: data.listDoneId
+			}
 		};
-		TrelloCardApi.request(method.PUT, urlList.updateCard, data.idCardA, update)
+		TrelloCardApi.request(method.PUT, urlList.updateCard, update)
 			.then(response => {
 				const responseBody: GetCardByIdResponse = response.body;
 				expect(response).to.be.an('object');
@@ -153,7 +171,10 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 			});
 	});
 	it('GX2-16274 | TC9: Check that card A has status closed: false', () => {
-		TrelloCardApi.request(method.GET, urlList.getCard, data.idCardA)
+		const card = {
+			idCard: data.idCardA
+		};
+		TrelloCardApi.request(method.GET, urlList.getCard, card)
 			.then(response => {
 				const responseBody: GetCardByIdResponse = response.body;
 				expect(response.body.closed).to.eql(false);
@@ -162,9 +183,12 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 	});
 	it('GX2-16274 | TC10: Check that the user can archive card A', () => {
 		const update = {
-			closed: true,
+			idCard: data.idCardA,
+			body: {
+				closed: true,
+			}
 		};
-		TrelloCardApi.request(method.PUT, urlList.getCard, data.idCardA, update)
+		TrelloCardApi.request(method.PUT, urlList.updateCard, update)
 			.then(response => {
 				const responseBody: GetCardByIdResponse = response.body;
 				expect(response).to.be.an('object');
@@ -175,9 +199,12 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 	});
 	it('GX2-16274 | TC11: Check that the user can recover an archived card', () => {
 		const update = {
-			closed: false,
+			idCard: data.idCardA,
+			body:{
+				closed: false,
+			}
 		};
-		TrelloCardApi.request(method.PUT, urlList.getCard, data.idCardA, update)
+		TrelloCardApi.request(method.PUT, urlList.updateCard, update)
 			.then(response => {
 				const responseBody: GetCardByIdResponse = response.body;
 				expect(response).to.be.an('object');
@@ -187,14 +214,20 @@ describe('GX2-16267 | {API} Trello | Cards | Create Cards from a Board', () => {
 			});
 	});
 	it('GX2-16274 | TC12: Check that the user can delete a card', () => {
-		TrelloCardApi.request(method.DELETE, urlList.deleteCard, data.idCardA)
+		const deleteCard = {
+			idCard: data.idCardA,
+		};
+		TrelloCardApi.request(method.DELETE, urlList.deleteCard, deleteCard)
 			.then(response => {
 				expect(response.body.id).to.not.exist;
 				expect(response.status).to.eql(200);
 			});
 	});
 	it('GX2-16274 | TC13: Check that the user can delete all cards from Active List', () => {
-		TrelloCardApi.request(method.POST, urlList.archiveCardsInList, data.listActiveId)
+		const deleteList = {
+			idList: data.listActiveId,
+		};
+		TrelloCardApi.request(method.POST, urlList.archiveCardsInList, deleteList)
 			.then(response => {
 				expect(response).to.be.an('object');
 				expect(response.status).to.eql(200);
