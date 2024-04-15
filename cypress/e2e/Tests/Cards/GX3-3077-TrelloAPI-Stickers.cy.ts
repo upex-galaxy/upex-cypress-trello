@@ -9,6 +9,14 @@ const dataParams: TrelloDataParams = dataJson as TrelloDataParams;
 const cardNameA : string =  faker.commerce.productName();
 const description : string =  faker.commerce.productDescription();
 
+const createTrelloList = (options : {}) => {
+	return TrelloCardApi.request(method.POST, urlList.createList, options).then(response => {
+		expect(response).to.be.an('object');
+		expect(response.status).to.eql(200);
+		return response.body.id;
+	});
+};
+
 const expectedStickerResult = (stickerId : string, responseBody : GetStickerByIdResponse) => {
 	expect(responseBody).to.have.property('id').that.is.equal(stickerId);
 	expect(responseBody).to.have.property('id').that.is.a('string');
@@ -35,20 +43,14 @@ describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, D
 			idBoard: dataParams.board.idBoard,
 			name: dataParams.lists.done.name
 		};
-		TrelloCardApi.request(method.POST, urlList.createList, optionsBacklog).then(response => {
-			expect(response).to.be.an('object');
-			expect(response.status).to.eql(200);
-			dataParams.lists.backlog.id = response.body.id;
+		createTrelloList(optionsBacklog).then(id => {
+			dataParams.lists.backlog.id = id;
 		});
-		TrelloCardApi.request(method.POST, urlList.createList, optionsActive).then(response => {
-			expect(response).to.be.an('object');
-			expect(response.status).to.eql(200);
-			dataParams.lists.active.id = response.body.id;
+		createTrelloList(optionsActive).then(id => {
+			dataParams.lists.active.id = id;
 		});
-		TrelloCardApi.request(method.POST, urlList.createList, optionsDone).then(response => {
-			expect(response).to.be.an('object');
-			expect(response.status).to.eql(200);
-			dataParams.lists.done.id = response.body.id;
+		createTrelloList(optionsDone).then(id => {
+			dataParams.lists.done.id = id;
 		});
 	});
 	it('GX3-3081 | TC1: Check that the user can create a card on the Backlog list', () => {
