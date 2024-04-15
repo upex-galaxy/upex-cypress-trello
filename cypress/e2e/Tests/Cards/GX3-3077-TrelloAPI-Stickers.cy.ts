@@ -22,6 +22,35 @@ const expectedStickerResult = (stickerId : string, responseBody : GetStickerById
 };
 
 describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, Delete a Sticker on a Card', () => {
+	before('GX3-3081 | Precon: The user creates a Backlog, Active and Done  List',() => {
+		const optionsBacklog = {
+			idBoard: dataParams.board.idBoard,
+			name: dataParams.lists.backlog.name
+		};
+		const optionsActive = {
+			idBoard: dataParams.board.idBoard,
+			name: dataParams.lists.active.name
+		};
+		const optionsDone = {
+			idBoard: dataParams.board.idBoard,
+			name: dataParams.lists.done.name
+		};
+		TrelloCardApi.request(method.POST, urlList.createList, optionsBacklog).then(response => {
+			expect(response).to.be.an('object');
+			expect(response.status).to.eql(200);
+			dataParams.lists.backlog.id = response.body.id;
+		});
+		TrelloCardApi.request(method.POST, urlList.createList, optionsActive).then(response => {
+			expect(response).to.be.an('object');
+			expect(response.status).to.eql(200);
+			dataParams.lists.active.id = response.body.id;
+		});
+		TrelloCardApi.request(method.POST, urlList.createList, optionsDone).then(response => {
+			expect(response).to.be.an('object');
+			expect(response.status).to.eql(200);
+			dataParams.lists.done.id = response.body.id;
+		});
+	});
 	it('GX3-3081 | TC1: Check that the user can create a card on the Backlog list', () => {
 		const options = {
 			idList: dataParams.lists.backlog.id,
@@ -103,5 +132,37 @@ describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, D
 				expect(response).to.be.an('object');
 				expect(response.status).to.eql(200);
 			});
+	});
+	after(() => {
+		const optionsBacklog = {
+			idList: dataParams.lists.backlog.id,
+			body: {
+				closed: true,
+			}
+		};
+		const optionsActive = {
+			idList: dataParams.lists.active.id,
+			body: {
+				closed: true,
+			}
+		};
+		const optionsDone = {
+			idList: dataParams.lists.done.id,
+			body: {
+				closed: true,
+			}
+		};
+		TrelloCardApi.request(method.PUT, urlList.deleteList, optionsBacklog).then(response => {
+			expect(response).to.be.an('object');
+			expect(response.status).to.eql(200);
+		});
+		TrelloCardApi.request(method.PUT, urlList.deleteList, optionsActive).then(response => {
+			expect(response).to.be.an('object');
+			expect(response.status).to.eql(200);
+		});
+		TrelloCardApi.request(method.PUT, urlList.deleteList, optionsDone).then(response => {
+			expect(response).to.be.an('object');
+			expect(response.status).to.eql(200);
+		});
 	});
 });
