@@ -10,6 +10,7 @@ export class TrelloCardApi {
 		method: string,
 		endpointKey: urlList,
 		options?: {
+			idBoard?: string,
             idCard?: string,
 			idList?: string,
             idSticker?: string,
