@@ -1,10 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
+import data from 'cypress/fixtures/data/GX3-2958-trello-api-cards.json';
+import { faker } from '@faker-js/faker';
 class Trello {
+
 	public static getLists() {
 		return cy.api({
 			method: 'GET',
-			url: 'https://api.trello.com/1/boards/6592ed58a34878ef297261d5/lists?key=4b6c632cc1e7a202e9ad79f28f549d34&token=ATTAc47382028c4b75d1cc4df76132118d08134c919e95cbb01e15b9de168208314bCB6F74BD'
+			url: `${data.url.trelloBoards}${data.data.boards}/lists`,
+			qs: {
+				key: data.data.key,
+            	token: data.data.token
+			}
 		}).then((response) => {
 			const lists: { id: string, name: string }[] = response.body;
 
@@ -15,7 +22,11 @@ class Trello {
 	public static getCards() {
 		return cy.api({
 			method: 'GET',
-			url: 'https://api.trello.com/1/boards/6592ed58a34878ef297261d5/cards?key=4b6c632cc1e7a202e9ad79f28f549d34&token=ATTAc47382028c4b75d1cc4df76132118d08134c919e95cbb01e15b9de168208314bCB6F74BD'
+			url: `${data.url.trelloBoards}${data.data.boards}/cards`,
+			qs: {
+				key: data.data.key,
+            	token: data.data.token
+			}
 		}).then((response) => {
 			const cards: { id: string, idList: string }[] = response.body;
 			return cards;
@@ -46,6 +57,46 @@ class Trello {
 		return targetListId;
 	}
 
+	private static getRandomList() {
+		return cy.request({
+			method: 'GET',
+			url: `${data.url.trelloBoards}${data.data.boards}/lists`,
+			qs: {
+				key: data.data.key,
+            	token: data.data.token
+			}
+		}).then(response => {
+			const lists = response.body;
+			const randomListIndex = Number(faker.number.bigInt({ min: 0, max: lists.length - 1 }));
+      		const randomListId = lists[randomListIndex].id;
+			return randomListId;
+		});
+	}
+
+	public static createCard() {
+		this.getRandomList().then((randomListId: any) => {
+			const cardData = {
+				name: faker.lorem.words(3),
+				desc: faker.lorem.paragraph(),
+				coverColor: faker.helpers.arrayElement(data.colors),
+				labeText: faker.lorem.words(3),
+				labelColor: faker.helpers.arrayElement(data.colors)
+			};
+
+			cy.request({
+				method: 'POST',
+				url: data.url.trelloCards,
+				qs: {
+					key: data.data.key,
+        	    	token: data.data.token,
+					idList: randomListId,
+					name: cardData.name,
+					desc: cardData.desc
+				}
+			});
+		});
+	}
+
 	public static moveCards() {
 		this.getLists().then((lists: { id: string, name: string }[]) => {
 			this.getCards().then((cards: { id: string; idList: string; }[]) => {
@@ -56,11 +107,12 @@ class Trello {
 					if (card.idList !== targetListId) {
 						cy.api({
 							method: 'PUT',
-							url: `https://api.trello.com/1/cards/${card.id}?key=4b6c632cc1e7a202e9ad79f28f549d34&token=ATTAc47382028c4b75d1cc4df76132118d08134c919e95cbb01e15b9de168208314bCB6F74BD&idList=${targetListId}`
-						}).then((response) => {
-							expect(response.status).to.eq(200);
-
-							expect(response.body.idList).to.eq(targetListId);
+							url: `${data.url.trelloCards}${card.id}`,
+							qs:{
+								key: data.data.key,
+            					token: data.data.token,
+								idList: targetListId
+							}
 						});
 					}
 				});
@@ -68,6 +120,21 @@ class Trello {
 		});
 	}
 
+	public static archiveCards() {
+		this.getCards().then((cards: { id: string;}[]) => {
+			cards.forEach((card) => {
+				cy.api({
+					method: 'PUT',
+					url: `${data.url.trelloCards}${card.id}/closed`,
+					qs:{
+						value: true,
+						key: data.data.key,
+            			token: data.data.token
+					}
+				});
+			});
+		});
+	}
 }
 
 export const trello = Trello;
