@@ -16,21 +16,20 @@
     "idCardB": ""
   },
   "stickers": {
-	"id": "",
-	"randomStickerName": "",
+	  "id": "",
+	  "randomStickerName": "",
     "defaultStickers": [
       "taco-cool",
-	  "taco-confused",
-	  "taco-money",
-	  "taco-reading",
-	  "taco-trophy",
-	  "taco-sleeping",
-	  "taco-embarrased",
-	  "taco-clean",
-	  "taco-love",
-	  "taco-angry",
-	  "taco-robot",
-	  "taco-alert",
+	    "taco-confused",
+	    "taco-money",
+	    "taco-reading",
+	    "taco-trophy",
+	    "taco-sleeping",
+	    "taco-clean",
+	    "taco-love",
+	    "taco-angry",
+	    "taco-robot",
+	    "taco-alert",
       "heart"
     ]
   }
