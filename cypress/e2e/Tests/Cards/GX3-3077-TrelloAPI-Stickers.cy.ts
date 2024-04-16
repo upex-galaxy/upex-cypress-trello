@@ -16,6 +16,12 @@ const createTrelloList = (options : {}) => {
 		return response.body.id;
 	});
 };
+const deleteTrelloList = (options : {}) => {
+	return TrelloCardApi.request(method.PUT, urlList.deleteList, options).then(response => {
+		expect(response).to.be.an('object');
+		expect(response.status).to.eql(200);
+	});
+};
 
 const expectedStickerResult = (stickerId : string, responseBody : GetStickerByIdResponse) => {
 	expect(responseBody).to.have.property('id').that.is.equal(stickerId);
@@ -30,7 +36,7 @@ const expectedStickerResult = (stickerId : string, responseBody : GetStickerById
 };
 
 describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, Delete a Sticker on a Card', () => {
-	before('GX3-3081 | Precon: The user creates a Backlog, Active and Done  List',() => {
+	before('Precon: The user creates a Backlog, Active and Done  List',() => {
 		const optionsBacklog = {
 			idBoard: dataParams.board.idBoard,
 			name: dataParams.lists.backlog.name
@@ -53,7 +59,7 @@ describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, D
 			dataParams.lists.done.id = id;
 		});
 	});
-	it('GX3-3081 | TC1: Check that the user can create a card on the Backlog list', () => {
+	beforeEach('Precon: Check that the user can create a card on the Backlog list', () => {
 		const options = {
 			idList: dataParams.lists.backlog.id,
 			body: {
@@ -70,62 +76,88 @@ describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, D
 				dataParams.cards.idCardA = response.body.id;
 			});
 	});
-	it('GX3-3081 | TC2:Check that the user can Add a Sticker to card A', () => {
+	it('GX3-3081 | TC1:Check that the user can Add a Sticker to card A', () => {
 		TrelloCardApi.addRandomSticker(dataParams.cards.idCardA)
 			.then(response => {
 				const responseBody: GetStickerByIdResponse = response.body;
 				expect(response).to.be.an('object');
 				expect(response.status).to.eql(200);
 				dataParams.stickers.id = response.body.id;
-				dataParams.stickers.randomStickerName = response.body.image;
 				expectedStickerResult(dataParams.stickers.id, responseBody);
 			});
 	});
-	it('GX3-3081 | TC3:Check that the user can get a Sticker', () => {
-		const options = {
-			idCard: dataParams.cards.idCardA,
-			idSticker: dataParams.stickers.id,
-		};
-		TrelloCardApi.request(method.GET, urlList.getSticker, options)
+	it('GX3-3081 | TC2:Check that the user can get a Sticker', () => {
+		TrelloCardApi.addRandomSticker(dataParams.cards.idCardA)
 			.then(response => {
+				const responseBody: GetStickerByIdResponse = response.body;
+				expect(response.status).to.eql(200);
+				dataParams.stickers.id = response.body.id;
+				dataParams.stickers.randomStickerName = response.body.image;
+				expectedStickerResult(dataParams.stickers.id, responseBody);
+
+				const options = {
+					idCard: dataParams.cards.idCardA,
+					idSticker: dataParams.stickers.id,
+				};
+				return TrelloCardApi.request(method.GET, urlList.getSticker, options);
+			}).then(response => {
 				const responseBody: GetStickerByIdResponse = response.body;
 				expect(response).to.be.an('object');
 				expect(response.status).to.eql(200);
 				expect(response.body.image).to.eql(dataParams.stickers.randomStickerName);
+				expect(response.body.id).to.eql(dataParams.stickers.id);
 				expectedStickerResult(dataParams.stickers.id, responseBody);
 			});
 	});
-	it('GX3-3081 | TC4:Check that the user can update a Sticker', () => {
-		const options = {
-			idCard: dataParams.cards.idCardA,
-			idSticker: dataParams.stickers.id,
-			body: {
-				top: 50,
-				left: 50,
-			}
-		};
-		TrelloCardApi.request(method.PUT, urlList.getSticker, options)
+	it('GX3-3081 | TC3:Check that the user can update a Sticker', () => {
+		TrelloCardApi.addRandomSticker(dataParams.cards.idCardA)
 			.then(response => {
 				const responseBody: GetStickerByIdResponse = response.body;
-				expect(response).to.be.an('object');
 				expect(response.status).to.eql(200);
-				expect(response.body.top).to.eql(options.body.top);
-				expect(response.body.left).to.eql(options.body.left);
+				dataParams.stickers.id = response.body.id;
+				dataParams.stickers.randomStickerName = response.body.image;
 				expectedStickerResult(dataParams.stickers.id, responseBody);
-			});
-	});
-	it('GX3-3081 | TC5:Check that the user can delete the sticker', () => {
-		const options = {
-			idCard: dataParams.cards.idCardA,
-			idSticker: dataParams.stickers.id,
-		};
-		TrelloCardApi.request(method.DELETE, urlList.getSticker, options)
+
+				const options = {
+					idCard: dataParams.cards.idCardA,
+					idSticker: dataParams.stickers.id,
+					top: 10,
+					left: 10,
+					zIndex: 1,
+				};
+
+				return TrelloCardApi.request(method.PUT, urlList.updateSticker, options);
+			})
 			.then(response => {
 				expect(response).to.be.an('object');
 				expect(response.status).to.eql(200);
+				const responseBody : GetStickerByIdResponse = response.body;
+				expect(responseBody.image).to.eql(dataParams.stickers.randomStickerName);
+				expect(responseBody.id).to.eql(dataParams.stickers.id);
+				expectedStickerResult(dataParams.stickers.id, responseBody);
 			});
 	});
-	it('GX3-3081 | TC6:Check that the user can delete the card', () => {
+	it('GX3-3081 | TC4:Check that the user can delete the sticker', () => {
+		TrelloCardApi.addRandomSticker(dataParams.cards.idCardA)
+			.then(response => {
+				const responseBody: GetStickerByIdResponse = response.body;
+				expect(response.status).to.eql(200);
+				dataParams.stickers.id = response.body.id;
+				dataParams.stickers.randomStickerName = response.body.image;
+				expectedStickerResult(dataParams.stickers.id, responseBody);
+
+				const options = {
+					idCard: dataParams.cards.idCardA,
+					idSticker: dataParams.stickers.id,
+				};
+
+				return TrelloCardApi.request(method.DELETE, urlList.getSticker, options);
+			}).then(response => {
+				expect(response).to.be.an('object');
+				expect(response.status).to.eql(200);
+			});
+	});
+	afterEach('Precon: Check that the user can delete a card on the Backlog list', () => {
 		const options = {
 			idList: dataParams.lists.backlog.id
 		};
@@ -135,6 +167,17 @@ describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, D
 				expect(response.status).to.eql(200);
 			});
 	});
+	// it('GX3-3081 | TC6:Check that the user can delete the card', () => {
+	// 	const options = {
+	// 		idList: dataParams.lists.backlog.id
+	// 	};
+	// 	TrelloCardApi.request(method.POST, urlList.archiveCardsInList, options)
+	// 		.then(response => {
+	// 			expect(response).to.be.an('object');
+	// 			expect(response.status).to.eql(200);
+	// 		});
+	// });
+
 	after(() => {
 		const optionsBacklog = {
 			idList: dataParams.lists.backlog.id,
@@ -154,17 +197,8 @@ describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, D
 				closed: true,
 			}
 		};
-		TrelloCardApi.request(method.PUT, urlList.deleteList, optionsBacklog).then(response => {
-			expect(response).to.be.an('object');
-			expect(response.status).to.eql(200);
-		});
-		TrelloCardApi.request(method.PUT, urlList.deleteList, optionsActive).then(response => {
-			expect(response).to.be.an('object');
-			expect(response.status).to.eql(200);
-		});
-		TrelloCardApi.request(method.PUT, urlList.deleteList, optionsDone).then(response => {
-			expect(response).to.be.an('object');
-			expect(response.status).to.eql(200);
-		});
+		deleteTrelloList(optionsBacklog);
+		deleteTrelloList(optionsActive);
+		deleteTrelloList(optionsDone);
 	});
 });
