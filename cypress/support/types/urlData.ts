@@ -11,6 +11,7 @@ export enum urlList {
 	deleteCard = '/cards/{idCard}?&key={key}&token={token}',
 	addStickerToCard = '/cards/{idCard}/stickers?image={image}&top={top}&left={left}&zIndex={zIndex}&key={key}&token={token}',
 	getSticker = '/cards/{idCard}/stickers/{idSticker}?key={key}&token={token}',
+	updateSticker = '/cards/{idCard}/stickers/{idSticker}?top={top}&left={left}&zIndex={zIndex}&key={key}&token={token}',
 	getAllStckersOnCard = '/cards/{idCard}/stickers/?key={key}&token={token}'
 }
 export enum method {
