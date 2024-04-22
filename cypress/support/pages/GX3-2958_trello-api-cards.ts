@@ -2,6 +2,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import data from 'cypress/fixtures/data/GX3-2958-trello-api-cards.json';
 import { faker } from '@faker-js/faker';
+
+interface StatusJSON {
+    [key: string]: number;
+}
 class Trello {
 
 	public static getLists() {
@@ -78,9 +82,7 @@ class Trello {
 			const cardData = {
 				name: faker.lorem.words(3),
 				desc: faker.lorem.paragraph(),
-				coverColor: faker.helpers.arrayElement(data.colors),
-				labeText: faker.lorem.words(3),
-				labelColor: faker.helpers.arrayElement(data.colors)
+				labeText: faker.lorem.words(3)
 			};
 
 			cy.request({
@@ -98,40 +100,62 @@ class Trello {
 	}
 
 	public static moveCards() {
-		this.getLists().then((lists: { id: string, name: string }[]) => {
-			this.getCards().then((cards: { id: string; idList: string; }[]) => {
-				const cardCountByList: Record<string, number> = this.cardCountByList(cards);
-				const targetListId = this.getTargetList(cardCountByList, lists);
+		const statusJSON: StatusJSON = {};
+		return new Promise((resolve) => {
+			this.getLists().then((lists: { id: string, name: string }[]) => {
+				this.getCards().then((cards: { id: string; idList: string; }[]) => {
+					const cardCountByList: Record<string, number> = this.cardCountByList(cards);
+					const targetListId = this.getTargetList(cardCountByList, lists);
 
-				cards.forEach((card) => {
-					if (card.idList !== targetListId) {
-						cy.api({
-							method: 'PUT',
-							url: `${data.url.trelloCards}${card.id}`,
-							qs:{
-								key: data.data.key,
-            					token: data.data.token,
-								idList: targetListId
-							}
+					const apiPromises = cards.map(card => {
+						if (card.idList !== targetListId) {
+							cy.api({
+								method: 'PUT',
+								url: `${data.url.trelloCards}${card.id}`,
+								qs:{
+									key: data.data.key,
+            						token: data.data.token,
+									idList: targetListId
+								}
+							}).then(response => {
+								const { status } = response;
+								statusJSON[card.id] = status;
+							});
+						}
+					});
+					Promise.all(apiPromises)
+						.then(() => {
+							resolve(statusJSON);
 						});
-					}
 				});
 			});
 		});
 	}
 
 	public static archiveCards() {
-		this.getCards().then((cards: { id: string;}[]) => {
-			cards.forEach((card) => {
-				cy.api({
-					method: 'PUT',
-					url: `${data.url.trelloCards}${card.id}/closed`,
-					qs:{
-						value: true,
-						key: data.data.key,
-            			token: data.data.token
-					}
+		const statusJSON: StatusJSON = {};
+		return new Promise((resolve) => {
+			this.getCards().then((cards: { id: string;}[]) => {
+
+				const apiPromises = cards.map(card => {
+					return cy.api({
+						method: 'PUT',
+						url: `${data.url.trelloCards}${card.id}/closed`,
+						qs: {
+							value: true,
+							key: data.data.key,
+							token: data.data.token
+						}
+					}).then(response => {
+						const { status } = response;
+						statusJSON[card.id] = status;
+					});
 				});
+
+				Promise.all(apiPromises)
+					.then(() => {
+						resolve(statusJSON);
+					});
 			});
 		});
 	}
