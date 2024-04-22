@@ -54,9 +54,6 @@ export interface TrelloDataParams {
         key: string;
         token: string;
     };
-    board: {
-      idBoard : string;
-    }
     lists: {
         backlog: { id: string, name: string };
         active: { id: string, name: string };
@@ -65,6 +62,9 @@ export interface TrelloDataParams {
     cards: {
         idCardA: string;
         idCardB: string;
+    };
+     board: {
+      idBoard : string;
     };
     stickers: {
       id: string;

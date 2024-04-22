@@ -3,9 +3,6 @@
     "key": "ae2792af729826db3fed7b353719dfba",
     "token": "ATTA8173e9967d92d6239b9fe42c1276cfaeac467beca5b5a0ed92dbf2dd2c5070fa84A0F87C"
   },
-  "board":{
-	"idBoard": "654a326a8bf817161ed88568"
-  },
   "lists": {
     "backlog": {"id": "","name": "BACKLOG"},
     "active": {"id": "","name": "ACTIVE"},
@@ -14,6 +11,9 @@
   "cards": {
     "idCardA": "",
     "idCardB": ""
+  },
+  "board":{
+	"idBoard": "654a326a8bf817161ed88568"
   },
   "stickers": {
 	  "id": "",
