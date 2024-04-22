@@ -3,7 +3,7 @@ run-name: ${{github.actor}}👨🏻‍🔬 triggered SanityTest in ${{github.ref
 
 on:
   push:
-    branches: ['GX3-3077-Trello-API-Stcikers'] #! Cambia "TuBranchAqui" por el nombre de tu rama de tarea.
+    branches: ['GX3-3077-Trello-API-Stickers'] #! Cambia "TuBranchAqui" por el nombre de tu rama de tarea.
   workflow_dispatch:
 
 
