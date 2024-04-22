@@ -39,13 +39,26 @@ export type GetCardByIdResponse = {
   isTemplate: boolean;
   cardRole: null | string;
 }
-export interface TrelloData {
-  listBacklogId: string;
-  listActiveId: string;
-  listDoneId: string;
-  listOneName: string,
-	listTwoName: string,
-	listThreeName : string,
-  idCardA: string;
-  idCardB: string;
+export interface TrelloDataParams {
+  auth: {
+        key: string;
+        token: string;
+    };
+    board: {
+      idBoard : string;
+    }
+    lists: {
+        backlog: { id: string, name: string };
+        active: { id: string, name: string };
+        done: { id: string, name: string };
+    };
+    cards: {
+        idCardA: string;
+        idCardB: string;
+    };
+    stickers: {
+      id: string;
+      randomStickerName: string;
+      defaultStickers: string[];
+    };
 }
