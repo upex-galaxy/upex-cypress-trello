@@ -1,12 +1,12 @@
 {
-	"key": "ae2792af729826db3fed7b353719dfba",
-	"token": "ATTA8173e9967d92d6239b9fe42c1276cfaeac467beca5b5a0ed92dbf2dd2c5070fa84A0F87C",
-	"listBacklogId": "654a353c5b36a089e49656b5",
-	"listActiveId": "6556516a7ecd359fc7ea7ea3",
-	"listDoneId": "6556516dc2003862888d3238",
-	"listOneName": "BACKLOG",
-	"listTwoName": "ACTIVE",
-	"listThreeName": "DONE",
-	"idCardA": "",
-	"idCardB": ""
+	"auth" : {
+		"key": "ae2792af729826db3fed7b353719dfba",
+		"token": "ATTA8173e9967d92d6239b9fe42c1276cfaeac467beca5b5a0ed92dbf2dd2c5070fa84A0F87C"
+	},
+	"lists" : {
+		"backlog": {"id": "654a353c5b36a089e49656b5", "name": "BACKLOG"},
+		"active": {"id": "6556516a7ecd359fc7ea7ea3", "name": "ACTIVE"},
+		"done": {"id": "6556516dc2003862888d3238", "name": "DONE"}
+	},
+	"cards": {"idCardA": "", "idCardB": ""}
 }
