@@ -1,7 +1,7 @@
 export enum urlList {
 	getList = '/lists/{idList}?key={key}&token={token}',
 	archiveCardsInList = '/lists/{idList}/archiveAllCards?key={key}&token={token}',
-	getCard = '/cards/{idList}?key={key}&token={token}',
+	getCard = '/cards/{idCard}?key={key}&token={token}',
 	createCard = '/cards?idList={idList}&key={key}&token={token}',
 	updateCard = '/cards/{idCard}?&key={key}&token={token}',
 	deleteCard = '/cards/{idCard}?&key={key}&token={token}'
