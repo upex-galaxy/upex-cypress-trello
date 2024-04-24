@@ -1,7 +1,7 @@
-import { processUrl } from '../../support/types/urlData';
-import type { urlList } from '../../support/types/urlData';
+import { processUrl } from '../types/GX2-16267-urlData';
+import type { urlList } from '../types/GX2-16267-urlData';
 import dataJson from '../../fixtures/data/GX2-16267-Cards.json';
-import type { TrelloDataParams } from '../../support/types/responseType';
+import type { TrelloDataParams } from '../types/GX2-16267-responseType';
 const data: TrelloDataParams = dataJson as TrelloDataParams;
 
 export class TrelloCardApi {
