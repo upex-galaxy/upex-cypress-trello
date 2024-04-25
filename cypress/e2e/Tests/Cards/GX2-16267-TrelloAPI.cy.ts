@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { TrelloCardApi } from '@pages/GX2-16267-cards.Page';
-import type { GetListByIdResponse, GetCardByIdResponse, TrelloDataParams } from '../../../support/types/responseType';
+import type { GetListByIdResponse, GetCardByIdResponse, TrelloDataParams } from '../../../support/types/GX2-16267-responseType';
 import dataJson from '../../../fixtures/data/GX2-16267-Cards.json';
-import { method, urlList } from 'cypress/support/types/urlData';
+import { method, urlList } from 'cypress/support/types/GX2-16267-urlData';
 import { faker } from '@faker-js/faker';
 
 const dataParams: TrelloDataParams = dataJson as TrelloDataParams;

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { TrelloCardApi } from '@pages/GX2-16267-cards.Page';
-import type { GetStickerByIdResponse, TrelloDataParams } from '../../../support/types/responseType';
+import type { GetStickerByIdResponse, TrelloDataParams } from '../../../support/types/GX2-16267-responseType';
 import dataJson from '../../../fixtures/data/GX2-16267-Cards.json';
-import { method, urlList } from 'cypress/support/types/urlData';
+import { method, urlList } from 'cypress/support/types/GX2-16267-urlData';
 import { faker } from '@faker-js/faker';
 
 const dataParams: TrelloDataParams = dataJson as TrelloDataParams;
@@ -59,7 +59,7 @@ describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, D
 			dataParams.lists.done.id = id;
 		});
 	});
-	beforeEach('Precon: Check that the user can create a card on the Backlog list', () => {
+	beforeEach('Check that the user can create a card on the Backlog list', () => {
 		const options = {
 			idList: dataParams.lists.backlog.id,
 			body: {
@@ -157,7 +157,7 @@ describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, D
 				expect(response.status).to.eql(200);
 			});
 	});
-	afterEach('Precon: Check that the user can delete a card on the Backlog list', () => {
+	afterEach('Check that the user can delete a card on the Backlog list', () => {
 		const options = {
 			idList: dataParams.lists.backlog.id
 		};
@@ -167,18 +167,7 @@ describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, D
 				expect(response.status).to.eql(200);
 			});
 	});
-	// it('GX3-3081 | TC6:Check that the user can delete the card', () => {
-	// 	const options = {
-	// 		idList: dataParams.lists.backlog.id
-	// 	};
-	// 	TrelloCardApi.request(method.POST, urlList.archiveCardsInList, options)
-	// 		.then(response => {
-	// 			expect(response).to.be.an('object');
-	// 			expect(response.status).to.eql(200);
-	// 		});
-	// });
-
-	after(() => {
+	after('Delete all the created lists', () => {
 		const optionsBacklog = {
 			idList: dataParams.lists.backlog.id,
 			body: {
