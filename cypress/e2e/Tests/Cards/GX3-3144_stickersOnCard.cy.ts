@@ -1,12 +1,14 @@
 import { apiSticker } from "@pages/APIStickers.page";
 import { addSticker } from "@pages/APIStickers.page";
 import { updateSticker } from "@pages/APIStickers.page";
+import { deleteSticker } from "@pages/APIStickers.page";
 
 	const key = '60546f7606a6d9b65762f53b68d61aa2'
 	const token= 'ATTAba481ff908481346282087e391a6df7c1cad1c2f00b5baa233765cec3e5b26b26CBAC466'
 	const idList = '66228c917bf9a7fda9f9403d'
-	const idCard = '6622c85faef1e64ad7dd77bb'
-	const idSticker= '6626f81286a6d105a50a6291'
+	const idCard = '6622904b2d086ade25bce1a7'
+	const idSticker= '662ad1ca3c2061960b4b5fed'
+      
 
 	describe('API Trello board ',()=>{
 	    it('TC01:create a card in Trello',() => {
@@ -34,10 +36,10 @@ import { updateSticker } from "@pages/APIStickers.page";
 
 		})
 
-		it('TC03: Delete Sticker from Card', () =>{
+		it.only('TC04: Delete Sticker from Card', () =>{
+			deleteSticker.deleteStickerCard(idCard, idSticker, key,token)}		
 
-		})
-
+)
 }) 
 
 

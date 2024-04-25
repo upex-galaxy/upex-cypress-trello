@@ -1,5 +1,3 @@
-import { method } from "cypress/types/bluebird";
-
 export class apiSticker{
 	static createNewCard ( idList: string, key:string,token: string, ){
 		
@@ -46,7 +44,7 @@ export class updateSticker{
 			method: 'PUT',
 			url: `https://api.trello.com/1/cards/${idCard}/stickers/${idSticker}?key=${key}&token=${token}`,
 			qs:{
-				image:'taco-money',
+				image: 'taco-money',
 				top: -3,
 				left: 6,
 				zIndex: 1, 
@@ -75,6 +73,8 @@ export class deleteSticker{
 			}
 
 			
+		}).then(response =>{
+			return response; 
 		})
 
 	
