@@ -157,6 +157,13 @@ describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, D
 				expect(response.status).to.eql(200);
 			});
 	});
+	it('GX3-3081 | TC5: Should return a 400 status when idCard is not valid for adding a sticker', () => {
+		TrelloCardApi.addRandomSticker({idCard: 'not-valid-card-id'})
+			.then(response => {
+				expect(response.status).to.eq(400);
+				expect(response.body).to.include('invalid id');
+			});
+	});
 	afterEach('Check that the user can delete a card on the Backlog list', () => {
 		const options = {
 			idList: dataParams.lists.backlog.id
