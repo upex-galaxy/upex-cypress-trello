@@ -227,6 +227,18 @@ describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, D
 			expect(response.body).to.include('invalid value for left');
 		});
 	});
+	it('GX3-3081 | TC16: Should return a 400 status when zIndex is a string', () => {
+		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA, zIndex: 'notAnInteger'}).then(response => {
+			expect(response.status).to.eq(400);
+			expect(response.body.message).to.include('Invalid Z Value');
+		});
+	});
+	it('GX3-3081 | TC17: Should return a 400 status when zIndex is not an integer ', () => {
+		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA, zIndex: 0.1}).then(response => {
+			expect(response.status).to.eq(400);
+			expect(response.body.message).to.include('Invalid Z Value');
+		});
+	});
 	afterEach('Check that the user can delete a card on the Backlog list', () => {
 		const options = {
 			idList: dataParams.lists.backlog.id
