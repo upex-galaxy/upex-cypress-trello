@@ -77,7 +77,7 @@ describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, D
 			});
 	});
 	it('GX3-3081 | TC1:Check that the user can Add a Sticker to card A', () => {
-		TrelloCardApi.addRandomSticker(dataParams.cards.idCardA)
+		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA})
 			.then(response => {
 				const responseBody: GetStickerByIdResponse = response.body;
 				expect(response).to.be.an('object');
@@ -87,7 +87,7 @@ describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, D
 			});
 	});
 	it('GX3-3081 | TC2:Check that the user can get a Sticker', () => {
-		TrelloCardApi.addRandomSticker(dataParams.cards.idCardA)
+		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA})
 			.then(response => {
 				const responseBody: GetStickerByIdResponse = response.body;
 				expect(response.status).to.eql(200);
@@ -110,7 +110,7 @@ describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, D
 			});
 	});
 	it('GX3-3081 | TC3:Check that the user can update a Sticker', () => {
-		TrelloCardApi.addRandomSticker(dataParams.cards.idCardA)
+		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA})
 			.then(response => {
 				const responseBody: GetStickerByIdResponse = response.body;
 				expect(response.status).to.eql(200);
@@ -138,7 +138,7 @@ describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, D
 			});
 	});
 	it('GX3-3081 | TC4:Check that the user can delete the sticker', () => {
-		TrelloCardApi.addRandomSticker(dataParams.cards.idCardA)
+		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA})
 			.then(response => {
 				const responseBody: GetStickerByIdResponse = response.body;
 				expect(response.status).to.eql(200);
