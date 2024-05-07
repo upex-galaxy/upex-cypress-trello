@@ -208,9 +208,21 @@ describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, D
 			expect(response.body).to.include('invalid value for left');
 		});
 	});
-	 it('GX3-3081 | TC13: Should return a 400 status when left value is -61', () => {
+	it('GX3-3081 | TC13: Should return a 400 status when left value is -61', () => {
 		//This test fails because the left parameter accepts a number from -60 to -100
 		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA, left:-61 }).then(response => {
+			expect(response.status).to.eq(400);
+			expect(response.body).to.include('invalid value for left');
+		});
+	});
+	it('GX3-3081 | TC14: Should return a 400 status when left value is above 100', () => {
+		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA, left:TrelloCardApi.generateNumberAbove100() }).then(response => {
+			expect(response.status).to.eq(400);
+			expect(response.body).to.include('invalid value for left');
+		});
+	});
+	it('GX3-3081 | TC15: Should return a 400 status when left value is 101', () => {
+		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA, left: 101 }).then(response => {
 			expect(response.status).to.eq(400);
 			expect(response.body).to.include('invalid value for left');
 		});
