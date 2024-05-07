@@ -164,6 +164,13 @@ describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, D
 				expect(response.body).to.include('invalid id');
 			});
 	});
+	it('GX3-3081 | TC6: Should return a 404 status when required idCard is missing when adding a sticker', () => {
+		TrelloCardApi.addRandomSticker({idCard: ''})
+			.then(response => {
+				expect(response.status).to.eq(404);
+				expect(response.statusText).to.eq('Not Found');
+			});
+	});
 	afterEach('Check that the user can delete a card on the Backlog list', () => {
 		const options = {
 			idList: dataParams.lists.backlog.id
