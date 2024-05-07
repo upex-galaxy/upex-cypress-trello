@@ -171,6 +171,12 @@ describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, D
 				expect(response.statusText).to.eq('Not Found');
 			});
 	});
+	it.only('GX3-3081 | TC7: Should return a 401 status when sticker name is invalid', () => {
+		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA, image: 'notValidSticker'}).then(response => {
+			expect(response.status).to.eq(401);
+			expect(response.body.message).to.include('invalid sticker');
+		});
+	});
 	afterEach('Check that the user can delete a card on the Backlog list', () => {
 		const options = {
 			idList: dataParams.lists.backlog.id
