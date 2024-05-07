@@ -10,6 +10,7 @@ export class TrelloCardApi {
 		method: string,
 		endpointKey: urlList,
 		options?: {
+			failOnStatusCode?: boolean,
             idCard?: string,
 			idList?: string,
 			idBoard?: string,
@@ -29,6 +30,7 @@ export class TrelloCardApi {
 			method: method,
 			url: url,
 			body: options?.body,
+			failOnStatusCode: options?.failOnStatusCode
 		});
 	}
 	static getRandomInt(min : number, max : number) {
@@ -36,20 +38,27 @@ export class TrelloCardApi {
 		max = Math.floor(max);
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
+	static addRandomSticker(options?: { idCard?: string; top?: number; left?: number; image?: string; zIndex?: number }) {
 
-	static addRandomSticker(idCard: string) {
-		const randomSticker = Math.floor(Math.random() * data.stickers.defaultStickers.length);
-		const stickerImage = data.stickers.defaultStickers[randomSticker];
-		const top = TrelloCardApi.getRandomInt(-60, 100);
-		const left = TrelloCardApi.getRandomInt(-60, 100);
-		const zIndex = TrelloCardApi.getRandomInt(0, 10);
+		const idCard = options?.idCard;
+		const stickerImage = options?.image || data.stickers.defaultStickers[Math.floor(Math.random() * data.stickers.defaultStickers.length)];
+		const top = options?.top === undefined ?  TrelloCardApi.getRandomInt(-60, 100)  : options.top;
+		const left = options?.left === undefined ? TrelloCardApi.getRandomInt(-60, 100) : options.left;
+		const zIndex = options?.zIndex === undefined ? TrelloCardApi.getRandomInt(0, 10) : options.zIndex;
 
 		return TrelloCardApi.request('POST', urlList.addStickerToCard, {
+			failOnStatusCode: false,
 			idCard: idCard,
 			image: stickerImage,
 			top: top,
 			left: left,
 			zIndex: zIndex
 		});
+	}
+	static generateNumberAbove100(): number {
+		return Math.floor(Math.random() * 100) + 101;
+	}
+	static generateNumberBelowMinus60(): number {
+		return Math.floor(Math.random() * 60) - 120;
 	}
 }
