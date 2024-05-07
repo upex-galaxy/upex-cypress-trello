@@ -161,82 +161,82 @@ describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, D
 		TrelloCardApi.addRandomSticker({idCard: 'not-valid-card-id'})
 			.then(response => {
 				expect(response.status).to.eq(400);
-				expect(response.body).to.include('invalid id');
+				expect(response.body).to.include(dataJson.errorMessage.invalidIdCard);
 			});
 	});
 	it('GX3-3081 | TC6: Should return a 404 status when required idCard is missing when adding a sticker', () => {
 		TrelloCardApi.addRandomSticker({idCard: ''})
 			.then(response => {
 				expect(response.status).to.eq(404);
-				expect(response.statusText).to.eq('Not Found');
+				expect(response.statusText).to.eq(dataJson.errorMessage.notFound);
 			});
 	});
 	it('GX3-3081 | TC7: Should return a 401 status when sticker name is invalid', () => {
 		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA, image: 'notValidSticker'}).then(response => {
 			expect(response.status).to.eq(401);
-			expect(response.body.message).to.include('invalid sticker');
+			expect(response.body.message).to.include(dataJson.errorMessage.invalidSticker);
 		});
 	});
 	  it('GX3-3081 | TC8: Should return a 400 status when top value is less than 60', () => {
 		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA, top:TrelloCardApi.generateNumberBelowMinus60() }).then(response => {
 			expect(response.status).to.eq(400);
-			expect(response.body).to.include('invalid value for top');
+			expect(response.body).to.include(dataJson.errorMessage.invalidTop);
 		});
 	});
 	 it('GX3-3081 | TC9: Should return a 400 status when top value is -61', () => {
 		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA, top: -61 }).then(response => {
 			expect(response.status).to.eq(400);
-			expect(response.body).to.include('invalid value for top');
+			expect(response.body).to.include(dataJson.errorMessage.invalidTop);
 		});
 	});
 	it('GX3-3081 | TC10: Should return a 400 status when top value is 101', () => {
 		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA, top: 101 }).then(response => {
 			expect(response.status).to.eq(400);
-			expect(response.body).to.include('invalid value for top');
+			expect(response.body).to.include(dataJson.errorMessage.invalidTop);
 		});
 	});
 	it('GX3-3081 | TC11: Should return a 400 status when top value is higher than 100', () => {
 		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA, top:TrelloCardApi.generateNumberAbove100() }).then(response => {
 			expect(response.status).to.eq(400);
-			expect(response.body).to.include('invalid value for top');
+			expect(response.body).to.include(dataJson.errorMessage.invalidTop);
 		});
 	});
 	it('GX3-3081 | TC12: Should return a 400 status when left value is below -60', () => {
 		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA, left:TrelloCardApi.generateNumberBelowMinus60() }).then(response => {
 			//This test SOMETIMES fails because the left parameter accepts a number from -60 to -100. If the randomly generated value for left is below -101, it will pass
 			expect(response.status).to.eq(400);
-			expect(response.body).to.include('invalid value for left');
+			expect(response.body).to.include(dataJson.errorMessage.invalidLeft);
 		});
 	});
 	it('GX3-3081 | TC13: Should return a 400 status when left value is -61', () => {
 		//This test fails because the left parameter accepts a number from -60 to -100
 		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA, left:-61 }).then(response => {
 			expect(response.status).to.eq(400);
-			expect(response.body).to.include('invalid value for left');
+			expect(response.body).to.include(dataJson.errorMessage.invalidLeft);
 		});
 	});
 	it('GX3-3081 | TC14: Should return a 400 status when left value is above 100', () => {
 		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA, left:TrelloCardApi.generateNumberAbove100() }).then(response => {
 			expect(response.status).to.eq(400);
-			expect(response.body).to.include('invalid value for left');
+			expect(response.body).to.include(dataJson.errorMessage.invalidLeft);
 		});
 	});
 	it('GX3-3081 | TC15: Should return a 400 status when left value is 101', () => {
 		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA, left: 101 }).then(response => {
 			expect(response.status).to.eq(400);
-			expect(response.body).to.include('invalid value for left');
+			expect(response.body).to.include(dataJson.errorMessage.invalidLeft);
 		});
 	});
 	it('GX3-3081 | TC16: Should return a 400 status when zIndex is a string', () => {
 		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA, zIndex: 'notAnInteger'}).then(response => {
 			expect(response.status).to.eq(400);
-			expect(response.body.message).to.include('Invalid Z Value');
+			expect(response.body.message).to.include(dataJson.errorMessage.invalidZIndex);
 		});
 	});
 	it('GX3-3081 | TC17: Should return a 400 status when zIndex is not an integer ', () => {
 		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA, zIndex: 0.1}).then(response => {
 			expect(response.status).to.eq(400);
-			expect(response.body.message).to.include('Invalid Z Value');
+			expect(response.body.message).to.include(dataJson.errorMessage.invalidZIndex);
 		});
 	});
 	afterEach('Check that the user can delete a card on the Backlog list', () => {
