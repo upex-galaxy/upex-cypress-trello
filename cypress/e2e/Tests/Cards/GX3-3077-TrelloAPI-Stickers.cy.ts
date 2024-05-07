@@ -183,6 +183,12 @@ describe('GX3-3077 | Trello (API) | Stickers | API Endpoint: Add, Update, Get, D
 			expect(response.body).to.include('invalid value for top');
 		});
 	});
+	 it('GX3-3081 | TC9: Should return a 400 status when top value is -61', () => {
+		TrelloCardApi.addRandomSticker({idCard: dataParams.cards.idCardA, top: -61 }).then(response => {
+			expect(response.status).to.eq(400);
+			expect(response.body).to.include('invalid value for top');
+		});
+	});
 	afterEach('Check that the user can delete a card on the Backlog list', () => {
 		const options = {
 			idList: dataParams.lists.backlog.id
