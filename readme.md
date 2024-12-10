@@ -1,3 +1,11 @@
+# Portafolio: Automatización de Pruebas API en Cypress.io
+
+Este repositorio contiene **algunas** de mis tareas de automatización API en [UPEX Academy (upexgalaxy.com)](https://www.upexgalaxy.com/es), bajo el framework Cypress.io (JavaScript & TypeScript). Si desea consultar el repositorio original visite [https://github.com/.../upex-cypress-trello](https://github.com/upex-galaxy/upex-cypress-trello).
+
+No se publicaran trabajos en ninguna otra empresa debido a las leyes de *Propiedad Intelectual* y *Confidencialidad*.
+
+#
+
 [![🧪Pipeline Regression in QA](https://github.com/upex-galaxy/cypress-gx/actions/workflows/regression.yml/badge.svg)](https://github.com/upex-galaxy/cypress-gx/actions/workflows/regression.yml)
 
 [![vscode-logo]][vscode-site] [![cypress-logo]][cypress-site] [![javascript-logo]][javascript-site] [![typescript-logo]][typescript-site]
