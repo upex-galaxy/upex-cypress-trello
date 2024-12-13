@@ -1,0 +1,12 @@
+# Para archivos de texto
+*.txt text
+*.js text
+*.json text
+*.yml text
+*.yaml text
+*.md text
+*.css text
+*.html text
+
+# Para asegurar que yarn.lock use LF
+yarn.lock eol=lf
