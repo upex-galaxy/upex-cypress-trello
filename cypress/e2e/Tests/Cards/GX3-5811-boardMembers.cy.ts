@@ -1,91 +1,51 @@
-import OAuth from 'oauth-1.0a';
-import crypto from 'crypto';
-
-interface Auth {
-  key: string;
-  token: string;
-  user: string;
-}
-
-interface Data {
-  idBoard: string;
-}
-
-interface Url {
-  protocol: string;
-  host: string;
-  basePath: string;
-  membersBoard: string; // La URL con placeholders
-}
-
-interface UserData {
-  auth: Auth;
-  data: Data;
-  url: Url;
-}
-
-var strConnUser: string;
-var strConnKey: string;
-var strConnToken: string;
-
-// Crea una instancia de OAuth
-const oauth = new OAuth({
-	consumer: {
-		key: 'TU_CONSUMER_KEY', // Reemplaza con tu Consumer Key
-		secret: 'TU_CONSUMER_SECRET', // Reemplaza con tu Consumer Secret
-	},
-	signature_method: 'HMAC-SHA1',
-	hash_function(baseString: string, key: string): string {
-		return crypto.createHmac('sha1', key).update(baseString).digest('base64');
-	},
-});
+import { AuthType, TrelloAPI, type UserData } from '@pages/GX3-5811-boardMembers.Page';
 
 describe('GX3-5811 | Trello (API) | Members | API Endpoint: Get the Members of a Board', () => {
 	let fixtureData: UserData;
+	const trelloAPI = new TrelloAPI();
 
 	beforeEach(function() {
 		cy.fixture('data/GX3-5811-boardMembers').then((data: UserData) => {
 			fixtureData = data;
 
-			strConnUser = fixtureData.auth.user;
-			strConnKey = fixtureData.auth.key;
-			strConnToken = fixtureData.auth.token;
+			trelloAPI.setCredentials(fixtureData.auth, AuthType.oauth);
 		});
 	});
 
 	it('GX3-5812 | TC01: Validar obtener miembros del tablero exitosamente.', () => {
-		const URL_MEMBERS_BOARD = fixtureData.url.membersBoard
-			.replace('{{protocol}}', fixtureData.url.protocol)
-			.replace('{{host}}', fixtureData.url.host)
-			.replace('{{basePath}}', fixtureData.url.basePath)
-			.replace('{{idBoard}}', fixtureData.data.idBoard)
-			.replace('{{myKey}}', strConnKey)
-			.replace('{{myToken}}', strConnToken);
+		const URL_TEMPLATE = fixtureData.url.membersBoard;
+
+		const replacements = {
+			protocol: fixtureData.url.protocol,
+			host: fixtureData.url.host,
+			basePath: fixtureData.url.basePath,
+			idBoard: fixtureData.data.idBoard,
+			myKey: fixtureData.auth.key,
+			myToken: fixtureData.auth.token,
+		};
+
+		const URL_MEMBERS_BOARD = trelloAPI.buildUrl(URL_TEMPLATE, replacements);
 
 		cy.log(URL_MEMBERS_BOARD);
 
 		const requestData = {
 			url: URL_MEMBERS_BOARD,
-			method: 'GET',
 			data: {
+				method: 'GET',
 				idBoard: fixtureData.data.idBoard,
 			},
 		};
 
-		const oauthData = oauth.authorize(requestData, {
-			key: strConnKey,
-			secret: strConnToken,
-		});
-
-		// Usando cy.api() en lugar de cy.request()
-		cy.api({
-			method: 'GET',
-			url: URL_MEMBERS_BOARD,
-			headers: {
-				'Authorization': oauth.toHeader(oauthData)['Authorization'],
-			}
-		}).then((response) => {
-			expect(response.status).to.eq(200);
+		trelloAPI.authenticate(requestData).then((authHeader: string) => {
+			cy.api({
+				method: 'GET',
+				url: URL_MEMBERS_BOARD,
+				headers: {
+					'authorization': authHeader,
+				}
+			}).then((response) => {
+				expect(response.status).to.eq(200);
+			});
 		});
 	});
 

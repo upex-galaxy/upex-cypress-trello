@@ -1,10 +1,11 @@
 import { defineConfig } from 'cypress';
 import createBundler from '@bahmutov/cypress-esbuild-preprocessor';
 import 'dotenv/config';
+import * as crypto from 'crypto'; // @verogeid: Importar crypto para OAuth 1.0
 
 export default defineConfig({
 	// @Ely: CYPRESS DASHBOARD PARA VER NUESTRAS EJECUCIONES EN LA WEB:
-	//projectId: '7n2zun',
+	// projectId: '7n2zun',
 	// 1280×720 is considered to be the most suitable screen resolution for the desktop website version:
 	viewportWidth: 1920,
 	viewportHeight: 1080,
@@ -37,6 +38,14 @@ export default defineConfig({
 		setupNodeEvents(on, config) {
 			// This is required for the preprocessor to be able to generate JSON reports after each run, and more,
 			on('file:preprocessor', createBundler());
+
+			// @verogeid: Agregar la tarea para generar la firma
+			on('task', {
+				generateSignature({ baseString, key }: { baseString: string; key: string }) {
+					return crypto.createHmac('sha1', key).update(baseString).digest('base64');
+				}
+			});
+
 			// Make sure to return the config object as it might have been modified by the plugin.
 			return config;
 		},
