@@ -4,12 +4,14 @@
 		"token": "ATTAeee64e3b9e468e85ba40099a9385abfeae65f05c638f8d5a51e424660f356eedF3C02C6D"
 	},
 	"data": {
-		"idBoard": "663371d412e3a762b947e391"
+		"idBoard": "663371d412e3a762b947e391",
+		"idUser": "663371c3a5803661d1b7bcf9"
 	},
 	"url": {
 		"protocol": "https",
 		"host": "api.trello.com",
 		"basePath": "1/",
-		"membersBoard": "{{protocol}}://{{host}}/{{basePath}}boards/{{idBoard}}/memberships?key={{myKey}}&token={{myToken}}"
+		"membersBoard": "{{protocol}}://{{host}}/{{basePath}}boards/{{idBoard}}/members?key={{myKey}}&token={{myToken}}",
+		"memberData": "{{protocol}}://{{host}}/{{basePath}}members/{{idUser}}?key={{myKey}}&token={{myToken}}"
 	}
 }

@@ -6,6 +6,7 @@ interface Auth {
 }
 
 interface Data {
+	idUser: string;
 	idBoard: string;
 }
 
@@ -14,6 +15,7 @@ interface Url {
 	host: string;
 	basePath: string;
 	membersBoard: string;
+	memberData: string;
 }
 
 export interface UserData {
@@ -75,11 +77,12 @@ export class TrelloAPI {
 		});
 	}
 
-	public buildUrl(template: string, replacements: Record<string, string>): string {
+	public buildUrl(template: string, replacements: Record<string, string | null>): string {
 		let builtUrl = template;
 
 		for (const [key, value] of Object.entries(replacements)) {
-			builtUrl = builtUrl.replace(`{{${key}}}`, value);
+			// eslint-disable-next-line no-negated-condition
+			builtUrl = builtUrl.replace(`{{${key}}}`, value !== null ? value : '');
 		}
 
 		return builtUrl;
