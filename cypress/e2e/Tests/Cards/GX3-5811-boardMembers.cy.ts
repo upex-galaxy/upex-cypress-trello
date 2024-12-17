@@ -1,6 +1,3 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
 import { AuthType, TrelloAPI, type Auth } from '@pages/GX3-5811-boardMembers.Page';
 
 interface Url {
@@ -85,12 +82,14 @@ describe('GX3-5811 | Trello (API) | Members | API Endpoint: Get the Members of a
 		cy.fixture('data/GX3-5811-boardMembers').then((data: UserData) => {
 			fixtureData = data;
 
-			const token = process.env.TRELLO_TOKEN;
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+			const token = Cypress.env('TRELLO_TOKEN');
 
 			if (!token) {
 				throw new Error('La variable de ntorno TRELLO_TOKEN no está definida.');
 			}
 
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 			fixtureData.auth.token = token;
 
 			trelloAPI.setCredentials(fixtureData.auth, AuthType.oauth);
