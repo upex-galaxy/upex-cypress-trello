@@ -63,6 +63,7 @@ jobs:
       MOCHA_REPORT_DIR: cypress/tests_reports/chrome_mocha_report
       USERNAME: ${{ secrets.USERNAME }}
       PASSWORD: ${{ secrets.PASSWORD }}
+      TRELLO_TOKEN: ${{ secrets.TRELLO_TOKEN }}
 
     steps:
     - name: 💻 Checkout Repo
