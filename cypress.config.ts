@@ -51,6 +51,7 @@ export default defineConfig({
 		},
 	},
 	env: {
-
+		// eslint-disable-next-line @typescript-eslint/naming-convention
+		TRELLO_TOKEN: process.env.TRELLO_TOKEN,
 	},
 });
