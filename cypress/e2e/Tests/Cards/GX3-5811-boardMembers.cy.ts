@@ -1,7 +1,26 @@
-import { AuthType, TrelloAPI, type UserData } from '@pages/GX3-5811-boardMembers.Page';
+import { AuthType, TrelloAPI, type Auth } from '@pages/GX3-5811-boardMembers.Page';
+
+interface Url {
+    protocol: string;
+    host: string;
+    basePath: string;
+    membersBoard: string;
+    memberData: string;
+}
+
+interface Data {
+    idUser: string;
+    idBoard: string;
+}
+
+interface UserData {
+    auth: Auth;
+    data: Data;
+    url: Url;
+}
 
 interface ApiRespBoards {
-	idBoards: string[];
+    idBoards: string[];
 }
 
 describe('GX3-5811 | Trello (API) | Members | API Endpoint: Get the Members of a Board', () => {
@@ -209,17 +228,15 @@ describe('GX3-5811 | Trello (API) | Members | API Endpoint: Get the Members of a
 				}
 			}).then((response) => {
 				expect(response.status).to.eq(200);
-
-
 			});
 		});
 	});
 
 	it('GX3-5812 | TC05: Validar No obtener detalles de un miembro del tablero cuando el IDMEMBER es inexistente.', () => {
-
+		// Implementa la prueba aquí
 	});
 
 	it('GX3-5812 | TC06: Validar No obtener detalles de un miembro del tablero cuando el IDMEMBER es null.', () => {
-
+		// Implementa la prueba aquí
 	});
 });

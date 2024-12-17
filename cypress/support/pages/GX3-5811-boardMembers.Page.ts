@@ -1,27 +1,8 @@
 import OAuth from 'oauth-1.0a';
 
-interface Auth {
-	key: string;
-	token: string;
-}
-
-interface Data {
-	idUser: string;
-	idBoard: string;
-}
-
-interface Url {
-	protocol: string;
-	host: string;
-	basePath: string;
-	membersBoard: string;
-	memberData: string;
-}
-
-export interface UserData {
-	auth: Auth;
-	data: Data;
-	url: Url;
+export interface Auth {
+    key: string;
+    token: string;
 }
 
 export enum AuthType {
@@ -132,18 +113,14 @@ export class TrelloAPI {
 		return cy.task('generateSignature', {
 			baseString: baseString,
 			key: this.strConnKey,
-		}).then((signature) => { // No especificamos el tipo aquí
-			// Asegúrate de que signature tenga el tipo correcto, puedes usar un type assertion
-			const oauthSignature: string = signature as string; // Asegúrate de que sea un string
-
-			// Agregar la firma a los parámetros de OAuth
-			params.oauth_signature = oauthSignature; // Aquí asignas la firma generada
+		}).then((signature) => {
+			const oauthSignature: string = signature as string;			params.oauth_signature = oauthSignature;
 
 			// Generar los datos de OAuth
 			const oauthData = this.oauth.authorize({
 				url: requestData.url,
-				method: 'GET', // Asegúrate de usar el método correcto
-				data: params, // Pasar todos los parámetros, incluida la firma
+				method: 'GET',
+				data: params,
 			}, {
 				key: this.strConnKey,
 				secret: this.strConnOauthToken,
@@ -155,7 +132,6 @@ export class TrelloAPI {
 		});
 	}
 
-	// código generado por Aurora
 	private generateNonce(): string {
 		return Math.random().toString(36).substring(2);
 	}
@@ -169,7 +145,8 @@ export class TrelloAPI {
 		return cy.wrap(authHeader);
 	}
 
-	public authenticate(requestData: RequestData): Cypress.Chainable<any> {
+	public authenticate(requestData: RequestData, urlData?: string): Cypress.Chainable<any> {
+		// Aquí puedes usar urlData como un string genérico si es necesario
 		switch (this.authMethod) {
 			case AuthType.oauth:
 				return this.authenticateWithOauth1(requestData);
