@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import { AuthType, TrelloAPI, type Auth } from '@pages/GX3-5811-boardMembers.Page';
 
 interface Url {
@@ -37,7 +40,7 @@ describe('GX3-5811 | Trello (API) | Members | API Endpoint: Get the Members of a
 			basePath: fixtureData.url.basePath,
 			idUser: fixtureData.data.idUser,
 			myKey: fixtureData.auth.key,
-			myToken: fixtureData.auth.token,
+			myToken: fixtureData.auth.token
 		};
 
 		const URL_MEMBER_DATA = trelloAPI.buildUrl(URL_TEMPLATE, replacements);
@@ -78,9 +81,17 @@ describe('GX3-5811 | Trello (API) | Members | API Endpoint: Get the Members of a
 		});
 	};
 
-	beforeEach(function() {
+	before(function() {
 		cy.fixture('data/GX3-5811-boardMembers').then((data: UserData) => {
 			fixtureData = data;
+
+			const token = process.env.TRELLO_TOKEN;
+
+			if (!token) {
+				throw new Error('La variable de ntorno TRELLO_TOKEN no está definida.');
+			}
+
+			fixtureData.auth.token = token;
 
 			trelloAPI.setCredentials(fixtureData.auth, AuthType.oauth);
 
@@ -116,7 +127,8 @@ describe('GX3-5811 | Trello (API) | Members | API Endpoint: Get the Members of a
 				url: URL_MEMBERS_BOARD,
 				headers: {
 					'authorization': authHeader,
-				}
+				},
+				failOnStatusCode: false
 			}).then((response) => {
 				expect(response.status).to.eq(200);
 			});
