@@ -19,34 +19,93 @@ interface UserData {
     url: Url;
 }
 
-interface ApiRespBoards {
+interface ApiResponse {
     idBoards: string[];
+	id: string;
+	fullName: string;
+	status: string;
 }
 
 describe('GX3-5811 | Trello (API) | Members | API Endpoint: Get the Members of a Board', () => {
 	let fixtureData: UserData;
-
+	let idBoard: string = '';
 	const trelloAPI = new TrelloAPI();
 
 	before(function() {
 		cy.fixture('data/GX3-5811-boardMembers').then((data: UserData) => {
 			fixtureData = data;
 
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-			const token = Cypress.env('TRELLO_TOKEN');
-			const key = Cypress.env('TRELLO_TOKEN');
+			const token = Cypress.env('TRELLO_TOKEN') as string;
+			const key = Cypress.env('TRELLO_KEY') as string;
 
-			if ((!token) or (!key)) {
-				throw new Error('La variable de entorno TRELLO_TOKEN no está definida.');
+			if (!token || !key) {
+				throw new Error('Las variables de entorno TRELLO_TOKEN o TRELLO_KEY no están definidas.');
 			}
 
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 			fixtureData.auth.token = token;
 			fixtureData.auth.key = key;
 
-			const key = Cypress.env('TRELLO_KEY');
-
 			trelloAPI.setCredentials(fixtureData.auth, AuthType.oauth);
+		}).then(() => {
+			const urlUser = trelloAPI.buildUrl(
+				'{{protocol}}://{{host}}/{{basePath}}members/{{myUser}}?key={{myKey}}&token={{myToken}}',
+				{
+					protocol: fixtureData.url.protocol,
+					host: fixtureData.url.host,
+					basePath: fixtureData.url.basePath,
+					myUser: fixtureData.data.idUser,
+					myKey: fixtureData.auth.key,
+					myToken: fixtureData.auth.token,
+				}
+			);
+
+			const requestData = {
+				url: urlUser,
+				data: {
+					method: 'GET',
+				},
+			};
+
+			// Autenticación y solicitud
+			trelloAPI.authenticate(requestData).then((authHeader: string) => {
+				cy.request({
+					method: 'GET',
+					url: urlUser,
+					headers: {
+						'authorization': authHeader,
+					},
+				}).then((response) => {
+					// Verificar el tipo de contenido
+					expect(response.headers['content-type']).to.include('application/json');
+					// Verificar el código de estado
+					expect(response.status).to.equal(200);
+
+					const responseData: ApiResponse = response.body as ApiResponse; // Tipar la respuesta
+
+					// Verificar que se devolvió un usuario
+					expect(responseData).to.be.an('object');
+					expect(responseData).to.have.property('id');
+					expect(responseData).to.have.property('fullName');
+					expect(responseData).to.have.property('status');
+					cy.log(`id user: ${responseData.id}\nFull name: ${responseData.fullName}\nStatus: ${responseData.status}`);
+
+					// Verificar que el usuario está conectado
+					expect(responseData.status, 'Propiedad status -> ').to.not.equal('disconnected');
+
+					// Verificar que hay tableros
+					expect(responseData).to.have.property('idBoards');
+					const arrBoards: string[] = responseData.idBoards; // Ahora es de tipo string[]
+
+					expect(arrBoards.length).to.be.above(0);
+
+					if (arrBoards.length > 0) {
+						idBoard = arrBoards[0]; // Guardar el primer idBoard
+						cy.window().then((win) => {
+							win.localStorage.setItem('idBoard', idBoard); // Almacenar en localStorage
+						});
+					}
+				});
+			});
 		});
 	});
 
