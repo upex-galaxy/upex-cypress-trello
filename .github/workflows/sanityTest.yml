@@ -64,6 +64,7 @@ jobs:
       USERNAME: ${{ secrets.USERNAME }}
       PASSWORD: ${{ secrets.PASSWORD }}
       TRELLO_TOKEN: ${{ secrets.TRELLO_TOKEN }}
+      TRELLO_KEY: ${{ secrets.TRELLO_KEY }}
 
     steps:
     - name: 💻 Checkout Repo
