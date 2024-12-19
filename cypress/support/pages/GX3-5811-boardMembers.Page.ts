@@ -38,6 +38,7 @@ export class TrelloAPI {
 	private authMethod: AuthType = AuthType.bearer;
 
 	private strConnKey: string = '';
+	private strConnToken: string = '';
 	private strConnOauthToken: string = '';
 	private strConnBearerToken: string = '';
 
@@ -75,11 +76,13 @@ export class TrelloAPI {
 		switch (method) {
 			case AuthType.oauth:
 				this.strConnKey = auth.key;
-				this.strConnOauthToken = auth.token;
+				this.strConnToken = auth.token;
+				//this.strConnOauthToken = auth.token;
 				break;
 			case AuthType.bearer:
 			default:
-				this.strConnBearerToken = auth.token;
+				this.strConnToken = auth.token;
+				//this.strConnBearerToken = auth.token;
 				break;
 		}
 	}
@@ -97,7 +100,8 @@ export class TrelloAPI {
 			oauth_nonce: this.generateNonce(),
 			oauth_signature_method: 'HMAC-SHA1',
 			oauth_timestamp: Math.floor(Date.now() / 1000).toString(),
-			oauth_token: this.strConnOauthToken,
+			oauth_token: this.strConnToken,
+			//oauth_token: this.strConnOauthToken,
 			oauth_version: '1.0',
 			...requestData.data, // Otros parámetros que necesiten ser incluidos
 		};
@@ -105,7 +109,7 @@ export class TrelloAPI {
 
 		// Crear el baseString
 		const baseString = [
-			'GET', // O el método que estés usando
+			'GET',
 			encodeURIComponent(requestData.url),
 			encodeURIComponent(new URLSearchParams(params).toString())
 		].join('&');
@@ -114,7 +118,8 @@ export class TrelloAPI {
 			baseString: baseString,
 			key: this.strConnKey,
 		}).then((signature) => {
-			const oauthSignature: string = signature as string;			params.oauth_signature = oauthSignature;
+			const oauthSignature: string = signature as string;
+			params.oauth_signature = oauthSignature;
 
 			// Generar los datos de OAuth
 			const oauthData = this.oauth.authorize({
@@ -123,7 +128,8 @@ export class TrelloAPI {
 				data: params,
 			}, {
 				key: this.strConnKey,
-				secret: this.strConnOauthToken,
+				secret: this.strConnToken,
+				//secret: this.strConnOauthToken,
 			});
 
 			// Crear el encabezado de autorización
@@ -137,11 +143,13 @@ export class TrelloAPI {
 	}
 
 	private authenticateWithBearer(requestData: RequestData): Cypress.Chainable<any> {
-		if (!this.strConnBearerToken) {
+		//if (!this.strConnBearerToken) {
+		if (!this.strConnToken) {
 			throw new Error('Bearer Token no está definido.');
 		}
 
-		const authHeader = `Bearer ${this.strConnBearerToken}`;
+		//const authHeader = `Bearer ${this.strConnBearerToken}`;
+		const authHeader = `Bearer ${this.strConnToken}`;
 		return cy.wrap(authHeader);
 	}
 

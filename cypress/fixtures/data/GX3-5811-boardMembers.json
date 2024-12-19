@@ -1,12 +1,19 @@
 {
+	"auth": {
+		"token": "",
+		"key": ""
+	},
 	"data": {
-		"idBoard": "663371d412e3a762b947e391",
-		"idUser": "663371c3a5803661d1b7bcf9"
+		"idBoard": "",
+		"idUser": "",
+		"username": "663371c3a5803661d1b7bcf9"
 	},
 	"url": {
 		"protocol": "https",
 		"host": "api.trello.com",
 		"basePath": "1/",
+		"userMember": "{{protocol}}://{{host}}/{{basePath}}members/{{username}}?key={{myKey}}&token={{myToken}}",
+		"boardsUser": "{{protocol}}://{{host}}/{{basePath}}members/{{idUser}}/boards?key={{myKey}}&token={{myToken}}",
 		"membersBoard": "{{protocol}}://{{host}}/{{basePath}}boards/{{idBoard}}/members?key={{myKey}}&token={{myToken}}",
 		"memberData": "{{protocol}}://{{host}}/{{basePath}}members/{{idUser}}?key={{myKey}}&token={{myToken}}"
 	}
