@@ -1,19 +1,41 @@
-import { AuthType, TrelloAPI, type Auth } from '@pages/GX3-5811-boardMembers.Page';
+import { Api5811, type ApiResponse } from '@pages/GX3-5811_boardMembers.Page';
+import { AuthType, TrelloAPIAuth, type Auth } from '@pages/GX3-5811_boardMembers_APIAuth.Page';
+
+interface Get {
+	userIdMember: string;
+	membersBoard: string;
+	memberData: string;
+}
+
+interface Post {
+	board: string;
+}
+
+interface Put {
+	memberToBoard: string;
+}
+
+interface Delete {
+	board: string;
+}
 
 interface Url {
 	protocol: string;
 	host: string;
 	basePath: string;
-	userMember: string;
-	boardsUser: string,
-	membersBoard: string;
-	memberData: string;
+	endPath: string;
+	get: Get;
+	post: Post;
+	put: Put;
+	delete: Delete;
 }
 
 interface Data {
 	idUser: string;
-	idBoard: string;
+	idOrganization: string;
 	username: string;
+	idBoard: string;
+	boardName: string;
 }
 
 interface UserData {
@@ -22,26 +44,17 @@ interface UserData {
 	url: Url;
 }
 
-interface ApiResponse {
-	idBoards: string[];
-	id: string;
-	name: string;
-	fullName: string;
-	status: string;
-}
-
 describe('GX3-5811 | Trello (API) | Members | API Endpoint: Get the Members of a Board', () => {
 	let fixtureData: UserData;
-	let idBoard: string = '';
-	let arrBoards: string[] = [];
 	let authHeader: string = '';
 
-	const trelloAPI = new TrelloAPI();
+	const trelloAPI = new TrelloAPIAuth();
+	const trelloPRC = new Api5811();
 
-	beforeEach('PRC: El usuario tiene que tener boards con miembros', function() {
+	before('PRC: El usuario tiene que tener boards con miembros', function() {
 		cy.fixture('data/GX3-5811-boardMembers').then((data: UserData) => {
 			fixtureData = data;
-
+		}).then(() => {
 			const token = Cypress.env('TRELLO_TOKEN') as string;
 			const key = Cypress.env('TRELLO_KEY') as string;
 
@@ -52,23 +65,20 @@ describe('GX3-5811 | Trello (API) | Members | API Endpoint: Get the Members of a
 			fixtureData.auth.token = token;
 			fixtureData.auth.key = key;
 
-			trelloAPI.setCredentials(fixtureData.auth, AuthType.bearer);
-		}).then(() => {
-			const urlUser = trelloAPI.buildUrl(fixtureData.url.userMember,
-				{
-					protocol: fixtureData.url.protocol,
-					host: fixtureData.url.host,
-					basePath: fixtureData.url.basePath,
-					username: fixtureData.data.username,
-					myKey: fixtureData.auth.key,
-					myToken: fixtureData.auth.token,
-				}
-			);
+			trelloAPI.setCredentials(fixtureData.auth, AuthType.oauth);
 
-			//cy.log(urlUser);
+			const urlGetMemberId = trelloAPI.buildUrl(fixtureData.url.get.userIdMember, {
+				protocol: fixtureData.url.protocol,
+				host: fixtureData.url.host,
+				basePath: fixtureData.url.basePath,
+				username: fixtureData.data.username,
+				endPath: fixtureData.url.endPath,
+				myKey: fixtureData.auth.key,
+				myToken: fixtureData.auth.token,
+			});
 
 			const requestData = {
-				url: urlUser,
+				url: urlGetMemberId,
 				data: {
 					method: 'GET',
 				},
@@ -77,105 +87,76 @@ describe('GX3-5811 | Trello (API) | Members | API Endpoint: Get the Members of a
 			trelloAPI.authenticate(requestData).then((header: string) => {
 				authHeader = header;
 
-				cy.api({
-					method: 'GET',
-					url: urlUser,
-					headers: {
-						'authorization': authHeader,
-					},
-					failOnStatusCode: false
-				}).then((response) => {
-					expect(response.headers['content-type']).to.include('application/json');
-					expect(response.status).to.equal(200);
+				trelloPRC.getUserId(authHeader, urlGetMemberId).then((idUser) => {
+					fixtureData.data.idUser = idUser;
+				});
 
-					/*cy.log('User');
-					cy.log(urlUser);
-					// eslint-disable-next-line
-					cy.log(response.body);*/
+				const urlPostBoard = trelloAPI.buildUrl(fixtureData.url.post.board,
+					{
+						protocol: fixtureData.url.protocol,
+						host: fixtureData.url.host,
+						basePath: fixtureData.url.basePath,
+						boardName: fixtureData.data.boardName,
+						endPath: fixtureData.url.endPath,
+						myKey: fixtureData.auth.key,
+						myToken: fixtureData.auth.token
+					});
 
-					const responseData: ApiResponse = response.body as ApiResponse;
+				trelloPRC.createBoard(authHeader, urlPostBoard).then((idBoard) => {
+					fixtureData.data.idBoard= idBoard;
 
-					// Verificar que se devolvió un usuario
-					expect(responseData).to.be.an('object');
-					expect(responseData).to.have.property('id');
+					const urlPutMemberToBoard = trelloAPI.buildUrl(fixtureData.url.put.memberToBoard, {
+						protocol: fixtureData.url.protocol,
+						host: fixtureData.url.host,
+						basePath: fixtureData.url.basePath,
+						idBoard: fixtureData.data.idBoard,
+						idMember: fixtureData.data.idUser,
+						endPath: fixtureData.url.endPath,
+						myKey: fixtureData.auth.key,
+						myToken: fixtureData.auth.token
+					});
 
-					// Verificar que hay tableros
-					expect(responseData).to.have.property('idBoards');
-					arrBoards = responseData.idBoards;
-
-					expect(arrBoards.length).to.be.above(0);
-
-					if (arrBoards.length > 0) {
-						idBoard = arrBoards[0];
-						fixtureData.data.idBoard=idBoard;
-
-						/*arrBoards.forEach(element => {
-							idBoard = element;
-							cy.window().then((win) => {
-								win.localStorage.setItem('idBoard', idBoard);
-							});
-						});*/
-					}
+					trelloPRC.assignMemberToBoard(authHeader, urlPutMemberToBoard);
 				});
 			});
-		});/*.then(() => {
-			// Obtener información del tablero usando el idBoard
-			const urlBoard = trelloAPI.buildUrl(
-				fixtureData.url.membersBoard, // URL para obtener miembros del tablero
-				{
-					protocol: fixtureData.url.protocol,
-					host: fixtureData.url.host,
-					basePath: fixtureData.url.basePath,
-					idBoard: idBoard,
-					myKey: fixtureData.auth.key,
-					myToken: fixtureData.auth.token,
-				}
-			);
-
-			// Realiza la solicitud para obtener la información del tablero
-			cy.api({
-				method: 'GET',
-				url: urlBoard,
-				headers: {
-					'authorization': authHeader, // Reutiliza el header de autenticación
-				},
-			}).then((response) => {
-				cy.log('Board');
-				cy.log(urlBoard);
-				// eslint-disable-next-line
-				cy.log(response.body);
-
-				// Verificar el tipo de contenido
-				expect(response.headers['content-type']).to.include('application/json');
-				// Verificar el código de estado
-				expect(response.status).to.equal(200);
-
-				const boardData: ApiResponse[] = response.body as ApiResponse[]; // Tipar la respuesta como array
-
-				// Verificar que se devolvió la información del tablero
-				expect(boardData).to.be.an('array').that.is.not.empty; // Asegurarse de que es un array y no está vacío
-				expect(boardData[0]).to.have.property('id');
-				expect(boardData[0]).to.have.property('fullName'); // Asegúrate de que la propiedad que estás verificando sea correcta
-
-				// Aquí se registra la información del tablero
-				cy.log(`id Board: ${boardData[0].id}\nName of board: ${boardData[0].fullName}`);
-			});
-		});*/
+		});
 	});
 
-	it('GX3-5812 | TC01: Validar obtener miembros del tablero exitosamente.', () => {
-		const URL_TEMPLATE = fixtureData.url.membersBoard;
-
-		const replacements = {
+	after('PSC: Delete created board.', () => {
+		const urlDeleteBoard = trelloAPI.buildUrl(fixtureData.url.delete.board, {
 			protocol: fixtureData.url.protocol,
 			host: fixtureData.url.host,
 			basePath: fixtureData.url.basePath,
 			idBoard: fixtureData.data.idBoard,
+			endPath: fixtureData.url.endPath,
 			myKey: fixtureData.auth.key,
 			myToken: fixtureData.auth.token,
+		});
+
+		const requestData = {
+			url: urlDeleteBoard,
+			data: {
+				method: 'DELETE',
+			},
 		};
 
-		const URL_MEMBERS_BOARD = trelloAPI.buildUrl(URL_TEMPLATE, replacements);
+		trelloAPI.authenticate(requestData).then((header: string) => {
+			authHeader = header;
+
+			trelloPRC.deleteBoard(authHeader, urlDeleteBoard);
+		});
+	});
+
+	it('GX3-5812 | TC01: Validar obtener miembros del tablero exitosamente.', () => {
+		const URL_MEMBERS_BOARD = trelloAPI.buildUrl(fixtureData.url.get.membersBoard, {
+			protocol: fixtureData.url.protocol,
+			host: fixtureData.url.host,
+			basePath: fixtureData.url.basePath,
+			idBoard: fixtureData.data.idBoard,
+			endPath: fixtureData.url.endPath,
+			myKey: fixtureData.auth.key,
+			myToken: fixtureData.auth.token,
+		});
 
 		const requestData = {
 			url: URL_MEMBERS_BOARD,
@@ -200,19 +181,17 @@ describe('GX3-5811 | Trello (API) | Members | API Endpoint: Get the Members of a
 	});
 
 	it('GX3-5812 | TC02: Validar No obtener miembros del tablero cuando el IDBOARD es inexistente.', () => {
-		const URL_TEMPLATE = fixtureData.url.membersBoard;
-		const ID_BOARD = 'inexistente';
+		const ID_BOARD = 'nonexistent';
 
-		const replacements = {
+		const URL_MEMBERS_BOARD = trelloAPI.buildUrl(fixtureData.url.get.membersBoard, {
 			protocol: fixtureData.url.protocol,
 			host: fixtureData.url.host,
 			basePath: fixtureData.url.basePath,
 			idBoard: ID_BOARD,
+			endPath: fixtureData.url.endPath,
 			myKey: fixtureData.auth.key,
 			myToken: fixtureData.auth.token,
-		};
-
-		const URL_MEMBERS_BOARD = trelloAPI.buildUrl(URL_TEMPLATE, replacements);
+		});
 
 		const requestData = {
 			url: URL_MEMBERS_BOARD,
@@ -237,19 +216,17 @@ describe('GX3-5811 | Trello (API) | Members | API Endpoint: Get the Members of a
 	});
 
 	it('GX3-5812 | TC03: Validar No obtener miembros del tablero cuando el IDBOARD es null.', () => {
-		const URL_TEMPLATE = fixtureData.url.membersBoard;
 		const ID_BOARD = null;
 
-		const replacements = {
+		const URL_MEMBERS_BOARD = trelloAPI.buildUrl(fixtureData.url.get.membersBoard, {
 			protocol: fixtureData.url.protocol,
 			host: fixtureData.url.host,
 			basePath: fixtureData.url.basePath,
 			idBoard: ID_BOARD,
+			endPath: fixtureData.url.endPath,
 			myKey: fixtureData.auth.key,
 			myToken: fixtureData.auth.token,
-		};
-
-		const URL_MEMBERS_BOARD = trelloAPI.buildUrl(URL_TEMPLATE, replacements);
+		});
 
 		const requestData = {
 			url: URL_MEMBERS_BOARD,
@@ -274,18 +251,15 @@ describe('GX3-5811 | Trello (API) | Members | API Endpoint: Get the Members of a
 	});
 
 	it('GX3-5812 | TC04: Validar obtener detalles de un miembro del tablero exitosamente.', () => {
-		const URL_TEMPLATE = fixtureData.url.membersBoard;
-
-		const replacements = {
+		const URL_MEMBERS_BOARD = trelloAPI.buildUrl(fixtureData.url.get.membersBoard, {
 			protocol: fixtureData.url.protocol,
 			host: fixtureData.url.host,
 			basePath: fixtureData.url.basePath,
 			idBoard: fixtureData.data.idBoard,
+			endPath: fixtureData.url.endPath,
 			myKey: fixtureData.auth.key,
 			myToken: fixtureData.auth.token,
-		};
-
-		const URL_MEMBERS_BOARD = trelloAPI.buildUrl(URL_TEMPLATE, replacements);
+		});
 
 		const requestData = {
 			url: URL_MEMBERS_BOARD,
@@ -301,18 +275,102 @@ describe('GX3-5811 | Trello (API) | Members | API Endpoint: Get the Members of a
 				url: URL_MEMBERS_BOARD,
 				headers: {
 					'authorization': authHeader,
-				}
+				},
+				failOnStatusCode: false
 			}).then((response) => {
 				expect(response.status).to.eq(200);
+
+				const myResponse: ApiResponse[] = response.body as ApiResponse[];
+
+				if (myResponse.length > 0) {
+					const URL_MEMBER_DATA = trelloAPI.buildUrl(fixtureData.url.get.memberData, {
+						protocol: fixtureData.url.protocol,
+						host: fixtureData.url.host,
+						basePath: fixtureData.url.basePath,
+						idUser: myResponse[0].id,
+						endPath: fixtureData.url.endPath,
+						myKey: fixtureData.auth.key,
+						myToken: fixtureData.auth.token,
+					});
+
+					cy.api({
+						method: 'GET',
+						url: URL_MEMBER_DATA,
+						headers: {
+							'authorization': authHeader,
+						},
+						failOnStatusCode: false
+					}).then((response) => {
+						expect(response.status).to.eq(200);
+					});
+				}
 			});
 		});
 	});
 
 	it('GX3-5812 | TC05: Validar No obtener detalles de un miembro del tablero cuando el IDMEMBER es inexistente.', () => {
-		// Implementa la prueba aquí
+		const URL_MEMBER_DATA = trelloAPI.buildUrl(fixtureData.url.get.memberData, {
+			protocol: fixtureData.url.protocol,
+			host: fixtureData.url.host,
+			basePath: fixtureData.url.basePath,
+			idUser: 'nonexistent',
+			endPath: fixtureData.url.endPath,
+			myKey: fixtureData.auth.key,
+			myToken: fixtureData.auth.token,
+		});
+
+		const requestData = {
+			url: URL_MEMBER_DATA,
+			data: {
+				method: 'GET',
+				id: 'nonexistant',
+			},
+		};
+
+		trelloAPI.authenticate(requestData).then((authHeader: string) => {
+			cy.api({
+				method: 'GET',
+				url: URL_MEMBER_DATA,
+				headers: {
+					'authorization': authHeader,
+				},
+				failOnStatusCode: false
+			}).then((response) => {
+				expect(response.status).to.eq(404);
+			});
+		});
 	});
 
 	it('GX3-5812 | TC06: Validar No obtener detalles de un miembro del tablero cuando el IDMEMBER es null.', () => {
-		// Implementa la prueba aquí
+		const URL_MEMBER_DATA = trelloAPI.buildUrl(fixtureData.url.get.memberData, {
+			protocol: fixtureData.url.protocol,
+			host: fixtureData.url.host,
+			basePath: fixtureData.url.basePath,
+			idUser: null,
+			endPath: fixtureData.url.endPath,
+			myKey: fixtureData.auth.key,
+			myToken: fixtureData.auth.token,
+		});
+
+		const requestData = {
+			url: URL_MEMBER_DATA,
+			data: {
+				method: 'GET',
+				id: 'nonexistant',
+			},
+		};
+
+		trelloAPI.authenticate(requestData).then((authHeader: string) => {
+			cy.api({
+				method: 'GET',
+				url: URL_MEMBER_DATA,
+				headers: {
+					'authorization': authHeader,
+				},
+				failOnStatusCode: false
+			}).then((response) => {
+				expect(response.status).to.eq(404);
+			});
+		});
 	});
 });

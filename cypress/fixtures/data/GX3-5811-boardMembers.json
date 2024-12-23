@@ -4,17 +4,30 @@
 		"key": ""
 	},
 	"data": {
-		"idBoard": "",
+		"idOrganization": "",
 		"idUser": "",
-		"username": "663371c3a5803661d1b7bcf9"
+		"username": "diegogonzalezfernandez4",
+		"idBoard": "",
+		"boardName": "GX3-5811"
 	},
 	"url": {
 		"protocol": "https",
 		"host": "api.trello.com",
 		"basePath": "1/",
-		"userMember": "{{protocol}}://{{host}}/{{basePath}}members/{{username}}?key={{myKey}}&token={{myToken}}",
-		"boardsUser": "{{protocol}}://{{host}}/{{basePath}}members/{{idUser}}/boards?key={{myKey}}&token={{myToken}}",
-		"membersBoard": "{{protocol}}://{{host}}/{{basePath}}boards/{{idBoard}}/members?key={{myKey}}&token={{myToken}}",
-		"memberData": "{{protocol}}://{{host}}/{{basePath}}members/{{idUser}}?key={{myKey}}&token={{myToken}}"
+		"endPath": "key={{myKey}}&token={{myToken}}",
+		"get": {
+			"userIdMember": "{{protocol}}://{{host}}/{{basePath}}members/{{username}}?{{endPath}}",
+			"membersBoard": "{{protocol}}://{{host}}/{{basePath}}boards/{{idBoard}}/members?{{endPath}}",
+			"memberData": "{{protocol}}://{{host}}/{{basePath}}members/{{idUser}}?{{endPath}}"
+		},
+		"post": {
+			"board": "{{protocol}}://{{host}}/{{basePath}}boards/?name={{boardName}}&{{endPath}}"
+		},
+		"put": {
+			"memberToBoard": "{{protocol}}://{{host}}/{{basePath}}boards/{{idBoard}}/members/{{idMember}}?type=observer&{{endPath}}"
+		},
+		"delete": {
+			"board": "{{protocol}}://{{host}}/{{basePath}}boards/{{idBoard}}?{{endPath}}"
+		}
 	}
 }

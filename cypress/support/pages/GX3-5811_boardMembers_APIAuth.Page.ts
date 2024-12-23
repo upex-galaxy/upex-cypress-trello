@@ -32,15 +32,13 @@ interface OAuthParams {
 }
 /* eslint-enable @typescript-eslint/naming-convention */
 
-export class TrelloAPI {
+export class TrelloAPIAuth {
 	private oauth: OAuth;
 
 	private authMethod: AuthType = AuthType.bearer;
 
 	private strConnKey: string = '';
 	private strConnToken: string = '';
-	private strConnOauthToken: string = '';
-	private strConnBearerToken: string = '';
 
 	constructor() {
 		this.oauth = new OAuth({
@@ -77,12 +75,10 @@ export class TrelloAPI {
 			case AuthType.oauth:
 				this.strConnKey = auth.key;
 				this.strConnToken = auth.token;
-				//this.strConnOauthToken = auth.token;
 				break;
 			case AuthType.bearer:
 			default:
 				this.strConnToken = auth.token;
-				//this.strConnBearerToken = auth.token;
 				break;
 		}
 	}
@@ -101,7 +97,6 @@ export class TrelloAPI {
 			oauth_signature_method: 'HMAC-SHA1',
 			oauth_timestamp: Math.floor(Date.now() / 1000).toString(),
 			oauth_token: this.strConnToken,
-			//oauth_token: this.strConnOauthToken,
 			oauth_version: '1.0',
 			...requestData.data, // Otros parámetros que necesiten ser incluidos
 		};
@@ -129,7 +124,6 @@ export class TrelloAPI {
 			}, {
 				key: this.strConnKey,
 				secret: this.strConnToken,
-				//secret: this.strConnOauthToken,
 			});
 
 			// Crear el encabezado de autorización
@@ -143,18 +137,15 @@ export class TrelloAPI {
 	}
 
 	private authenticateWithBearer(requestData: RequestData): Cypress.Chainable<any> {
-		//if (!this.strConnBearerToken) {
 		if (!this.strConnToken) {
 			throw new Error('Bearer Token no está definido.');
 		}
 
-		//const authHeader = `Bearer ${this.strConnBearerToken}`;
 		const authHeader = `Bearer ${this.strConnToken}`;
 		return cy.wrap(authHeader);
 	}
 
 	public authenticate(requestData: RequestData, urlData?: string): Cypress.Chainable<any> {
-		// Aquí puedes usar urlData como un string genérico si es necesario
 		switch (this.authMethod) {
 			case AuthType.oauth:
 				return this.authenticateWithOauth1(requestData);
