@@ -57,10 +57,10 @@ export class TrelloAPIAuth {
 		});
 	}
 
-	public buildUrl(template: string, replacements: Record<string, string | null>): string {
-		let builtUrl = template;
+	public buildUrl(_template: string, _replacements: Record<string, string | null>): string {
+		let builtUrl = _template;
 
-		for (const [key, value] of Object.entries(replacements)) {
+		for (const [key, value] of Object.entries(_replacements)) {
 			// eslint-disable-next-line no-negated-condition
 			builtUrl = builtUrl.replace(`{{${key}}}`, value !== null ? value : '');
 		}
@@ -68,24 +68,24 @@ export class TrelloAPIAuth {
 		return builtUrl;
 	}
 
-	public setCredentials(auth: Auth, method?: AuthType) {
-		this.authMethod = method ?? AuthType.bearer;
+	public setCredentials(_auth: Auth, _method?: AuthType) {
+		this.authMethod = _method ?? AuthType.bearer;
 
-		switch (method) {
+		switch (_method) {
 			case AuthType.oauth:
-				this.strConnKey = auth.key;
-				this.strConnToken = auth.token;
+				this.strConnKey = _auth.key;
+				this.strConnToken = _auth.token;
 				break;
 			case AuthType.bearer:
 			default:
-				this.strConnToken = auth.token;
+				this.strConnToken = _auth.token;
 				break;
 		}
 	}
 
 	// código generado por Aurora, con mucha guía y corrección por mi parte.
-	private authenticateWithOauth1(requestData: RequestData): Cypress.Chainable<string> {
-		if (!requestData.url) {
+	private authenticateWithOauth1(_requestData: RequestData): Cypress.Chainable<string> {
+		if (!_requestData.url) {
 			throw new Error('url no está definida en requestData.');
 		}
 
@@ -98,14 +98,14 @@ export class TrelloAPIAuth {
 			oauth_timestamp: Math.floor(Date.now() / 1000).toString(),
 			oauth_token: this.strConnToken,
 			oauth_version: '1.0',
-			...requestData.data, // Otros parámetros que necesiten ser incluidos
+			..._requestData.data, // Otros parámetros que necesiten ser incluidos
 		};
 		/* eslint-enable @typescript-eslint/naming-convention */
 
 		// Crear el baseString
 		const baseString = [
 			'GET',
-			encodeURIComponent(requestData.url),
+			encodeURIComponent(_requestData.url),
 			encodeURIComponent(new URLSearchParams(params).toString())
 		].join('&');
 
@@ -118,7 +118,7 @@ export class TrelloAPIAuth {
 
 			// Generar los datos de OAuth
 			const oauthData = this.oauth.authorize({
-				url: requestData.url,
+				url: _requestData.url,
 				method: 'GET',
 				data: params,
 			}, {
@@ -136,7 +136,7 @@ export class TrelloAPIAuth {
 		return Math.random().toString(36).substring(2);
 	}
 
-	private authenticateWithBearer(requestData: RequestData): Cypress.Chainable<any> {
+	private authenticateWithBearer(): Cypress.Chainable<any> {
 		if (!this.strConnToken) {
 			throw new Error('Bearer Token no está definido.');
 		}
@@ -145,13 +145,13 @@ export class TrelloAPIAuth {
 		return cy.wrap(authHeader);
 	}
 
-	public authenticate(requestData: RequestData, urlData?: string): Cypress.Chainable<any> {
+	public authenticate(_requestData: RequestData): Cypress.Chainable<any> {
 		switch (this.authMethod) {
 			case AuthType.oauth:
-				return this.authenticateWithOauth1(requestData);
+				return this.authenticateWithOauth1(_requestData);
 			case AuthType.bearer:
 			default:
-				return this.authenticateWithBearer(requestData);
+				return this.authenticateWithBearer();
 		}
 	}
 }

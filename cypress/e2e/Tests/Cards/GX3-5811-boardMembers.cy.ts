@@ -45,13 +45,13 @@ interface UserData {
 }
 
 describe('GX3-5811 | Trello (API) | Members | API Endpoint: Get the Members of a Board', () => {
-	let fixtureData: UserData;
-	let authHeader: string = '';
-
 	const trelloAPI = new TrelloAPIAuth();
 	const trelloPRC = new Api5811();
 
-	before('PRC: El usuario tiene que tener boards con miembros', function() {
+	let fixtureData: UserData;
+	let authHeader: string = '';
+
+	before('PRC: El usuario tiene que estar conectado', function() {
 		cy.fixture('data/GX3-5811-boardMembers').then((data: UserData) => {
 			fixtureData = data;
 		}).then(() => {
@@ -66,63 +66,65 @@ describe('GX3-5811 | Trello (API) | Members | API Endpoint: Get the Members of a
 			fixtureData.auth.key = key;
 
 			trelloAPI.setCredentials(fixtureData.auth, AuthType.oauth);
+		});
+	});
 
-			const urlGetMemberId = trelloAPI.buildUrl(fixtureData.url.get.userIdMember, {
-				protocol: fixtureData.url.protocol,
-				host: fixtureData.url.host,
-				basePath: fixtureData.url.basePath,
-				username: fixtureData.data.username,
-				endPath: fixtureData.url.endPath,
-				myKey: fixtureData.auth.key,
-				myToken: fixtureData.auth.token,
+	beforeEach('PRC: El usuario tiene que tener boards con miembros', () => {
+		const urlGetMemberId = trelloAPI.buildUrl(fixtureData.url.get.userIdMember, {
+			protocol: fixtureData.url.protocol,
+			host: fixtureData.url.host,
+			basePath: fixtureData.url.basePath,
+			username: fixtureData.data.username,
+			endPath: fixtureData.url.endPath,
+			myKey: fixtureData.auth.key,
+			myToken: fixtureData.auth.token,
+		});
+
+		const requestData = {
+			url: urlGetMemberId,
+			data: {
+				method: 'GET',
+			},
+		};
+
+		trelloAPI.authenticate(requestData).then((header: string) => {
+			authHeader = header;
+
+			trelloPRC.getUserId(authHeader, urlGetMemberId).then((idUser) => {
+				fixtureData.data.idUser = idUser;
 			});
 
-			const requestData = {
-				url: urlGetMemberId,
-				data: {
-					method: 'GET',
-				},
-			};
-
-			trelloAPI.authenticate(requestData).then((header: string) => {
-				authHeader = header;
-
-				trelloPRC.getUserId(authHeader, urlGetMemberId).then((idUser) => {
-					fixtureData.data.idUser = idUser;
+			const urlPostBoard = trelloAPI.buildUrl(fixtureData.url.post.board,
+				{
+					protocol: fixtureData.url.protocol,
+					host: fixtureData.url.host,
+					basePath: fixtureData.url.basePath,
+					boardName: fixtureData.data.boardName,
+					endPath: fixtureData.url.endPath,
+					myKey: fixtureData.auth.key,
+					myToken: fixtureData.auth.token
 				});
 
-				const urlPostBoard = trelloAPI.buildUrl(fixtureData.url.post.board,
-					{
-						protocol: fixtureData.url.protocol,
-						host: fixtureData.url.host,
-						basePath: fixtureData.url.basePath,
-						boardName: fixtureData.data.boardName,
-						endPath: fixtureData.url.endPath,
-						myKey: fixtureData.auth.key,
-						myToken: fixtureData.auth.token
-					});
+			trelloPRC.createBoard(authHeader, urlPostBoard).then((idBoard) => {
+				fixtureData.data.idBoard= idBoard;
 
-				trelloPRC.createBoard(authHeader, urlPostBoard).then((idBoard) => {
-					fixtureData.data.idBoard= idBoard;
-
-					const urlPutMemberToBoard = trelloAPI.buildUrl(fixtureData.url.put.memberToBoard, {
-						protocol: fixtureData.url.protocol,
-						host: fixtureData.url.host,
-						basePath: fixtureData.url.basePath,
-						idBoard: fixtureData.data.idBoard,
-						idMember: fixtureData.data.idUser,
-						endPath: fixtureData.url.endPath,
-						myKey: fixtureData.auth.key,
-						myToken: fixtureData.auth.token
-					});
-
-					trelloPRC.assignMemberToBoard(authHeader, urlPutMemberToBoard);
+				const urlPutMemberToBoard = trelloAPI.buildUrl(fixtureData.url.put.memberToBoard, {
+					protocol: fixtureData.url.protocol,
+					host: fixtureData.url.host,
+					basePath: fixtureData.url.basePath,
+					idBoard: fixtureData.data.idBoard,
+					idMember: fixtureData.data.idUser,
+					endPath: fixtureData.url.endPath,
+					myKey: fixtureData.auth.key,
+					myToken: fixtureData.auth.token
 				});
+
+				trelloPRC.assignMemberToBoard(authHeader, urlPutMemberToBoard);
 			});
 		});
 	});
 
-	after('PSC: Delete created board.', () => {
+	afterEach('PSC: Delete created board.', () => {
 		const urlDeleteBoard = trelloAPI.buildUrl(fixtureData.url.delete.board, {
 			protocol: fixtureData.url.protocol,
 			host: fixtureData.url.host,

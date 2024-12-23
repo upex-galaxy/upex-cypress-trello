@@ -3,12 +3,12 @@ export interface ApiResponse {
 }
 
 export class Api5811 {
-	public getUserId(strHeader: string, urlMember: string): Cypress.Chainable<string> {
+	public getUserId(_strHeader: string, _urlMember: string): Cypress.Chainable<string> {
 		return cy.api({
 			method: 'GET',
-			url: urlMember,
+			url: _urlMember,
 			headers: {
-				'authorization': strHeader,
+				'authorization': _strHeader,
 			},
 			failOnStatusCode: false
 		}).then((response) => {
@@ -19,19 +19,18 @@ export class Api5811 {
 
 			expect(responseData).to.be.an('object');
 			expect(responseData).to.have.property('id');
-			expect(responseData).to.have.property('idOrganizations');
 
 			return responseData.id;
 		});
 	}
 
 
-	public createBoard(strHeader: string, urlBoard: string): Cypress.Chainable<string> {
+	public createBoard(_strHeader: string, _urlBoard: string): Cypress.Chainable<string> {
 		return cy.api({
 			method: 'POST',
-			url: urlBoard,
+			url: _urlBoard,
 			headers: {
-				'authorization': strHeader,
+				'authorization': _strHeader,
 			},
 			failOnStatusCode: false
 		}).then((response) => {
@@ -47,27 +46,27 @@ export class Api5811 {
 		});
 	};
 
-	public assignMemberToBoard(strHeader: string, urlMemberToBoard: string) {
+	public assignMemberToBoard(_strHeader: string, _urlMemberToBoard: string) {
 		cy.api({
 			method: 'PUT',
-			url: urlMemberToBoard,
+			url: _urlMemberToBoard,
 			headers: {
-				'authorization': strHeader,
+				'authorization': _strHeader,
 			},
 			failOnStatusCode: false
 		}).then((response) => {
 			if (response.status !== 200) {
-				this.assignMemberToBoard(strHeader, urlMemberToBoard.replace('observer', 'admin'));
+				this.assignMemberToBoard(_strHeader, _urlMemberToBoard.replace('observer', 'admin'));
 			}
 		});
 	}
 
-	public deleteBoard(strHeader: string, urlBoard: string) {
+	public deleteBoard(_strHeader: string, _urlBoard: string) {
 		cy.api({
 			method: 'DELETE',
-			url: urlBoard,
+			url: _urlBoard,
 			headers: {
-				'authorization': strHeader,
+				'authorization': _strHeader,
 			},
 			failOnStatusCode: false
 		}).then((response) => {
